@@ -59,6 +59,15 @@ app.controller('CodeEditorCtrl',function($scope, botCodeFactory){
 	$scope.saveCode = function(){
 		botCodeFactory.saveBotCode($scope.string);		
 	};
+	
+	// ui.ace start
+	$scope.aceLoaded = function(_editor) {
+		// Options
+		_editor.setReadOnly(false);
+	};
+	$scope.aceChanged = function(e) {
+		//
+	};
 });
 
 app.controller('CodeConsoleCtrl',function($scope,$sce){
