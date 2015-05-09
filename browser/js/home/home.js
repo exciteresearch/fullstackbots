@@ -44,6 +44,14 @@ app.factory('botCodeFactory', function ($http) {
     };
 });
 
+app.factory('msgCtrl', function(){
+/*	// msgCtrl - browser notifications to trigger AJAX update requests 
+ * */
+	
+	
+	
+});
+
 app.controller('PlayCanvasCtrl',function($scope,$sce){
 	//playCanvas URL can be changed to anything including /pc/index.html or http://playcanv.as/p/aP0oxhUr
 	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html');
