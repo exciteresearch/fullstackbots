@@ -7,27 +7,6 @@ app.config(function ($stateProvider) {
     });
 });
 
-//app.service('srcCode', function($q) {
-//	  var d = $q.defer();
-//	  var getData = $http({
-//		  url: '/pc/osc.js',
-//		  method: 'GET',
-//		  transformResponse: appendTransform($http.defaults.transformResponse, function(value) {
-//		    return doTransform(value);
-//		  })
-//		});
-//	  
-//	  this.botCode = function() {
-//	    fs.readFile('tags', 'utf8', function(err, data) {
-//	      if (err) throw err;
-//	      console.debug(data.split(','));
-//	      d.resolve(data.split(','));
-//	    });
-//	    return d.promise();
-//	  };    
-//	});
-
-
 app.factory('botCodeFactory', function ($http) {
     return {
         getBotCode: function () {
@@ -42,10 +21,25 @@ app.factory('botCodeFactory', function ($http) {
             });
         },
 
-        sendBotCode: function (data) {
-            return $http.post('/pc', data).then(function (response) {
-                return response.data;
-            });
+        saveBotCode: function (data) {
+        	console.log("saveBotCode data",data);
+        	var temp = data;
+
+        	data = {
+        			botCode: temp,
+        			fileName: "osc.js",
+        			filePath: "/pc/"
+        	};
+
+            return $http.post('/api/saveBotCode/', data).then(function(res) {
+//                update.currentOrder = res.data;
+//                update.justOrdered = true;
+            	console.log("res.data",res.data);
+                return res.data;
+              }, function(err) {
+                  throw new Error(err);
+              });
+                        
         }
     };
 });
@@ -58,7 +52,13 @@ app.controller('PlayCanvasCtrl',function($scope,$sce){
 app.controller('CodeEditorCtrl',function($scope, botCodeFactory){
 	//Could also be a Panel of Tabs
 	$scope.string = "";
-	botCodeFactory.getBotCode().then(function(data){ console.log(data); $scope.string = data;});
+	botCodeFactory.getBotCode()
+					.then(function(data){
+						$scope.string = data;
+		});
+	$scope.saveCode = function(){
+		botCodeFactory.saveBotCode($scope.string);		
+	};
 });
 
 app.controller('CodeConsoleCtrl',function($scope,$sce){
