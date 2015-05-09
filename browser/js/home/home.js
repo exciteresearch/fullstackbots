@@ -1,4 +1,5 @@
 'use strict';
+
 app.config(function ($stateProvider) {
     $stateProvider.state('home', {
         url: '/',
@@ -6,14 +7,58 @@ app.config(function ($stateProvider) {
     });
 });
 
+app.factory('botCodeFactory', function ($http) {
+    return {
+        getBotCode: function () {
+            var queryParams = {};
+//            if (category) {
+//                queryParams.category = category;
+//            }
+            return $http.get('/pc/osc.js', {
+                params: queryParams
+            }).then(function (response) {
+                return response.data;
+            });
+        },
+
+        saveBotCode: function (data) {
+        	console.log("saveBotCode data",data);
+        	var temp = data;
+
+        	data = {
+        			botCode: temp,
+        			fileName: "osc.js",
+        			filePath: "/pc/"
+        	};
+
+            return $http.post('/api/saveBotCode/', data).then(function(res) {
+//                update.currentOrder = res.data;
+//                update.justOrdered = true;
+            	console.log("res.data",res.data);
+                return res.data;
+              }, function(err) {
+                  throw new Error(err);
+              });
+                        
+        }
+    };
+});
+
 app.controller('PlayCanvasCtrl',function($scope,$sce){
 	//playCanvas URL can be changed to anything including /pc/index.html or http://playcanv.as/p/aP0oxhUr
 	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html');
 });
 
-app.controller('CodeEditorCtrl',function($scope,$sce){
+app.controller('CodeEditorCtrl',function($scope, botCodeFactory){
 	//Could also be a Panel of Tabs
-	
+	$scope.string = "";
+	botCodeFactory.getBotCode()
+					.then(function(data){
+						$scope.string = data;
+		});
+	$scope.saveCode = function(){
+		botCodeFactory.saveBotCode($scope.string);		
+	};
 });
 
 app.controller('CodeConsoleCtrl',function($scope,$sce){
