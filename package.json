@@ -1,7 +1,7 @@
 {
   "name": "FullStackBots",
   "version": "1.0.0",
-  "description": "A generated project at Fullstack Academy",
+  "description": "Code JavaScript Bots to interact in a PlayCanvas Game.",
   "main": "server/start.js",
   "scripts": {
     "start": "node server/start.js",
