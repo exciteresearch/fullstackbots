@@ -12,7 +12,7 @@ router.post('/', function (req, res) {
 			"\n req.body.filePath",req.body.filePath,
 			"\n req.body.fileName",req.body.fileName,
 			"\n res",res);
-	fs.writeFile(path.join(__dirname,"../../../../bower_components/",req.body.filePath,req.body.fileName), req.body.botCode, function (err) {
+	fs.writeFile(path.join(__dirname,"../../../../public/",req.body.filePath,req.body.fileName), req.body.botCode, function (err) {
 		  if (err) return console.log(err);
 		  console.log('writeFile');
 		    res.send({
