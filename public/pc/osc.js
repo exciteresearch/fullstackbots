@@ -1,4 +1,4 @@
-/// test save 2 "*20"
+/// test save 2 "/20"
 // This script moves the entity backwards and forwards on the x-axis.
 // You can pause the oscillation by pressing the space bar.
 ///
@@ -28,7 +28,7 @@ pc.script.create('oscillator', function (app) {
                 this.time += dt;
 
                 // Calculate the new value
-                var x = this.amplitude * Math.sin(this.time*20);
+                var x = this.amplitude * Math.sin(this.time/20);
 
                 // Update the x position of the Entity
                 this.entity.setLocalPosition(x, 0, 0);

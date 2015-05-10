@@ -44,16 +44,9 @@ app.factory('botCodeFactory', function ($http) {
     };
 });
 
-app.factory('msgCtrl', function(){
-/*	// msgCtrl - browser notifications to trigger AJAX update requests 
- * */
-	
-	
-	
-});
-
 app.controller('PlayCanvasCtrl',function($scope,$sce){
-	//playCanvas URL can be changed to anything including /pc/index.html or http://playcanv.as/p/aP0oxhUr
+/*	//playCanvas URL can be changed to anything including /pc/index.html or http://playcanv.as/p/aP0oxhUr
+*/	
 	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html');
 });
 
@@ -78,17 +71,41 @@ app.controller('CodeEditorCtrl',function($scope, botCodeFactory){
 	};
 });
 
-app.controller('CodeConsoleCtrl',function($scope,$sce){
+app.controller('CodeConsoleCtrl',function($scope){
 	//Code output, console logs, errors etc.
 	
 });
 
-app.controller('ButtonsCtrl',function($scope,$sce){
+app.controller('ButtonsCtrl',function($scope){
 	//Practice and/or Compete
 	
 });
 
-app.controller('SideMenuCtrl',function($scope,$sce){
+app.controller('SideMenuCtrl',function($scope){
 	//Chat, Repo, FAQ. etc
 	
+});
+
+app.controller('msgCtrl',function($scope) {
+    if (typeof(EventSource) !== "undefined") {
+        // Yes! Server-sent events support!
+        var source = new EventSource('/api/dispatcher/');
+        console.log("source",source);
+        // creat an eventHandler for when a message is received
+        source.addEventListener('open', function(event) {
+        	console.log("open",event);
+        });
+        source.addEventListener('message', function(event) {
+        	console.log("message",event);
+        	$scope.msg = JSON.parse(event.data);
+            $scope.$apply();
+            console.log($scope.msg);
+        });
+        source.addEventListener('error', function(event) {
+        	console.log("error",event);
+        });
+    } else {
+	    // Sorry! No server-sent events support..
+	    console.log('SSE not supported by browser.');
+	}
 });

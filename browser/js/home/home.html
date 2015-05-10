@@ -1,6 +1,4 @@
 <section id="home">
-    <!-- <fullstack-logo></fullstack-logo>
-    <rando-greeting></rando-greeting>  -->
     <div class="row">
 	    <div ng-controller="PlayCanvasCtrl" class="col-lg-6 col-sm-12">
 	    	<iframe ng-src="{{playCanvasURL}}" style="width:100%;height:500px;"></iframe>
@@ -26,4 +24,9 @@
 		    <div class="col-lg-6 col-sm-12" style="width:100%;height:20px;"><button>PRACTICE</button><button>COMPETE</button></div>	    
 	    </div>
     </div>
+    
+    <div ng-controller="msgCtrl" ng-model="msg" class="col-lg-6 col-sm-12" style="width:100%;height:20px;border: dashed black 1px;">
+    	{{msg}}
+	</div>
+    
 </section>
