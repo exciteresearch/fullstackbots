@@ -45,9 +45,14 @@ app.factory('botCodeFactory', function ($http) {
 });
 
 app.controller('PlayCanvasCtrl',function($scope,$sce){
-/*	//playCanvas URL can be changed to anything including /pc/index.html or http://playcanv.as/p/aP0oxhUr
+/*	//playCanvas URL can be changed to anything including:
+ * FullStackBots: /pc/index.html ,
+ * Tanx: http://playcanv.as/p/aP0oxhUr ,
+ * Voyager: http://playcanv.as/p/MmS7rx1i ,
+ * Swoop: http://playcanv.as/p/JtL2iqIH ,
+ * Hack: http://playcanv.as/p/KRE8VnRm 
 */	
-	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html');
+	$scope.playCanvasURL = $sce.trustAsResourceUrl('http://playcanv.as/p/KRE8VnRm');
 });
 
 app.controller('CodeEditorCtrl',function($scope, botCodeFactory){
