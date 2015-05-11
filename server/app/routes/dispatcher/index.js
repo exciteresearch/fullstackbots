@@ -1,5 +1,6 @@
 'use strict';
 var path = require('path');
+// remove the next two lines and you will get an error 'Router.use() requires middleware function but got a Obj'
 var router = require('express').Router();
 module.exports = router;
 
@@ -34,19 +35,42 @@ router.get('/', function (req, res) {
     var createMsg = function () {
         return { dt: new Date(), connection: false };
     };
-
+    res.write('connection');
+    res.write('\n\n');
     setInterval(function() {
-        openConnections.forEach(function(resp,index) {
+        openConnections.forEach(function(response,index) {
             var msg = createMsg() ; 
             msg.connection = index;
-            resp.write('connection: ' + index + '\n');
-            resp.write('msg: ' + JSON.stringify(msg) + '\n\n'); // Note the extra newline
+            response.write('data: ' + JSON.stringify(msg) + '\n\n'); // Note the extra newline
             console.log("connection",index,"msg",msg);
         });
-    }, 30000);
+    }, 15000);
 });
 
-//an open connection can have multiple subscriptions
-//every subscription is a registered emmitter
-//a registered emmitter can be emmitted during an event
+// an open connection can have multiple subscriptions
+// every subscription is a registered emmitter
+// a registered emmitter can be emmitted during an event
 // emmit to allow appropriate subscribers to refresh an iframe
+
+//create an sse server on a specific port, require sse library is very old.
+//var SSE = require("sse")
+//, express = require('express')
+////, sseApp = express.createServer(); // express.createServer() depricated
+//, sseApp = express();
+//
+////sseApp.use(express.static(__dirname + '/public'));
+//sseApp.use(express.static(__dirname + '/app/routes/dispatcher'));
+//
+//var sse = new SSE(sseApp);
+//sse.on('connection', function(client) {
+//	var id = setInterval(function() {
+//		client.send(JSON.stringify(process.memoryUsage()));
+//	}, 100);
+//	console.log('started client interval');
+//	client.on('close', function() {
+//		console.log('stopping client interval');
+//		clearInterval(id);
+//	})
+//});
+//
+//sseApp.listen(1337);
