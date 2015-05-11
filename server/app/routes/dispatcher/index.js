@@ -1,4 +1,5 @@
 'use strict';
+var fs = require('fs');
 var path = require('path');
 // remove the next two lines and you will get an error 'Router.use() requires middleware function but got a Obj'
 var router = require('express').Router();
@@ -32,19 +33,23 @@ router.get('/', function (req, res) {
         console.log("openConnections ",openConnections.length);
     });
     
-    var createMsg = function () {
-        return { dt: new Date(), connection: false };
-    };
-
-    setInterval(function() {
-        openConnections.forEach(function(response,index) {
-            var msg = createMsg() ; 
-            msg.connection = index;
-            response.write('data: ' + JSON.stringify(msg) + '\n\n'); // Note the extra newline
-            console.log("connection",index,"msg",msg);
-        });
-    }, 15000);
 });
+
+var createMsg = function (type,connection) {
+    return { 
+    	type: type,
+    	dt: new Date(), 
+    	connection: connection || false
+    };
+};
+
+setInterval(function() {
+    openConnections.forEach(function(response,index) {
+        var msg = createMsg('heartbeat',index) ; 
+        response.write('data: ' + JSON.stringify(msg) + '\n\n'); // Note the extra newline
+        console.log("connection",index,"msg",msg);
+    });
+}, 15000);
 
 // an open connection can have multiple subscriptions
 // every subscription is a registered emmitter
@@ -74,3 +79,20 @@ router.get('/', function (req, res) {
 //});
 //
 //sseApp.listen(1337);
+
+//was saveBotCode BUT res does not match!!! need to start working with sessions
+
+router.post('/saveFile', function (req, res) {
+	fs.writeFile(path.join(__dirname,"../../../../public/",req.body.filePath,req.body.fileName), 
+		req.body.botCode, 
+		function (err) {
+	
+			if (err) return console.log(err);
+			
+//			console.log('writeFile openConnections.length:',openConnections.length);
+			
+	        var msg = createMsg('iFrame',openConnections.indexOf(res));
+	        console.log('saveFile msg',msg);
+	        res.write('data: ' + JSON.stringify(msg) + '\n\n'); // Note the extra newline
+	});
+});
