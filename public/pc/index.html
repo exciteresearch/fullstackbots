@@ -68,7 +68,7 @@
         }
     </style>
     <title>PlayCanvas</title>
-    <script src="code.playcanvas.com/playcanvas-0.166.4.min.js"></script>
+    <script src="code.playcanvas.com/playcanvas-0.167.1.min.js"></script>
 
     <script>
         var options = {};
@@ -90,15 +90,14 @@
     </script>
 
     <script src="data.js"></script>
-    <script src="bootstrap.js"></script>
 </head>
-<body><div class="col-lg-8">
+<body>
     <div id="application-splash">
         <a href="https://games.playcanvas.com" target="_blank"><img src="logo.png"/></a>
         <div id='application-progress'></div>
     </div>
-</div><div class="col-lg-4"></div>
-    
+
+    <script src="bootstrap.js"></script>
 
     <script>
         window.addEventListener('message', function (e) {
@@ -123,7 +122,7 @@
             splash.parentNode.removeChild(splash);
         });
         window.addEventListener("load", function () {
-            bootstrap.start(366258);
+            bootstrap.start(366340);
         }, false);
     </script>
 </body>

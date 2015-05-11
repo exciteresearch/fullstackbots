@@ -47,6 +47,7 @@ app.factory('botCodeFactory', function ($http) {
 app.controller('PlayCanvasCtrl',function($scope,$sce){
 /*	//playCanvas URL can be changed to anything including:
  * FullStackBots: /pc/index.html ,
+ * FSB: http://playcanv.as/p/bbMQlNMt?server=fsb,
  * Tanx: http://playcanv.as/p/aP0oxhUr ,
  * Voyager: http://playcanv.as/p/MmS7rx1i ,
  * Swoop: http://playcanv.as/p/JtL2iqIH ,
@@ -54,7 +55,7 @@ app.controller('PlayCanvasCtrl',function($scope,$sce){
 */	
 	// trustAsResourceUrl can be highly insecure if you do not filter for secure URLs
 	// it compounds the security risk of malicious code injection from the Code Editor
-	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html');
+	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html?server=fsb');
 });
 
 app.controller('CodeEditorCtrl',function($scope, botCodeFactory){
