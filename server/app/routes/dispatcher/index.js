@@ -35,8 +35,7 @@ router.get('/', function (req, res) {
     var createMsg = function () {
         return { dt: new Date(), connection: false };
     };
-    res.write('connection');
-    res.write('\n\n');
+
     setInterval(function() {
         openConnections.forEach(function(response,index) {
             var msg = createMsg() ; 
@@ -53,6 +52,7 @@ router.get('/', function (req, res) {
 // emmit to allow appropriate subscribers to refresh an iframe
 
 //create an sse server on a specific port, require sse library is very old.
+
 //var SSE = require("sse")
 //, express = require('express')
 ////, sseApp = express.createServer(); // express.createServer() depricated

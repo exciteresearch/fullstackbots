@@ -102,7 +102,10 @@ app.controller('msgCtrl',function($scope) {
         	console.log("open",event);
         };
         source.onmessage = function(event) {
-        	  console.log('messaage data:',event);
+        	  console.log('messaage data:',event.data);
+        	  $scope.msg = JSON.parse(event.data);
+//            $scope.$apply();
+//            console.log($scope.msg);
         };
         source.onerror = function(event) {
         	console.log("error",event);
@@ -114,9 +117,6 @@ app.controller('msgCtrl',function($scope) {
         
 //        source.addEventListener('message', function(event) {
 //        	console.log("message",event);
-//        	$scope.msg = JSON.parse(event.data);
-//            $scope.$apply();
-//            console.log($scope.msg);
 //        });
 //        source.addEventListener('error', function(event) {
 //        	console.log("error",event);
