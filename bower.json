@@ -1,7 +1,7 @@
 {
-  "name": "FullstackGeneratedApp",
+  "name": "FullStackBots",
   "version": "1.0.0",
-  "description": "A generated Fullstack Academy project ",
+  "description": "Code JavaScript Bots to interact in a PlayCanvas Game.",
   "private": true,
   "ignore": [
     "**/.*",

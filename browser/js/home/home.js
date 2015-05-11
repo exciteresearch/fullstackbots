@@ -22,7 +22,7 @@ app.factory('botCodeFactory', function ($http) {
         },
 
         saveBotCode: function (data) {
-        	console.log("saveBotCode data",data);
+//        	console.log("saveBotCode data",data);
         	var temp = data;
 
         	data = {
@@ -31,11 +31,11 @@ app.factory('botCodeFactory', function ($http) {
         			filePath: "/pc/"
         	};
 
-            return $http.post('/api/saveBotCode/', data).then(function(res) {
+            return $http.post('/api/dispatcher/saveFile/', data).then(function(res) {
 //                update.currentOrder = res.data;
 //                update.justOrdered = true;
-            	console.log("res.data",res.data);
-                return res.data;
+//            	console.log("res.data",res.data);
+//                return res.data;
               }, function(err) {
                   throw new Error(err);
               });
@@ -45,7 +45,15 @@ app.factory('botCodeFactory', function ($http) {
 });
 
 app.controller('PlayCanvasCtrl',function($scope,$sce){
-	//playCanvas URL can be changed to anything including /pc/index.html or http://playcanv.as/p/aP0oxhUr
+/*	//playCanvas URL can be changed to anything including:
+ * FullStackBots: /pc/index.html ,
+ * Tanx: http://playcanv.as/p/aP0oxhUr ,
+ * Voyager: http://playcanv.as/p/MmS7rx1i ,
+ * Swoop: http://playcanv.as/p/JtL2iqIH ,
+ * Hack: http://playcanv.as/p/KRE8VnRm 
+*/	
+	// trustAsResourceUrl can be highly insecure if you do not filter for secure URLs
+	// it compounds the security risk of malicious code injection from the Code Editor
 	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html');
 });
 
@@ -68,19 +76,87 @@ app.controller('CodeEditorCtrl',function($scope, botCodeFactory){
 	$scope.aceChanged = function(e) {
 		//
 	};
+	
+    if (typeof(EventSource) !== "undefined") {
+    	
+        // Yes! Server-sent events support!
+        var source = new EventSource('/api/dispatcher/saveFile/');
+        source.onopen = function(event) {
+//        	console.log("open",event);
+        };
+        source.onmessage = function(event) {
+//        	  console.log('messaage data:',event.data);
+        	  $scope.msg = JSON.parse(event.data);
+//            $scope.$apply();
+//            console.log($scope.msg);
+        };
+        source.onerror = function(event) {
+//        	console.log("error",event);
+        };
+        // creat an eventHandler for when a message is received
+//        source.addEventListener('open', function(event) {
+//        	console.log("open",event);
+//        });
+        
+//        source.addEventListener('message', function(event) {
+//        	console.log("message",event);
+//        });
+//        source.addEventListener('error', function(event) {
+//        	console.log("error",event);
+//        });
+    } else {
+	    // Sorry! No server-sent events support..
+	    console.log('SSE not supported by browser.');
+	}
+
+	
 });
 
-app.controller('CodeConsoleCtrl',function($scope,$sce){
+app.controller('CodeConsoleCtrl',function($scope){
 	//Code output, console logs, errors etc.
 	
 });
 
-app.controller('ButtonsCtrl',function($scope,$sce){
+app.controller('ButtonsCtrl',function($scope){
 	//Practice and/or Compete
 	
 });
 
-app.controller('SideMenuCtrl',function($scope,$sce){
+app.controller('SideMenuCtrl',function($scope){
 	//Chat, Repo, FAQ. etc
 	
+});
+
+app.controller('msgCtrl',function($scope) {
+    if (typeof(EventSource) !== "undefined") {
+    	
+        // Yes! Server-sent events support!
+        var source = new EventSource('/api/dispatcher/');
+        source.onopen = function(event) {
+//        	console.log("open",event);
+        };
+        source.onmessage = function(event) {
+//        	  console.log('messaage data:',event.data);
+        	  $scope.msg = JSON.parse(event.data);
+//            $scope.$apply();
+//            console.log($scope.msg);
+        };
+        source.onerror = function(event) {
+//        	console.log("error",event);
+        };
+        // creat an eventHandler for when a message is received
+//        source.addEventListener('open', function(event) {
+//        	console.log("open",event);
+//        });
+        
+//        source.addEventListener('message', function(event) {
+//        	console.log("message",event);
+//        });
+//        source.addEventListener('error', function(event) {
+//        	console.log("error",event);
+//        });
+    } else {
+	    // Sorry! No server-sent events support..
+	    console.log('SSE not supported by browser.');
+	}
 });
