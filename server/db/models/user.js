@@ -50,7 +50,16 @@ var schema = new mongoose.Schema({
 	restExpires: {
 		type: Date,
 		default: Date(Date.now()+3) // 3 days for resetHas to expire
-	}
+	},
+    rank: {
+    	type: String
+    },
+    school: {
+    	type: String
+    },
+    insignia: {
+    	type: String
+    }
 		
 });
 

@@ -15,7 +15,10 @@ var schema = new mongoose.Schema({
     shots: {
         type: Number
     },
-    games: {
+    kills: {
+        type: Number
+    },
+    battles: {
         type: Number
     },
     wins: {
