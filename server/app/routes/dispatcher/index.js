@@ -34,22 +34,23 @@ router.get('/', function (req, res) {
     });
     
 });
+    
+	var createMsg = function (type,connection) {
+	    return { 
+	    	type: type,
+	    	dt: new Date(), 
+	    	connection: connection || false
+	    };
+	};
+	
+	setInterval(function() {
+	    openConnections.forEach(function(response,index) {
+	        var msg = createMsg('heartbeat',index) ; 
+	        response.write('data: ' + JSON.stringify(msg) + '\n\n'); // Note the extra newline
+	        console.log("connection",index,"msg",msg);
+	    });
+	}, 15000);
 
-var createMsg = function (type,connection) {
-    return { 
-    	type: type,
-    	dt: new Date(), 
-    	connection: connection || false
-    };
-};
-
-setInterval(function() {
-    openConnections.forEach(function(response,index) {
-        var msg = createMsg('heartbeat',index) ; 
-        response.write('data: ' + JSON.stringify(msg) + '\n\n'); // Note the extra newline
-        console.log("connection",index,"msg",msg);
-    });
-}, 15000);
 
 // an open connection can have multiple subscriptions
 // every subscription is a registered emmitter

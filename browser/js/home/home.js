@@ -47,6 +47,7 @@ app.factory('botCodeFactory', function ($http) {
 app.controller('PlayCanvasCtrl',function($scope,$sce){
 /*	//playCanvas URL can be changed to anything including:
  * FullStackBots: /pc/index.html ,
+ * FSB: http://playcanv.as/p/bbMQlNMt?server=fsb,
  * Tanx: http://playcanv.as/p/aP0oxhUr ,
  * Voyager: http://playcanv.as/p/MmS7rx1i ,
  * Swoop: http://playcanv.as/p/JtL2iqIH ,
@@ -54,7 +55,7 @@ app.controller('PlayCanvasCtrl',function($scope,$sce){
 */	
 	// trustAsResourceUrl can be highly insecure if you do not filter for secure URLs
 	// it compounds the security risk of malicious code injection from the Code Editor
-	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html');
+	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html?server=fsb');
 });
 
 app.controller('CodeEditorCtrl',function($scope, botCodeFactory){
@@ -76,39 +77,6 @@ app.controller('CodeEditorCtrl',function($scope, botCodeFactory){
 	$scope.aceChanged = function(e) {
 		//
 	};
-	
-    if (typeof(EventSource) !== "undefined") {
-    	
-        // Yes! Server-sent events support!
-        var source = new EventSource('/api/dispatcher/saveFile/');
-        source.onopen = function(event) {
-//        	console.log("open",event);
-        };
-        source.onmessage = function(event) {
-//        	  console.log('messaage data:',event.data);
-        	  $scope.msg = JSON.parse(event.data);
-//            $scope.$apply();
-//            console.log($scope.msg);
-        };
-        source.onerror = function(event) {
-//        	console.log("error",event);
-        };
-        // creat an eventHandler for when a message is received
-//        source.addEventListener('open', function(event) {
-//        	console.log("open",event);
-//        });
-        
-//        source.addEventListener('message', function(event) {
-//        	console.log("message",event);
-//        });
-//        source.addEventListener('error', function(event) {
-//        	console.log("error",event);
-//        });
-    } else {
-	    // Sorry! No server-sent events support..
-	    console.log('SSE not supported by browser.');
-	}
-
 	
 });
 
@@ -133,28 +101,18 @@ app.controller('msgCtrl',function($scope) {
         // Yes! Server-sent events support!
         var source = new EventSource('/api/dispatcher/');
         source.onopen = function(event) {
-//        	console.log("open",event);
+        	console.log("open",event);
         };
+        // creat an eventHandler for when a message is received
         source.onmessage = function(event) {
-//        	  console.log('messaage data:',event.data);
+        	  console.log('messaage data:',event.data);
         	  $scope.msg = JSON.parse(event.data);
 //            $scope.$apply();
 //            console.log($scope.msg);
         };
         source.onerror = function(event) {
-//        	console.log("error",event);
+        	console.log("error",event);
         };
-        // creat an eventHandler for when a message is received
-//        source.addEventListener('open', function(event) {
-//        	console.log("open",event);
-//        });
-        
-//        source.addEventListener('message', function(event) {
-//        	console.log("message",event);
-//        });
-//        source.addEventListener('error', function(event) {
-//        	console.log("error",event);
-//        });
     } else {
 	    // Sorry! No server-sent events support..
 	    console.log('SSE not supported by browser.');
