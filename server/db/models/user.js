@@ -4,7 +4,14 @@ var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
     email: {
-        type: String
+        type: String,
+        required: true,
+        unique: true
+    },
+    username: {
+            type: String,
+            required: true,
+            unique: true
     },
     password: {
         type: String
@@ -23,7 +30,37 @@ var schema = new mongoose.Schema({
     },
     google: {
         id: String
+    },
+    github: {
+    	id: String
+    },
+    points: {
+    	type: Number
+    },
+	bots: [{
+		type: mongoose.Schema.Types.ObjectId, ref: 'Bot'
+	}],
+	activated: {
+		type: Date,
+		default: Date.now
+	},
+	resetHash: {
+		type: String
+	},
+	restExpires: {
+		type: Date,
+		default: Date(Date.now()+3) // 3 days for resetHas to expire
+	},
+    rank: {
+    	type: String
+    },
+    school: {
+    	type: String
+    },
+    insignia: {
+    	type: String
     }
+		
 });
 
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
