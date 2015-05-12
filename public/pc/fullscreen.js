@@ -49,8 +49,7 @@ pc.script.create('fullscreen', function (context) {
             }
         }.bind(this);
         
-        console.log("this",this);
-        
+//        console.log("this",this);        
 
         button.addEventListener('click', changeState, false);
         button.addEventListener('touchstart', changeState, false);
