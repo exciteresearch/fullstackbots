@@ -39,7 +39,19 @@ var schema = new mongoose.Schema({
     },
 	bots: [{
 		type: mongoose.Schema.Types.ObjectId, ref: 'Bot'
-	}]
+	}],
+	activated: {
+		type: Date,
+		default: Date.now
+	},
+	resetHash: {
+		type: String
+	},
+	restExpires: {
+		type: Date,
+		default: Date(Date.now()+3) // 3 days for resetHas to expire
+	}
+		
 });
 
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
