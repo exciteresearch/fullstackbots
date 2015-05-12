@@ -4,7 +4,14 @@ var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
     email: {
-        type: String
+        type: String,
+        required: true,
+        unique: true
+    },
+    username: {
+            type: String,
+            required: true,
+            unique: true
     },
     password: {
         type: String
@@ -27,9 +34,12 @@ var schema = new mongoose.Schema({
     github: {
     	id: String
     },
-    bots: {
-    	type: []
-    }
+    points: {
+    	type: Number
+    },
+	bots: [{
+		type: mongoose.Schema.Types.ObjectId, ref: 'Bot'
+	}]
 });
 
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
