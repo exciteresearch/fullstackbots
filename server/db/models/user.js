@@ -9,9 +9,9 @@ var schema = new mongoose.Schema({
         unique: true
     },
     username: {
-            type: String,
-            required: true,
-            unique: true
+        type: String,
+        required: true,
+        unique: true
     },
     password: {
         type: String
@@ -45,20 +45,21 @@ var schema = new mongoose.Schema({
 		default: Date.now
 	},
 	resetHash: {
-		type: String
+		type: String, expires: 4320 // 60*24*3days
 	},
-	restExpires: {
-		type: Date,
-		default: Date(Date.now()+3) // 3 days for resetHas to expire
-	},
+//	restExpires: {
+//		type: Date,
+//		default: Date(Date.now()+3) // 3 days for resetHas to expire
+//	},
     rank: {
-    	type: String
+    	type: String,
+    	enum: ["Expert","Advanced","Intermediate","Beginner"]
     },
     school: {
     	type: String
     },
     insignia: {
-    	type: String
+    	type: String // URL to image
     }
 		
 });

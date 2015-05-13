@@ -102,7 +102,19 @@ describe('User model', function () {
             var saltSpy;
 
             var createUser = function () {
-                return User.create({ email: 'obama@gmail.com', password: 'potus' });
+                return User.create({ 
+		                	email: 'obama@gmail.com', 
+		                	username: 'tp', 
+		                	password: 'potus' ,
+		                	
+		                	points: 300,
+		                	bots: [],
+		                	activated: Date.now(),
+		                	resetHash: '',
+		                	rank: 'Expert',
+		                	school: 'FullStack Academy',
+                			insignia: "http://www.askskipper.com/wp-content/uploads/2014/09/PresidentialSeal1.jpg"
+                		});
             };
 
             beforeEach(function () {
