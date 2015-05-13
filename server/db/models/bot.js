@@ -3,7 +3,7 @@ var crypto = require('crypto');
 var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
-	CodedBy: {
+	codedBy: {
 		type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true
 	},
     forked: {
@@ -29,6 +29,9 @@ var schema = new mongoose.Schema({
     },
     kills: {
         type: Number
+    },
+    pickables: {
+    	coins: Number, repairs: Number, shields: Number, damages: Number
     },
     battles: {
         type: Number
