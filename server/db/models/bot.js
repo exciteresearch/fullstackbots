@@ -3,45 +3,24 @@ var crypto = require('crypto');
 var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
-	codedBy: {
-		type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true
-	},
-    forked: {
-    	type: Number
-    },
-    forkedFrom: {
-		type: mongoose.Schema.Types.ObjectId, ref: 'Bot'
-	},
-	botname: {
-        type: String, required: true
-    },
-    botFile: {
-    	type: String, default: ''
-    },
-    created: {
-        type: Date, required: true, default: Date.now()
-    },
-    points: {
-        type: Number
-    },
-    shots: {
-        type: Number
-    },
-    kills: {
-        type: Number
-    },
+	codedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    forked: { type: Number },
+    forkedFrom: { type: mongoose.Schema.Types.ObjectId, ref: 'Bot' },
+	botname: { type: String, required: true },
+    botFile: { type: String, default: '' },
+    created: { type: Date, required: true, default: Date.now() },
+    points: { type: Number, default: 0 },
+    shots: { type: Number, default: 0 },
+    kills: { type: Number, default: 0 },
     pickables: {
-    	coins: Number, repairs: Number, shields: Number, damages: Number
+    	coins: { type: Number, default: 0 },
+    	damages: { type: Number, default: 0 },
+    	repairs: { type: Number, default: 0 },
+    	shields: { type: Number, default: 0 },
     },
-    battles: {
-        type: Number
-    },
-    wins: {
-        type: Number
-    },
-    fubarbundy: {
-        type: Number
-    }
+    battles: { type: Number, default: 0 },
+    wins: { type: Number, default: 0 },
+    fubarbundy: { type: Number, default: 0 },
 });
 
 mongoose.model('Bot', schema);

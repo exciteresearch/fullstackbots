@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 require('../../../server/db/models/user');
 require('../../../server/db/models/bot');
 
-var Product = mongoose.model('Bot');
+var Bot = mongoose.model('Bot');
 var User = mongoose.model('User');
 
 describe('Bot model', function(){
@@ -20,9 +20,60 @@ describe('Bot model', function(){
 	var user;
     beforeEach('Create temporary user', function (done) {
 		user = new User({
-			email: 'fake@email.com'
+			email: 'fake@email.com',
+			username: 'faker'
 		});
-		user.save(function(err) {
+		User.create(user,function(err,saved) {
+			if(err) return done(err);
+			user = saved;
+			done();
+		});
+    });
+
+	var bot, forkedBot;
+    beforeEach('Create temporary bot', function (done) {
+		bot = new Bot({
+			codedBy: user._id,
+			forked: 1,
+			botname: "bruiser",
+			botFile: "// Empty BotFile",
+			created: Date.now(),
+			points: 0,
+			shots: 30,
+			kills: 0,
+			pickables: { coins: 0, damages: 0, repairs: 0, shields: 0},
+			battles: 0,
+			wins: 0,
+			fubarbundy: 1,			
+		});
+		Bot.create(bot,function(err,saved) {
+			if(err) return done(err);
+			forkedBot = saved;
+			console.log("forkedBot._id",forkedBot._id);
+			done();
+		});
+    });
+
+    beforeEach('Create temporary bot', function (done) {
+		bot = new Bot({
+			codedBy: user._id,
+			forked: 0,
+			forkedFrom: forkedBot._id,
+			botname: "hasher",
+			botFile: "// Empty BotFile",
+			created: Date.now(),
+			points: 300,
+			shots: 3,
+			kills: 3,
+			pickables: { coins: 0, damages: 1, repairs: 2, shields: 3},
+			battles: 1,
+			wins: 1,
+			fubarbundy: 0,			
+		});
+		Bot.create(bot,function(err,saved) {
+			if(err) return done(err);
+			bot = saved;
+			console.log("bot",bot);
 			done();
 		});
     });
@@ -32,28 +83,34 @@ describe('Bot model', function(){
     });
 
     it('should exist', function () {
-        expect(Product).to.be.a('function');
+        expect(Bot).to.be.a('function');
     });
 
-    it('should have name, image, description, price, createdBy be strings',function(done){
-		var product = new Product ({
-			name: "Jimmy's Brew",
-			price:'29.99',
-			image:'/images/jimmysbrew.png',
-            categories: ['Organic','Red'],
-            createdBy: user._id,
-			description:"It's organic"
+    it('has codedBy, forked, botname, botFile, created, points, shots, kills, pickables, battles, wins, and fubarbundy',function(done){			
+		Bot.findById(bot._id,function(err,found){
+			expect(found.codedBy).to.equal(user._id);
+			expect(found.forked).to.equal(0);
+			expect(found.botname).to.equal('hasher');
+			expect(found.botFile).to.equal("// Empty BotFile");
+			expect(found.created).to.equal(bot.created);
+			expect(found.points).to.equal(300);
+			expect(found.shots).to.equal(3);
+			expect(found.kills).to.equal('29.99');
+			expect(found.battles).to.equal(3);
+			expect(found.wins).to.equal(1);
+			expect(found.fubarbundy).to.equal(0);
+			done();
 		});
-		product.save(function(err){
-			expect(product.name).to.equal("Jimmy's Brew");
-			expect(product.image).to.equal('/images/jimmysbrew.png');
-			expect(product.description).to.equal("It's organic");
-			expect(product.price).to.equal('29.99');
+    });
+   
+    xit('has forkedFrom which is equal to the id of the bot it was forked from',function(done){			
+		Bot.findById(bot._id,function(err,found){
+			expect((found.forkedFrom).toString).to.equal((bot.forkedFrom).toString);
 			done();
 		});
     });
 
-    it('should have qty which is a Number',function(done){
+    xit('should have qty which is a Number',function(done){
     	var product = new Product({
 			name: "Jimmy's Brew",
 			price:'29.99',
@@ -68,7 +125,7 @@ describe('Bot model', function(){
         });
     });
 
-    it('should have categories which is an Array ',function(done){
+    xit('should have categories which is an Array ',function(done){
         var product = new Product({
 			name: "Jimmy's Brew",
 			price:'29.99',
@@ -83,7 +140,7 @@ describe('Bot model', function(){
         });
      });
 
-    it('should have createdBy which is an Object reference to a user',function(done){
+    xit('should have createdBy which is an Object reference to a user',function(done){
         var product = new Product({
 			name: "Jimmy's Brew",
 			price:'29.99',
@@ -97,7 +154,7 @@ describe('Bot model', function(){
         });
     });
 
-   it('should have validation to require description',function(done){
+   xit('should have validation to require description',function(done){
         var product = new Product({
 			name: "Jimmy's Brew",
             image:'/images/jimmysbrew.png',
@@ -112,7 +169,7 @@ describe('Bot model', function(){
         });
     });
 
-    it('should require price',function(done){
+    xit('should require price',function(done){
         var product = new Product({
             name: "Jimmy's Brew",
             image:'/images/jimmysbrew.png',
@@ -127,7 +184,7 @@ describe('Bot model', function(){
         });
     });
 
-    it('should require category',function(done){
+    xit('should require category',function(done){
         var product = new Product({
             name: "Jimmy's Brew",
             image:'/images/jimmysbrew.png',
@@ -142,7 +199,7 @@ describe('Bot model', function(){
         });
     });
 
-    it('should require createdBy',function(done){
+    xit('should require createdBy',function(done){
         var product = new Product({
             name: "Jimmy's Brew",
             image:'/images/jimmysbrew.png',
