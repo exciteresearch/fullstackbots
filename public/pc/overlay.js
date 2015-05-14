@@ -360,6 +360,12 @@ pc.script.create('overlay', function (app) {
         timer.id = 'timer';
         overlay.appendChild(timer);
         
+        //ian edit adding scripts:
+       var userscript = this.elUserscript = document.createElement('div');
+        userscript.id = 'userscriptPopup';
+        userscript.innerHTML = "<input id='userscriptInput' type='text' value='guest'><div id='userscriptCancel'>Cancel</div><div id='userscriptOk'>OK</div>";
+        document.body.appendChild(userscript);
+        
         // username
         var username = this.elUsername = document.createElement('div');
         username.id = 'usernamePopup';

@@ -84,16 +84,12 @@ router.get('/', function (req, res) {
 //was saveBotCode BUT res does not match!!! need to start working with sessions
 
 router.post('/saveFile', function (req, res) {
-	fs.writeFile(path.join(__dirname,"../../../../public/",req.body.filePath,req.body.fileName), 
-		req.body.botCode, 
-		function (err) {
-	
-			if (err) return console.log(err);
-			
-//			console.log('writeFile openConnections.length:',openConnections.length);
-			
-	        var msg = createMsg('iFrame',openConnections.indexOf(res));
-	        console.log('saveFile msg',msg);
-	        res.write('data: ' + JSON.stringify(msg) + '\n\n'); // Note the extra newline
-	});
+//	fs.writeFile(path.join(__dirname,"../../../../public/",req.body.filePath,req.body.fileName), 
+//		req.body.botCode, 
+//		function (err) {	
+//			if (err) return console.log(err);			
+//	        var msg = createMsg('iFrame',openConnections.indexOf(res));
+//	        console.log('saveFile msg',msg);
+//	        res.write('data: ' + JSON.stringify(msg) + '\n\n'); // Note the extra newline
+//	});
 });

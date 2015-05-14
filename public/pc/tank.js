@@ -268,7 +268,7 @@ pc.script.create('tank', function (context) {
                     });
                 }
             }
-            // rotation
+            // rotation: Determines where the tank body points
             tmpVec.copy(pos);
             var len = tmpVec.sub(this.movePoint).length();
             if (len > 0.2) {

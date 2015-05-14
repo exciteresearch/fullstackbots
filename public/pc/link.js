@@ -2,6 +2,7 @@ var tmpVec = new pc.Vec3();
 var tmpVec2 = new pc.Vec3();
 var tmpVec3 = new pc.Vec3();
 
+
 pc.script.create('link', function (context) {
     var Link = function (entity) {
         this.entity = entity;
@@ -76,7 +77,7 @@ pc.script.create('link', function (context) {
                 
                 this.entity.setPosition(tmpVec.lerp(this.entity.getPosition(), tmpVec, 0.1));
                 
-                if (this.mouse && this.mouse.move) {
+                if (this.mouse) {
                     // camera offset
                     this.mPos[0] = this.mouse.x - context.graphicsDevice.width / 2;
                     this.mPos[1] = this.mouse.y - context.graphicsDevice.height / 2;
@@ -94,11 +95,22 @@ pc.script.create('link', function (context) {
         				var mouseDir = tmpVec.set(0, 0, 0).sub2(mouseWPos, camPos).normalize();
         			    var planeNormal = tmpVec3.set(0, 1, 0);
         			    var rayPlaneDot = planeNormal.dot(mouseDir);
-        				var pointPlaneDist = (planeNormal.dot(camPos) - 0) / rayPlaneDot;
-        				var pickedPos = mouseDir.scale(-pointPlaneDist).add(camPos);
+        				// var pointPlaneDist = (planeNormal.dot(camPos) - 0) / rayPlaneDot;
+        				// var pickedPos = mouseDir.scale(-pointPlaneDist).add(camPos);
         				
-        				pickedPos.sub(this.link.getPosition()).normalize();
-        				this.angle = Math.floor(Math.atan2(pickedPos.x, pickedPos.z) / (Math.PI / 180));
+        				// pickedPos.sub(this.link.getPosition()).normalize();
+        				// this.angle = Math.floor(Math.atan2(pickedPos.x, pickedPos.z) / (Math.PI / 180));
+        				
+        				
+        				//ian edit: this rotates the cannon in 360 degrees:
+        				if(this.angle<180){
+        				    this.angle+=3
+        				    if(shootNow===true){
+        				       this.angle-=3
+        				    }
+        				}else{
+        				    this.angle=-180;
+        				}
         				this.link.targeting(this.angle);
                     }
                 }
