@@ -34,6 +34,7 @@ describe('Bot model', function(){
     beforeEach('Create temporary bot', function (done) {
 		bot = new Bot({
 			codedBy: user._id,
+			viewable: true, // include in tests
 			forked: 1,
 			botname: "bruiser",
 			botFile: "// Empty BotFile",
@@ -41,15 +42,16 @@ describe('Bot model', function(){
 			points: 0,
 			shots: 30,
 			kills: 0,
+			friendlyKills: 0,
 			pickables: { coins: 0, damages: 0, repairs: 0, shields: 0},
 			battles: 0,
 			wins: 0,
-			fubarbundy: 1,			
+			losses: 1,
+			fubarbundy: 1
 		});
 		Bot.create(bot,function(err,saved) {
 			if(err) return done(err);
 			forkedBot = saved;
-			console.log("forkedBot._id",forkedBot._id);
 			done();
 		});
     });
@@ -57,6 +59,7 @@ describe('Bot model', function(){
     beforeEach('Create temporary bot', function (done) {
 		bot = new Bot({
 			codedBy: user._id,
+			viewble: true, // include in tests
 			forked: 0,
 			forkedFrom: forkedBot._id,
 			botname: "hasher",
@@ -65,15 +68,16 @@ describe('Bot model', function(){
 			points: 300,
 			shots: 3,
 			kills: 3,
+			friendlyKills: 0,
 			pickables: { coins: 0, damages: 1, repairs: 2, shields: 3},
 			battles: 1,
 			wins: 1,
-			fubarbundy: 0,			
+			losses: 0,
+			fubarbundy: 0
 		});
 		Bot.create(bot,function(err,saved) {
 			if(err) return done(err);
 			bot = saved;
-			console.log("bot",bot);
 			done();
 		});
     });
@@ -86,132 +90,142 @@ describe('Bot model', function(){
         expect(Bot).to.be.a('function');
     });
 
-    it('has codedBy, forked, botname, botFile, created, points, shots, kills, pickables, battles, wins, and fubarbundy',function(done){			
+    it('has codedBy which is equal to the id of the user who is coding it',function(done){			
 		Bot.findById(bot._id,function(err,found){
-			expect(found.codedBy).to.equal(user._id);
-			expect(found.forked).to.equal(0);
+			expect(found.codedBy.toString()).to.equal(user._id.toString());
+			done();
+		});
+    });
+    
+    it('requires codedBy',function(done){
+		invalidBot = new Bot({
+			viewble: true, // include in tests
+			forked: 0,
+			forkedFrom: forkedBot._id,
+			botname: "hasher",
+			botFile: "// Empty BotFile",
+			created: Date.now(),
+			points: 300,
+			shots: 3,
+			kills: 3,
+			friendlyKills: 0,
+			pickables: { coins: 0, damages: 1, repairs: 2, shields: 3},
+			battles: 1,
+			wins: 1,
+			losses: 0,
+			fubarbundy: 0
+		});
+		invalidBot.save(function(err){
+			expect(err).to.exist;
+            expect(err.message).to.equal("Validation failed");
+            done();
+        });
+    });
+    
+    it('has viewable which is Boolean',function(done){			
+		Bot.findById(bot._id,function(err,found){
+			expect(found.codedBy.toString()).to.equal(user._id.toString());
+			done();
+		});
+    });
+    
+    it('has viewable equal to true by default',function(done){
+		tempBot = new Bot({
+			codedBy: user._id,
+//			viewble: true, // include in tests
+			forked: 0,
+			forkedFrom: forkedBot._id,
+			botname: "hasher",
+			botFile: "// Empty BotFile",
+			created: Date.now(),
+			points: 300,
+			shots: 3,
+			kills: 3,
+			friendlyKills: 0,
+			pickables: { coins: 0, damages: 1, repairs: 2, shields: 3},
+			battles: 1,
+			wins: 1,
+			losses: 0,
+			fubarbundy: 0
+		});
+		Bot.create(tempBot, function(err,saved) {
+			if(err) return done(err);
+			expect(saved.viewable).to.equal(true);
+			done();
+		});
+    });
+
+    it('has forked, a number which is equal to 0 by default',function(done){
+		tempBot = new Bot({
+			codedBy: user._id,
+			viewble: true, // include in tests
+//			forked: 0,
+			forkedFrom: forkedBot._id,
+			botname: "hasher",
+			botFile: "// Empty BotFile",
+			created: Date.now(),
+			points: 300,
+			shots: 3,
+			kills: 3,
+			friendlyKills: 0,
+			pickables: { coins: 0, damages: 1, repairs: 2, shields: 3},
+			battles: 1,
+			wins: 1,
+			losses: 0,
+			fubarbundy: 0
+		});
+		Bot.create(tempBot, function(err,saved) {
+			if(err) return done(err);
+			expect(saved.forked).to.equal(0);
+			done();
+		});
+
+    });
+
+    it('has forkedFrom which is equal to the id of the bot it was forked from',function(done){			
+		Bot.findById(bot._id,function(err,found){
+			expect((found.forkedFrom).toString()).to.equal((bot.forkedFrom).toString());
+			done();
+		});
+    });
+    
+    it('has botname, created which are required and an empty string and a Date object by default',function(done){			
+		Bot.findById(bot._id,function(err,found){
+//			expect(err).to.exist;
+//			expect(err.message).to.equal("Validation failed");
 			expect(found.botname).to.equal('hasher');
+			expect(found.created.toString()).to.equal(bot.created.toString());
+			done();
+		});
+    });
+    
+    it('has botFile, points, shots, kills, pickables, battles, wins, and fubarbundy',function(done){			
+		Bot.findById(bot._id,function(err,found){
+			expect(found).property('botFile');
 			expect(found.botFile).to.equal("// Empty BotFile");
-			expect(found.created).to.equal(bot.created);
+			expect(found).property('points');
 			expect(found.points).to.equal(300);
+			expect(found).property('shots');
 			expect(found.shots).to.equal(3);
-			expect(found.kills).to.equal('29.99');
-			expect(found.battles).to.equal(3);
+			expect(found).property('kills');
+			expect(found.kills).to.equal(3);
+			expect(found).property('friendlyKills');
+			expect(found.friendlyKills).to.equal(0);
+			expect(found).property('pickables');
+			expect(found.pickables).to.have.deep.property('coins', 0);
+			expect(found.pickables).to.have.deep.property('damages', 1);
+			expect(found.pickables).to.have.deep.property('repairs', 2);
+			expect(found.pickables).to.have.deep.property('shields', 3);
+			expect(found).property('battles');
+			expect(found.battles).to.equal(1);
+			expect(found).property('wins');
 			expect(found.wins).to.equal(1);
+			expect(found).property('losses');
+			expect(found.losses).to.equal(0);
+			expect(found).property('fubarbundy');
 			expect(found.fubarbundy).to.equal(0);
 			done();
 		});
     });
-   
-    xit('has forkedFrom which is equal to the id of the bot it was forked from',function(done){			
-		Bot.findById(bot._id,function(err,found){
-			expect((found.forkedFrom).toString).to.equal((bot.forkedFrom).toString);
-			done();
-		});
-    });
 
-    xit('should have qty which is a Number',function(done){
-    	var product = new Product({
-			name: "Jimmy's Brew",
-			price:'29.99',
-            categories: ['Organic','Red'],
-            createdBy: user._id,
-    		qty: 15,
-			description:"It's organic"
-    	});
-        product.save(function(err){
-			expect(product.qty).to.equal(15);
-            done();
-        });
-    });
-
-    xit('should have categories which is an Array ',function(done){
-        var product = new Product({
-			name: "Jimmy's Brew",
-			price:'29.99',
-            createdBy: user._id,
-            categories: ['Organic','Red'],
-			description:"It's organic"
-        });
-       product.save(function(err){
-			expect(product).to.have.deep.property('categories[0]', 'Organic');
-			expect(product).to.have.deep.property('categories[1]', 'Red');
-            done();
-        });
-     });
-
-    xit('should have createdBy which is an Object reference to a user',function(done){
-        var product = new Product({
-			name: "Jimmy's Brew",
-			price:'29.99',
-            categories: ['Organic','Red'],
-            createdBy: user._id,
-			description:"It's organic"
-        });
-		product.save(function(err){
-            expect(product.createdBy).to.equal(user._id);
-            done();
-        });
-    });
-
-   xit('should have validation to require description',function(done){
-        var product = new Product({
-			name: "Jimmy's Brew",
-            image:'/images/jimmysbrew.png',
-            price:'29.99',
-            qty: 15,
-            categories: ['Organic','Red'],
-            createdBy: user._id
-        });
-       product.save(function(err){
-            expect(err.message).to.equal("Validation failed");
-            done();
-        });
-    });
-
-    xit('should require price',function(done){
-        var product = new Product({
-            name: "Jimmy's Brew",
-            image:'/images/jimmysbrew.png',
-            description:"It's organic",
-            qty: 15,
-            categories: ['Organic','Red'],
-            createdBy: user._id
-       });
-       product.save(function(err){
-            expect(err.message).to.equal("Validation failed");
-			done();
-        });
-    });
-
-    xit('should require category',function(done){
-        var product = new Product({
-            name: "Jimmy's Brew",
-            image:'/images/jimmysbrew.png',
-            description:"It's organic",
-            price:'29.99',
-            qty: 15,
-            createdBy: user._id
-        });
-       product.save(function(err){
-            expect(err.message).to.equal("Validation failed");
-			done();
-        });
-    });
-
-    xit('should require createdBy',function(done){
-        var product = new Product({
-            name: "Jimmy's Brew",
-            image:'/images/jimmysbrew.png',
-            description:"It's organic",
-            price:'29.99',
-            qty: 15,
-            categories: ['Organic','Red']
-        });
-       product.save(function(err){
-            expect(err.message).to.equal("Validation failed");
-            done();
-        });
-    });
-
-})
+});
