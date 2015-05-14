@@ -1,3 +1,4 @@
+var tankPosition=[0,0,0];
 pc.script.create('tanks', function (context) {
     var Tanks = function (entity) {
         this.entity = entity;
@@ -16,6 +17,7 @@ pc.script.create('tanks', function (context) {
             this.minimap = context.root.getChildren()[0].script.minimap;
             this.teams = context.root.getChildren()[0].script.teams;
             // this.hpBar = context.root.getChildren()[0].script.hp;
+
             
             this.own = null;
         },
@@ -61,7 +63,8 @@ pc.script.create('tanks', function (context) {
                 // targeting
                 if (! tank.own && tankData.hasOwnProperty('a'))
                     tank.targeting(tankData.a);
-
+                //ian edit: gravitate to repairs    
+                    tankPosition=tank.entity.position.data
                 // hp
                 if (tankData.hasOwnProperty('hp'))
                     tank.setHP(tankData.hp);

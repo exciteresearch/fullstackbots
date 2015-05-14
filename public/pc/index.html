@@ -68,13 +68,16 @@
         }
     </style>
     <title>PlayCanvas</title>
-    <script src="code.playcanvas.com/playcanvas-0.167.1.min.js"></script>
+    <script src="code.playcanvas.com/playcanvas-0.167.3.min.js"></script>
 
     <script>
         var options = {};
         (function (options) {
+        	// window.location.href in FSB iFrame is "'fsb':'http://localhost:1337/pc/index.html?server=fsb'"
             var uri = new pc.URI(window.location.href);
+            // uri is pc.extend.URI { scheme: "http", authority: "192.168.1.216:1337", path: "/pc/index.html", query: "server=fsb", …}
             var query = uri.getQuery();
+            // query {server: "fsb"}
 
             pc.config = pc.config || {};
             pc.config['frame'] = {
@@ -122,7 +125,7 @@
             splash.parentNode.removeChild(splash);
         });
         window.addEventListener("load", function () {
-            bootstrap.start(366340);
+            bootstrap.start(366343);
         }, false);
     </script>
 </body>

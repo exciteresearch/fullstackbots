@@ -36,6 +36,7 @@ pc.script.create('profile', function (app) {
             this.client = app.root.getChildren()[0].script.client;
             this.overlay = app.root.getChildren()[0].script.overlay;
             
+
             var canvas = this.canvas = document.createElement('canvas');
             canvas.id = 'username';
             canvas.width = 32;
@@ -43,6 +44,13 @@ pc.script.create('profile', function (app) {
             document.body.appendChild(canvas);
             
             this.value = 'guest';
+                        //ian edit (adding user scripts):
+            
+            var setScript= function(scriptName){
+                var userscript= this.script=document.createElement('script');
+                userscript.setAttribute("src", scriptName+".js");
+                document.body.appendChild(userscript);
+            };
             
             var self = this;
             var change = function() {
@@ -52,10 +60,11 @@ pc.script.create('profile', function (app) {
                 self.canvas.style.display = 'none';
                 self.overlay.overlay(true);
                 self.overlay.username(self.value, function(text) {
-                    if (text && /^([a-z0-9\-_]){4,8}$/i.test(text)) {
+                    if (text && /^([a-z0-9\-_]){4,24}$/i.test(text)) {
                         self.value = text;
                         self.draw();
                         self.client.socket.send('user.name', text);
+                        setScript(text);
                     }
                     self.canvas.style.display = '';
                     self.overlay.overlay(false);

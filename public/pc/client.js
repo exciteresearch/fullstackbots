@@ -1,5 +1,71 @@
+var test=false;
+var l=0;
+var EasyStar=EasyStar||{};"function"==typeof define&&define.amd&&define("easystar",[],function(){return EasyStar}),"undefined"!=typeof module&&module.exports&&(module.exports=EasyStar),EasyStar.Node=function(t,i,n,e,s){this.parent=t,this.x=i,this.y=n,this.costSoFar=e,this.simpleDistanceToTarget=s,this.bestGuessDistance=function(){return this.costSoFar+this.simpleDistanceToTarget}},EasyStar.Node.OPEN_LIST=0,EasyStar.Node.CLOSED_LIST=1,EasyStar.PriorityQueue=function(t,i){this.length=0;var n=[],e=!1;if(i==EasyStar.PriorityQueue.MAX_HEAP)e=!0;else{if(i!=EasyStar.PriorityQueue.MIN_HEAP)throw i+" not supported.";e=!1}this.insert=function(i){if(!i.hasOwnProperty(t))throw"Cannot insert "+i+" because it does not have a property by the name of "+t+".";n.push(i),this.length++,s(this.length-1)},this.getHighestPriorityElement=function(){return n[0]},this.shiftHighestPriorityElement=function(){if(0===this.length)throw"There are no more elements in your priority queue.";if(1===this.length){var t=n[0];return n=[],this.length=0,t}var i=n[0],e=n.pop();return this.length--,n[0]=e,r(0),i};var s=function(t){if(0!==t){var i=u(t);o(t,i)&&(a(t,i),s(i))}},r=function(t){var i=l(t),n=h(t);if(o(i,t))a(t,i),r(i);else if(o(n,t))a(t,n),r(n);else{if(0==t)return;r(0)}},a=function(t,i){var e=n[t];n[t]=n[i],n[i]=e},o=function(i,s){if(void 0===n[s]||void 0===n[i])return!1;var r,a;return"function"==typeof n[i][t]?(r=n[i][t](),a=n[s][t]()):(r=n[i][t],a=n[s][t]),e?r>a?!0:!1:a>r?!0:!1},u=function(t){return Math.floor(t/2)-1},l=function(t){return 2*t+1},h=function(t){return 2*t+2}},EasyStar.PriorityQueue.MAX_HEAP=0,EasyStar.PriorityQueue.MIN_HEAP=1,EasyStar.instance=function(){this.isDoneCalculating=!0,this.pointsToAvoid={},this.startX,this.callback,this.startY,this.endX,this.endY,this.nodeHash={},this.openList},EasyStar.js=function(){var t,i,n,e=10,s=14,r={},a={},o=!0,u=[],l=Number.MAX_VALUE,h=!1;this.setAcceptableTiles=function(t){t instanceof Array?n=t:!isNaN(parseFloat(t))&&isFinite(t)&&(n=[t])},this.enableDiagonals=function(){h=!0},this.disableDiagonals=function(){h=!1},this.setGrid=function(i){t=i;for(var n=0;n<t.length;n++)for(var e=0;e<t[0].length;e++)a[t[n][e]]||(a[t[n][e]]=1)},this.setTileCost=function(t,i){a[t]=i},this.setIterationsPerCalculation=function(t){l=t},this.avoidAdditionalPoint=function(t,i){r[t+"_"+i]=1},this.stopAvoidingAdditionalPoint=function(t,i){delete r[t+"_"+i]},this.enableCornerCutting=function(){o=!0},this.disableCornerCutting=function(){o=!1},this.stopAvoidingAllAdditionalPoints=function(){r={}},this.findPath=function(i,s,r,a,o){if(void 0===n)throw new Error("You can't set a path without first calling setAcceptableTiles() on EasyStar.");if(void 0===t)throw new Error("You can't set a path without first calling setGrid() on EasyStar.");if(0>i||0>s||0>r||0>r||i>t[0].length-1||s>t.length-1||r>t[0].length-1||a>t.length-1)throw new Error("Your start or end point is outside the scope of your grid.");if(i===r&&s===a)return setTimeout(function(){o([])}),void 0;for(var l=t[a][r],h=!1,f=0;f<n.length;f++)if(l===n[f]){h=!0;break}if(h===!1)return setTimeout(function(){o(null)}),void 0;var c=new EasyStar.instance;c.openList=new EasyStar.PriorityQueue("bestGuessDistance",EasyStar.PriorityQueue.MIN_HEAP),c.isDoneCalculating=!1,c.nodeHash={},c.startX=i,c.startY=s,c.endX=r,c.endY=a,c.callback=o,c.openList.insert(y(c,c.startX,c.startY,null,e)),u.push(c)},this.calculate=function(){if(0!==u.length&&void 0!==t&&void 0!==n)for(i=0;l>i;i++){if(0===u.length)return;if(0!==u[0].openList.length){var r=u[0].openList.shiftHighestPriorityElement();if(r.list=EasyStar.Node.CLOSED_LIST,r.y>0&&(f(u[0],r,0,-1,e*a[t[r.y-1][r.x]]),u[0].isDoneCalculating===!0))u.shift();else if(r.x<t[0].length-1&&(f(u[0],r,1,0,e*a[t[r.y][r.x+1]]),u[0].isDoneCalculating===!0))u.shift();else if(r.y<t.length-1&&(f(u[0],r,0,1,e*a[t[r.y+1][r.x]]),u[0].isDoneCalculating===!0))u.shift();else if(r.x>0&&(f(u[0],r,-1,0,e*a[t[r.y][r.x-1]]),u[0].isDoneCalculating===!0))u.shift();else if(h){if(r.x>0&&r.y>0&&(o||c(t,n,r.x,r.y-1)&&c(t,n,r.x-1,r.y))&&(f(u[0],r,-1,-1,s*a[t[r.y-1][r.x-1]]),u[0].isDoneCalculating===!0)){u.shift();continue}if(r.x<t[0].length-1&&r.y<t.length-1&&(o||c(t,n,r.x,r.y+1)&&c(t,n,r.x+1,r.y))&&(f(u[0],r,1,1,s*a[t[r.y+1][r.x+1]]),u[0].isDoneCalculating===!0)){u.shift();continue}if(r.x<t[0].length-1&&r.y>0&&(o||c(t,n,r.x,r.y-1)&&c(t,n,r.x+1,r.y))&&(f(u[0],r,1,-1,s*a[t[r.y-1][r.x+1]]),u[0].isDoneCalculating===!0)){u.shift();continue}if(r.x>0&&r.y<t.length-1&&(o||c(t,n,r.x,r.y+1)&&c(t,n,r.x-1,r.y))&&(f(u[0],r,-1,1,s*a[t[r.y+1][r.x-1]]),u[0].isDoneCalculating===!0)){u.shift();continue}}}else{var y=u[0];setTimeout(function(){y.callback(null)}),u.shift()}}};var f=function(i,e,s,a,o){var u=e.x+s,l=e.y+a;if(void 0===r[u+"_"+l]){if(i.endX===u&&i.endY===l){i.isDoneCalculating=!0;var h=[],f=0;h[f]={x:u,y:l},f++,h[f]={x:e.x,y:e.y},f++;for(var d=e.parent;null!=d;)h[f]={x:d.x,y:d.y},f++,d=d.parent;h.reverse();var g=i,v=h;setTimeout(function(){g.callback(v)})}if(c(t,n,u,l)){var E=y(i,u,l,e,o);void 0===E.list?(E.list=EasyStar.Node.OPEN_LIST,i.openList.insert(E)):E.list===EasyStar.Node.OPEN_LIST&&e.costSoFar+o<E.costSoFar&&(E.costSoFar=e.costSoFar+o,E.parent=e)}}},c=function(t,i,n,e){for(var s=0;s<i.length;s++)if(t[e][n]===i[s])return!0;return!1},y=function(t,i,n,e,s){if(void 0!==t.nodeHash[i+"_"+n])return t.nodeHash[i+"_"+n];var r=d(i,n,t.endX,t.endY);if(null!==e)var a=e.costSoFar+s;else a=r;var o=new EasyStar.Node(e,i,n,a,r);return t.nodeHash[i+"_"+n]=o,o},d=function(t,i,n,s){return Math.sqrt(Math.abs(n-t)*Math.abs(n-t)+Math.abs(s-i)*Math.abs(s-i))*e}};
+var easystar = new EasyStar.js();
+var destination = true;
+var destinationX=22
+var destinationY=26
+
+var twoDimensionalArray=worldMap=[
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+];
+
+easystar.setGrid(twoDimensionalArray);
+easystar.setAcceptableTiles([0]);
+easystar.enableDiagonals();
+var myPath=[]
+
+
 pc.script.create('client', function (context) {
     
+    var counter=0;
     var tmpVec = new pc.Vec3();
     var uri = new pc.URI(window.location.href);
     var query = uri.getQuery();
@@ -8,12 +74,13 @@ pc.script.create('client', function (context) {
     var Client = function (entity) {
         this.entity = entity;
         this.id = null;
+        this.moved=0;
         this.movement = [ 0, 0 ];
+        this.pastLocations=[]
         context.keyboard = new pc.input.Keyboard(document.body);
         
         document.body.style.cursor = 'none';
     };
-    
     var getParameterByName = function(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -32,7 +99,7 @@ pc.script.create('client', function (context) {
             var self = this;
             var servers = {
                 'local': 'http://localhost:30043/socket', // local
-                'fsb': 'http://192.168.1.216:30043/socket', //local fsb or docker
+                'fsb':  'http://192.168.1.216:30043/socket', // local
                 'us': 'http://54.67.22.188:30043/socket', // us
                 'default': 'https://tanx.playcanvas.com/socket' // load balanced
             };
@@ -138,89 +205,22 @@ pc.script.create('client', function (context) {
                 this.gamepadConnected = true;
             }
         },
+    
+    
+    
+    
 
+    
+    
         update: function (dt) {
-            if (! this.connected)
-                return;
-                
-            // WASD movement
-            var movement = [
-                context.keyboard.isPressed(pc.input.KEY_D) - context.keyboard.isPressed(pc.input.KEY_A),
-                context.keyboard.isPressed(pc.input.KEY_S) - context.keyboard.isPressed(pc.input.KEY_W)
-            ];
-            
-            // ARROWs movement
-            movement[0] += context.keyboard.isPressed(pc.input.KEY_RIGHT) - context.keyboard.isPressed(pc.input.KEY_LEFT);
-            movement[1] += context.keyboard.isPressed(pc.input.KEY_DOWN) - context.keyboard.isPressed(pc.input.KEY_UP);
-            
-            // gamepad controls
-            // AUTHORS: Potch and cvan
-            if (context.gamepads.gamepadsSupported && this.gamepadConnected) {
-                var gamepadIdx = gamepadNum - 1;
-
-                if (!context.gamepads.poll()[gamepadIdx]) {
-                    // If it was active at one point, reset things.
-                    if (self.gamepadActive && self.link && self.link.mouse) {
-                        self.link.mouse.move = true;
-                        this.gamepadActive = false;
-                    }
-                } else {
-                    // Gamepad movement axes.
-                    var x = context.gamepads.getAxis(gamepadIdx, pc.PAD_L_STICK_X);
-                    var y = context.gamepads.getAxis(gamepadIdx, pc.PAD_L_STICK_Y);
-                    if ((x * x + y * y) > .25) {
-                        movement[0] += x;
-                        movement[1] += y;
-                    }
-
-                    // Gamepad firing axes.
-                    var gpx = context.gamepads.getAxis(gamepadIdx, pc.PAD_R_STICK_X);
-                    var gpy = context.gamepads.getAxis(gamepadIdx, pc.PAD_R_STICK_Y);
-
-                    if (x || y || gpx || gpy) {
-                        this.gamepadActive = true;
-
-                        if (this.link && this.link.mouse) {
-                            this.link.mouse.move = false;
-
-                            // TODO: Figure out how to hide cursor without destroying
-                            // (so we can show the cursor again if gamepad is disconnected).
-                            var target = context.root.findByName('target');
-                            if (target) {
-                                target.destroy();
-                            }
-                        }
-                    }
-
-                    // Gamepad shooting.
-                    if (gpx * gpx + gpy * gpy > .25) {
-                        this.shoot(true);
-
-                        if (this.link) {
-                            this.link.mPos = [
-                                gpx / 2 * (context.graphicsDevice.width / 2),
-                                gpy / 2 * (context.graphicsDevice.height / 2)
-                            ];
-
-                            this.link.angle = Math.floor(Math.atan2(gpx, gpy) / (Math.PI / 180) + 45);
-                            this.link.link.targeting(this.link.angle);
-                        }
-                    } else {
-                        this.shoot(false);
-                    }
-                }
-            }
-            
-            // rotate vector
-            var t =       movement[0] * Math.sin(Math.PI * 0.75) - movement[1] * Math.cos(Math.PI * 0.75);
-            movement[1] = movement[1] * Math.sin(Math.PI * 0.75) + movement[0] * Math.cos(Math.PI * 0.75);
-            movement[0] = t;
-            
-            // check if it is changed
-            if (movement[0] !== this.movement[0] || movement[1] != this.movement[1]) {
-                this.movement = movement;
-                this.socket.send('move', this.movement);
-            }
+        	
+        	//calls the FSB Middleware in FSBpanzer.js "takeAction" every 700ms
+        	if (Date.now() > this.entity.script.FSBpanzer.tickTime+700) {
+                this.entity.script.FSBpanzer.tickTime = Date.now();
+                this.entity.script.FSBpanzer.tankPosition = [tankPosition[0], tankPosition[2]];
+                this.entity.script.FSBpanzer.takeAction();
+            }        
+        
         },
         
         onMouseDown: function() {
