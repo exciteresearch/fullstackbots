@@ -33,7 +33,8 @@ pc.script.create('FSBpanzer', function (app) {
             this.numberOfPositionsToRemember = 6;
         },
 
-        takeAction: function( tankPosition ){
+        // Called every frame, dt is time in seconds since last update
+        takeAction: function(){
         	// botCode start
                 this.goTowards( this.tankPosition, [24, 24] );
         	// botCode end

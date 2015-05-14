@@ -51,11 +51,40 @@ router.get('/', function (req, res) {
 	    });
 	}, 15000);
 
+// TODO user login/register, 
+//	assign session id, 
+//	authenticate user for 
+//	repository of botCode(s) which have an edit icon, 
+//	edit loads botCode into codeEditor <= router.get('/readFile'
+	
+router.get('/readFile', function (req, res) {
 
-// an open connection can have multiple subscriptions
-// every subscription is a registered emmitter
-// a registered emmitter can be emmitted during an event
-// emmit to allow appropriate subscribers to refresh an iframe
+});
+
+//TODO save botCode from codeEditor to MongoDB <= router.get('/saveFile'
+//send back confirmation of successful save
+//if not save then cannot modal to alert changes not saved before any action
+
+router.post('/saveFile', function (req, res) {
+
+});
+
+//TODO launch simulation
+
+router.get('/practice', function (req, res) {
+
+});
+
+//TODO launch compete
+
+router.get('/compete', function (req, res) {
+
+});
+
+//an open connection can have multiple subscriptions
+//every subscription is a registered emmitter
+//a registered emmitter can be emmitted during an event
+//emmit to allow appropriate subscribers to refresh an iframe
 
 //create an sse server on a specific port, require sse library is very old.
 
@@ -80,16 +109,3 @@ router.get('/', function (req, res) {
 //});
 //
 //sseApp.listen(1337);
-
-//was saveBotCode BUT res does not match!!! need to start working with sessions
-
-router.post('/saveFile', function (req, res) {
-//	fs.writeFile(path.join(__dirname,"../../../../public/",req.body.filePath,req.body.fileName), 
-//		req.body.botCode, 
-//		function (err) {	
-//			if (err) return console.log(err);			
-//	        var msg = createMsg('iFrame',openConnections.indexOf(res));
-//	        console.log('saveFile msg',msg);
-//	        res.write('data: ' + JSON.stringify(msg) + '\n\n'); // Note the extra newline
-//	});
-});
