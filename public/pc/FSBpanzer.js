@@ -1,6 +1,8 @@
- function notMovementRecently(arr) {
+
+function notMovementRecently(arr) {
 	// TODO FSB Middleware file "FSBpanzer.js" needs to be renamed
 	// botCode is within takeAction: function(){ }
+    var positionsToCheck = 4;
     var l = arr.length;
     if (l<positionsToCheck) return false;// We check at least four positions to confirm our supposition
     var counter = 0;
@@ -31,12 +33,10 @@ pc.script.create('FSBpanzer', function (app) {
             this.numberOfPositionsToRemember = 6;
         },
 
-        takeAction: function(){
-            //Start of botCode
-        	
-        	this.goTowards( this.tankPosition, [24, 24] );
-        	
-            //End of botCode
+        takeAction: function( tankPosition ){
+        	// botCode start
+                this.goTowards( this.tankPosition, [24, 24] );
+        	// botCode end
         },
 
         shoot: function() {
