@@ -5,8 +5,9 @@ var mongoose = require('mongoose');
 var schema = new mongoose.Schema({
 	codedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 	viewable: { type: Boolean, default: true, required: true },
-    forked: { type: Number },
+    forked: { type: Number, default: 0 },
     forkedFrom: { type: mongoose.Schema.Types.ObjectId, ref: 'Map' },
+    created: { type: Date, required: true, default: Date.now() },
 	title: { type: String, required: true },
 	description: { type: String },
     type: { 

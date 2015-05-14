@@ -37,7 +37,7 @@ describe('Bot model', function(){
 			viewable: true, // include in tests
 			forked: 1,
 			botname: "bruiser",
-			botFile: "// Empty BotFile",
+			botCode: "// Empty BotFile",
 			created: Date.now(),
 			points: 0,
 			shots: 30,
@@ -63,7 +63,7 @@ describe('Bot model', function(){
 			forked: 0,
 			forkedFrom: forkedBot._id,
 			botname: "hasher",
-			botFile: "// Empty BotFile",
+			botCode: "// Empty BotFile",
 			created: Date.now(),
 			points: 300,
 			shots: 3,
@@ -90,7 +90,7 @@ describe('Bot model', function(){
         expect(Bot).to.be.a('function');
     });
 
-    it('has codedBy which is equal to the id of the user who is coding it',function(done){			
+    it('has codedBy which is equal to the id of the user who is created it or last forked it',function(done){			
 		Bot.findById(bot._id,function(err,found){
 			expect(found.codedBy.toString()).to.equal(user._id.toString());
 			done();
@@ -103,7 +103,7 @@ describe('Bot model', function(){
 			forked: 0,
 			forkedFrom: forkedBot._id,
 			botname: "hasher",
-			botFile: "// Empty BotFile",
+			botCode: "// Empty BotFile",
 			created: Date.now(),
 			points: 300,
 			shots: 3,
@@ -124,7 +124,8 @@ describe('Bot model', function(){
     
     it('has viewable which is Boolean',function(done){			
 		Bot.findById(bot._id,function(err,found){
-			expect(found.codedBy.toString()).to.equal(user._id.toString());
+			expect(found.viewable).to.be.a('boolean');
+			expect(found.viewable).to.equal(true);
 			done();
 		});
     });
@@ -136,7 +137,7 @@ describe('Bot model', function(){
 			forked: 0,
 			forkedFrom: forkedBot._id,
 			botname: "hasher",
-			botFile: "// Empty BotFile",
+			botCode: "// Empty BotFile",
 			created: Date.now(),
 			points: 300,
 			shots: 3,
@@ -162,7 +163,7 @@ describe('Bot model', function(){
 //			forked: 0,
 			forkedFrom: forkedBot._id,
 			botname: "hasher",
-			botFile: "// Empty BotFile",
+			botCode: "// Empty BotFile",
 			created: Date.now(),
 			points: 300,
 			shots: 3,
@@ -189,7 +190,7 @@ describe('Bot model', function(){
 		});
     });
     
-    it('has botname, created which are required and an empty string and a Date object by default',function(done){			
+    it('has botname and created which are required and an empty string and a Date object by default',function(done){			
 		Bot.findById(bot._id,function(err,found){
 //			expect(err).to.exist;
 //			expect(err.message).to.equal("Validation failed");
@@ -199,10 +200,10 @@ describe('Bot model', function(){
 		});
     });
     
-    it('has botFile, points, shots, kills, pickables, battles, wins, and fubarbundy',function(done){			
+    it('has botCode, points, shots, kills, pickables, battles, wins, and fubarbundy',function(done){			
 		Bot.findById(bot._id,function(err,found){
-			expect(found).property('botFile');
-			expect(found.botFile).to.equal("// Empty BotFile");
+			expect(found).property('botCode');
+			expect(found.botCode).to.equal("// Empty BotFile");
 			expect(found).property('points');
 			expect(found.points).to.equal(300);
 			expect(found).property('shots');

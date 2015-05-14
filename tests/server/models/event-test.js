@@ -12,8 +12,8 @@ require('../../../server/db/models/event');
 
 var Bot = mongoose.model('Bot');
 var User = mongoose.model('User');
-var User = mongoose.model('Map');
-var User = mongoose.model('Event');
+var Map = mongoose.model('Map');
+var Event = mongoose.model('Event');
 
 describe('Event model', function(){
     beforeEach('Establish DB connection', function (done) {
@@ -45,53 +45,144 @@ describe('Event model', function(){
 		});
     });
 
-
 	var bot, forkedBot;
-    beforeEach('Create temporary forkedBot', function (done) {
-    	forkedBot = new Bot({
+    beforeEach('Create temporary bot', function (done) {
+		bot = new Bot({
 			codedBy: user1._id,
 			viewable: true, // include in tests
 			forked: 1,
 			botname: "bruiser",
-			botFile: "// Empty BotFile",
+			botCode: "// Empty BotFile",
 			created: Date.now(),
 			points: 0,
 			shots: 30,
 			kills: 0,
+			friendlyKills: 0,
 			pickables: { coins: 0, damages: 0, repairs: 0, shields: 0},
 			battles: 0,
 			wins: 0,
 			losses: 1,
-			fubarbundy: 1,			
+			fubarbundy: 1
 		});
-		Bot.create(forkedBot,function(err,saved) {
+		Bot.create(bot,function(err,saved) {
 			if(err) return done(err);
 			forkedBot = saved;
-			console.log("forkedBot._id",forkedBot._id);
 			done();
 		});
     });
+
     beforeEach('Create temporary bot', function (done) {
 		bot = new Bot({
 			codedBy: user2._id,
+			viewble: true, // include in tests
 			forked: 0,
 			forkedFrom: forkedBot._id,
 			botname: "hasher",
-			botFile: "// Empty BotFile",
+			botCode: "// Empty BotFile",
 			created: Date.now(),
 			points: 300,
 			shots: 3,
 			kills: 3,
+			friendlyKills: 0,
 			pickables: { coins: 0, damages: 1, repairs: 2, shields: 3},
 			battles: 1,
 			wins: 1,
 			losses: 0,
-			fubarbundy: 0,			
+			fubarbundy: 0
 		});
 		Bot.create(bot,function(err,saved) {
 			if(err) return done(err);
 			bot = saved;
-			console.log("bot",bot);
+			done();
+		});
+    });
+    
+	var map, forkedMap;
+    beforeEach('Create temporary forkedMap', function (done) {
+    	forkedMap = new Map({
+    		codedBy: user1._id,
+    		viewable: true,
+    	    forked: 1,
+    	    created: Date.now(),
+    		title: "Moat of Acid Map",
+    		description: "Awesome Map with every pickable, walls and a Moat of Acid",
+    	    type: "Walls and Pickables",
+    		levelData: '[[1,1,1,1],[1,0,0,1],[1,1,1,1]]',
+    		pickablesData: '[[1.5,1,1,1,1],[2.5,1,1,1,1],[3.5,1,1,1,1]]'	
+		});
+		Map.create(forkedMap,function(err,saved) {
+			if(err) return done(err);
+			forkedMap = saved;
+			done();
+		});
+    });
+    beforeEach('Create temporary map', function (done) {
+    	map = new Map({
+       		codedBy: user2._id,
+    		viewable: true,
+    	    forked: 1,
+    	    forkedFrom: forkedMap._id,
+    	    created: Date.now(),
+    		title: "Everything but Moat of Acid Map",
+    		description: "Awesome Map with every pickable, walls but NO Moat of Acid",
+    	    type: "Walls and Pickables",
+    		levelData: '[[1,1,1,1],[1,0,0,1],[1,1,1,1]]',
+    		pickablesData: '[[1.5,1,1,1,1],[2.5,1,1,1,1]]'	
+		});
+		Map.create(map,function(err,saved) {
+			if(err) return done(err);
+			map = saved;
+			done();
+		});
+    });
+    
+	var event, forkedEvent;
+    beforeEach('Create temporary forkedEvent', function (done) {
+    	forkedEvent = new Event({
+			codedBy: user1._id,
+			viewable: true, // include in tests
+			forked: 1,
+    	    created: Date.now(),
+			title: "Best Bot Battle Ever!!!",
+			description: "4 teams of 3 bots fight till there is only one team operational" +
+					"Arena map includes walls, coins, shields, damages, repairs, mines, " +
+					"and moat filled with acid!",
+		    type: "Battle",
+		    eventDt: Date("10:00 AM 5/15/2015"),
+			durationSec: 180,
+		    map: forkedMap._id, //map model needs to be created
+		    botsParticipants: [ bot._id, forkedBot._id ],
+		    usersParticipants: [],
+		    viewers: [ user1._id, user2._id ]
+		});
+		Event.create(forkedEvent,function(err,saved) {
+			if(err) return done(err);
+			forkedEvent = saved;
+			done();
+		});
+    });
+    beforeEach('Create temporary event', function (done) {
+    	event = new Event({
+			codedBy: user2._id,
+			viewable: true, // include in tests
+			forked: 0,
+			forkedFrom: forkedEvent._id,
+    	    created: Date.now(),
+			title: "Rematch of Best Bot Battle Ever without the Moat of Acid!!!",
+			description: "4 teams of 3 bots fight till there is only one team operational" +
+					"Arena map includes walls, coins, shields, damages, repairs, mines, " +
+					"and BUT without the moat filled with acid this time...",
+		    type: "Battle",
+		    eventDt: Date("12:00 PM 5/15/2015"),
+			durationSec: 180,
+		    map: map._id,
+		    botsParticipants: [ bot._id, forkedBot._id ],
+		    usersParticipants: [],
+		    viewers: [ user1._id, user2._id ]		
+		});
+		Event.create(event,function(err,saved) {
+			if(err) return done(err);
+			event = saved;
 			done();
 		});
     });
@@ -101,142 +192,128 @@ describe('Event model', function(){
     });
 
     it('should exist', function () {
-        expect(Bot).to.be.a('function');
+        expect(Event).to.be.a('function');
     });
 
-    it('has codedBy which is equal to the id of the user who is coding it',function(done){			
-		Bot.findById(bot._id,function(err,found){
+    it('has codedBy which is equal to the id of the user who is created it or last forked it',function(done){			
+		Event.findById(event._id,function(err,found){
 			expect(found.codedBy.toString()).to.equal(user2._id.toString());
 			done();
 		});
     });
-
-    it('has forked, botname, botFile, created, points, shots, kills, pickables, battles, wins, and fubarbundy',function(done){			
-		Bot.findById(bot._id,function(err,found){
-			expect(found.forked).to.equal(0);
-			expect(found.botname).to.equal('hasher');
-			expect(found.botFile).to.equal("// Empty BotFile");
-			expect(found.created.toString()).to.equal(bot.created.toString());
-			expect(found.points).to.equal(300);
-			expect(found.shots).to.equal(3);
-			expect(found.kills).to.equal(3);
-			expect(found.battles).to.equal(1);
-			expect(found.wins).to.equal(1);
-			expect(found.losses).to.equal(0);
-			expect(found.fubarbundy).to.equal(0);
+    
+    it('requires codedBy',function(done){
+		invalidEvent = new Event({
+//			codedBy: user1._id,
+			viewable: true, // include in tests
+			forked: 1,
+			title: "Invalid Event",
+			description: "blah",
+		    type: "Battle",
+		    eventDt: Date("12:00 PM 5/15/2015"),
+			durationSec: 180,
+		    map: map._id,
+		    botsParticipants: [ bot._id, forkedBot._id ],
+		    usersParticipants: [],
+		    viewers: [ user1._id, user2._id ]		
+		});
+		invalidEvent.save(function(err){
+			expect(err).to.exist;
+            expect(err.message).to.equal("Validation failed");
+            done();
+        });
+    });
+    
+    it('has viewable which is Boolean',function(done){			
+		Event.findById(forkedEvent._id,function(err,found){
+			expect(found.viewable).to.be.a('boolean');
+			expect(found.viewable).to.equal(true);
 			done();
 		});
     });
-   
-    it('has forkedFrom which is equal to the id of the bot it was forked from',function(done){			
-		Bot.findById(bot._id,function(err,found){
-			expect((found.forkedFrom).toString()).to.equal((bot.forkedFrom).toString());
+    
+    it('has viewable equal to true by default',function(done){
+		tempEvent = new Event({
+			codedBy: user1._id,
+			viewable: true, // include in tests
+			forked: 1,
+			title: "Invalid Event",
+			description: "blah",
+		    type: "Battle",
+		    eventDt: Date("12:00 PM 5/15/2015"),
+			durationSec: 180,
+		    map: map._id,
+		    botsParticipants: [ bot._id, forkedBot._id ],
+		    usersParticipants: [],
+		    viewers: [ user1._id, user2._id ]		
+		});
+		Event.create(tempEvent, function(err,saved) {
+			if(err) return done(err);
+			expect(saved.viewable).to.equal(true);
 			done();
 		});
     });
 
-    xit('should have qty which is a Number',function(done){
-    	var product = new Product({
-			name: "Jimmy's Brew",
-			price:'29.99',
-            categories: ['Organic','Red'],
-            createdBy: user._id,
-    		qty: 15,
-			description:"It's organic"
-    	});
-        product.save(function(err){
-			expect(product.qty).to.equal(15);
-            done();
-        });
-    });
-
-    xit('should have categories which is an Array ',function(done){
-        var product = new Product({
-			name: "Jimmy's Brew",
-			price:'29.99',
-            createdBy: user._id,
-            categories: ['Organic','Red'],
-			description:"It's organic"
-        });
-       product.save(function(err){
-			expect(product).to.have.deep.property('categories[0]', 'Organic');
-			expect(product).to.have.deep.property('categories[1]', 'Red');
-            done();
-        });
-     });
-
-    xit('should have createdBy which is an Object reference to a user',function(done){
-        var product = new Product({
-			name: "Jimmy's Brew",
-			price:'29.99',
-            categories: ['Organic','Red'],
-            createdBy: user._id,
-			description:"It's organic"
-        });
-		product.save(function(err){
-            expect(product.createdBy).to.equal(user._id);
-            done();
-        });
-    });
-
-   xit('should have validation to require description',function(done){
-        var product = new Product({
-			name: "Jimmy's Brew",
-            image:'/images/jimmysbrew.png',
-            price:'29.99',
-            qty: 15,
-            categories: ['Organic','Red'],
-            createdBy: user._id
-        });
-       product.save(function(err){
-            expect(err.message).to.equal("Validation failed");
-            done();
-        });
-    });
-
-    xit('should require price',function(done){
-        var product = new Product({
-            name: "Jimmy's Brew",
-            image:'/images/jimmysbrew.png',
-            description:"It's organic",
-            qty: 15,
-            categories: ['Organic','Red'],
-            createdBy: user._id
-       });
-       product.save(function(err){
-            expect(err.message).to.equal("Validation failed");
+    it('has forked, a number which is equal to 0 by default',function(done){
+		tempEvent = new Event({
+			codedBy: user1._id,
+			viewable: true, // include in tests
+//			forked: 0,
+			title: "Invalid Event",
+			description: "blah",
+		    type: "Battle",
+		    eventDt: Date("12:00 PM 5/15/2015"),
+			durationSec: 180,
+		    map: map._id,
+		    botsParticipants: [ bot._id, forkedBot._id ],
+		    usersParticipants: [],
+		    viewers: [ user1._id, user2._id ]		
+		});
+		Event.create(tempEvent, function(err,saved) {
+			if(err) return done(err);
+			expect(saved.forked).to.equal(0);
 			done();
-        });
+		});
     });
 
-    xit('should require category',function(done){
-        var product = new Product({
-            name: "Jimmy's Brew",
-            image:'/images/jimmysbrew.png',
-            description:"It's organic",
-            price:'29.99',
-            qty: 15,
-            createdBy: user._id
-        });
-       product.save(function(err){
-            expect(err.message).to.equal("Validation failed");
+    it('has forkedFrom which is equal to the id of id it was forked from',function(done){			
+		Event.findById(event._id,function(err,found){
+			expect(found.forkedFrom.toString()).to.equal(event.forkedFrom.toString());
 			done();
-        });
+		});
+    });
+    
+    it('has title and created which are required and an empty string and a Date object by default',function(done){			
+		Event.findById(event._id,function(err,found){
+//			expect(err).to.exist;
+//			expect(err.message).to.equal("Validation failed");
+			expect(found).property('title');
+			expect(found.title).to.equal("Rematch of Best Bot Battle Ever without the Moat of Acid!!!");
+			expect(found.created.toString()).to.equal(event.created.toString());
+			done();
+		});
+    });
+    
+    it('has description, type, eventDt, durationSec, map, botsParticipants, usersParticipants, and viewers',function(done){			
+		Event.findById(event._id,function(err,found){
+			expect(found).to.have.property('description');
+			expect(found.description).to.equal("4 teams of 3 bots fight till there is only one team operational" +
+					"Arena map includes walls, coins, shields, damages, repairs, mines, " +
+					"and BUT without the moat filled with acid this time...");
+			expect(found).property('type');
+			expect(found.type).to.equal('Battle');
+			expect(found).property('eventDt');
+			expect(found.eventDt.toString()).to.equal(event.eventDt.toString());
+			expect(found).property('durationSec');
+			expect(found.durationSec).to.equal(180);
+			expect(found).property('map');
+			expect(found.map.toString()).to.equal(map._id.toString());
+			expect(found).property('usersParticipants');
+			expect(found.usersParticipants).to.be.an('array');
+			expect(found).property('viewers');
+			expect(found.viewers).to.be.an('array');
+			done();
+		});
     });
 
-    xit('should require createdBy',function(done){
-        var product = new Product({
-            name: "Jimmy's Brew",
-            image:'/images/jimmysbrew.png',
-            description:"It's organic",
-            price:'29.99',
-            qty: 15,
-            categories: ['Organic','Red']
-        });
-       product.save(function(err){
-            expect(err.message).to.equal("Validation failed");
-            done();
-        });
-    });
-
-})
+});
