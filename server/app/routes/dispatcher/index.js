@@ -3,7 +3,6 @@ var fs = require('fs');
 var path = require('path');
 // remove the next two lines and you will get an error 'Router.use() requires middleware function but got a Obj'
 var router = require('express').Router();
-
 var _ = require("lodash");
 var bodyParser = require("body-parser");
 var User = require('mongoose').model('User');
@@ -32,12 +31,39 @@ router.get('/readFile', function (req, res, next) {
 //if not save then cannot modal to alert changes not saved before any action
 
 router.post('/saveFile', function(req, res, next) {
-  var bot = req.body.data;
-  Bot.save(bot, function(err, saved) {
-      if (err) return next(err);
-      res.send(saved);
-  });
+	console.log("/saveFile req.body",req.body);
+	var bot = req.body;
+	
+	Bot.findById({ _id: bot._id }, function(err,found) {
+			    if (err) return next(err);
+			    found.botCode = bot.botCode.toString();
+			    found.save(function (err,saved) {
+			        if (err) return next(err);
+			        res.send(saved);
+			      });
+			    next();
+	});
+	
+//	Bot.findAndModify(
+//			//query
+//			{ "_id": bot._id },
+//			//update
+//			{ 
+//				"$set": { 
+//				"botCode": bot.botCode
+//		  		}
+//			},
+//			//params return new or original, upsert etc.
+//			{ "new": true },
+//			function(err,updated) {
+//			    if (err) next(err);
+//			    console.log( "updated bot:",updated );
+//			    res.send(updated);
+//	});
+
 });
+
+
 
 //TODO launch simulation
 
