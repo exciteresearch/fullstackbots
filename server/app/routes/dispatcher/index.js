@@ -3,12 +3,64 @@ var fs = require('fs');
 var path = require('path');
 // remove the next two lines and you will get an error 'Router.use() requires middleware function but got a Obj'
 var router = require('express').Router();
+
+var _ = require("lodash");
+var bodyParser = require("body-parser");
+var User = require('mongoose').model('User');
+var Bot = require('mongoose').model('Bot');
+
 module.exports = router;
+
+// TODO user login/register, 
+//	assign session id, 
+//	authenticate user for 
+//	repository of botCode(s) which have an edit icon, 
+//	edit loads botCode into codeEditor <= router.get('/readFile'
+	
+router.get('/readFile', function (req, res, next) {
+	console.log("/readFile req.query",req.query);
+	var botID = req.query.botID;
+	Bot.findOne({ _id: botID }, function(err, found){
+        if (err) return next(err);
+        console.log("Bot found",found);
+		res.send(found);
+	});
+});
+
+//TODO save botCode from codeEditor to MongoDB <= router.get('/saveFile'
+//send back confirmation of successful save
+//if not save then cannot modal to alert changes not saved before any action
+
+router.post('/saveFile', function(req, res, next) {
+  var bot = req.body.data;
+  Bot.save(bot, function(err, saved) {
+      if (err) return next(err);
+      res.send(saved);
+  });
+});
+
+//TODO launch simulation
+
+router.get('/practice', function (req, res) {
+	body = req.body;
+	Bot.save({ _id: botID }, function(err, found){
+      if (err) return next(err);		
+		res.send(found);
+	});
+});
+
+//TODO launch compete
+
+router.get('/compete', function (req, res) {
+
+});
+
+//Experimental SSE code below
 
 var openConnections = [];
 
 router.get('/', function (req, res) {
-	console.log("openned ip:"+ req.socket.remoteAddress + ":" + req.socket.remotePort );
+	console.log("sse openned ip:"+ req.socket.remoteAddress + ":" + req.socket.remotePort );
     req.socket.setTimeout(Infinity);
 
     res.writeHead(200, {
@@ -28,9 +80,9 @@ router.get('/', function (req, res) {
                 break;
             }
         }
-    	console.log("disconnected " + j + " ip:"+ req.socket.remoteAddress + ":" + req.socket.remotePort );
+    	console.log("sse disconnected " + j + " ip:"+ req.socket.remoteAddress + ":" + req.socket.remotePort );
         openConnections.splice(j,1);
-        console.log("openConnections ",openConnections.length);
+        console.log("sse openConnections ",openConnections.length);
     });
     
 });
@@ -47,39 +99,11 @@ router.get('/', function (req, res) {
 	    openConnections.forEach(function(response,index) {
 	        var msg = createMsg('heartbeat',index) ; 
 	        response.write('data: ' + JSON.stringify(msg) + '\n\n'); // Note the extra newline
-	        console.log("connection",index,"msg",msg);
+	        console.log("sse connection",index,"msg",msg);
 	    });
 	}, 15000);
 
-// TODO user login/register, 
-//	assign session id, 
-//	authenticate user for 
-//	repository of botCode(s) which have an edit icon, 
-//	edit loads botCode into codeEditor <= router.get('/readFile'
-	
-router.get('/readFile', function (req, res) {
 
-});
-
-//TODO save botCode from codeEditor to MongoDB <= router.get('/saveFile'
-//send back confirmation of successful save
-//if not save then cannot modal to alert changes not saved before any action
-
-router.post('/saveFile', function (req, res) {
-
-});
-
-//TODO launch simulation
-
-router.get('/practice', function (req, res) {
-
-});
-
-//TODO launch compete
-
-router.get('/compete', function (req, res) {
-
-});
 
 //an open connection can have multiple subscriptions
 //every subscription is a registered emmitter
