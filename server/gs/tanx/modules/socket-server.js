@@ -33,7 +33,7 @@ Server.prototype = Object.create(EventEmitter.prototype);
 
 
 Server.prototype._onconnection = function(socket) {
-	console.log("_onconnection socket",socket);
+//	console.log("_onconnection socket-server.js",socket);
     this.emit('connection', new Client(socket));
 };
 

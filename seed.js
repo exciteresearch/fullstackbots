@@ -22,6 +22,7 @@ Refer to the q documentation for why and how q.invoke is used.
 var mongoose = require('mongoose');
 var connectToDb = require('./server/db');
 var User = mongoose.model('User');
+var Bot = mongoose.model('Bot');
 var q = require('q');
 var chalk = require('chalk');
 
@@ -54,12 +55,15 @@ var userIDs= [];
 return User.findOne({email:'gwb@gmail.com'}).exec()
 .then(function(user) {
     userIDs.push(user._id);
+    return userIDs;
 })
-.then(function() {
+.then(function(userIDs) {
     return User.findOne({email:'obama@gmail.com'}).exec()
 })
 .then(function(user) {
     userIDs.push(user._id);
+    console.log(userIDs);
+    return userIDs;
 })
 .then(function(userIDs){
     var bots = [
@@ -74,7 +78,7 @@ return User.findOne({email:'gwb@gmail.com'}).exec()
         	botCode: "this.goTowards( this.tankPosition, [24, 24] );"
         }
     ];
-    return q.invoke(Product, 'create', bots);
+    return q.invoke(Bot, 'create', bots);
     });
 
 };

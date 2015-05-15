@@ -9,37 +9,38 @@ app.config(function ($stateProvider) {
 
 app.factory('botCodeFactory', function ($http) {
     return {
-        getBotCode: function () {
+        getBot: function (userID,botID) {
+        	
             var queryParams = {};
-//            if (category) {
-//                queryParams.category = category;
-//            }
-            return $http.get('/pc/FSBpanzer.js', {
+            
+            if (userID || botID) {
+                queryParams.userID = userID;
+                queryParams.botID = botID;
+            }
+            return $http.get('/api/dispatcher/readFile/', {
                 params: queryParams
             }).then(function (response) {
+            	console.log("get response.data",response.data);
                 return response.data;
             });
         },
 
-        saveBotCode: function (data) {
-//        	console.log("saveBotCode data",data);
-        	var temp = data;
-
-        	data = {
-        			botCode: temp,
-        			fileName: "FSBpanzer.js",
-        			filePath: "/pc/"
-        	};
+        saveBot: function (bot) {
+        	console.log("saveBot bot",bot);
+        	if(!bot._id){
+        		bot.bot._id = '5556463aaadfdb33433b63b5';
+        	}
+        	
+        	var data; //data packet to send
+        	data = { bot: bot };
 
             return $http.post('/api/dispatcher/saveFile/', data).then(function(res) {
 //                update.currentOrder = res.data;
 //                update.justOrdered = true;
-//            	console.log("res.data",res.data);
-//                return res.data;
+            	return res.data;
               }, function(err) {
                   throw new Error(err);
-              });
-                        
+              });                        
         }
     };
 });
@@ -59,14 +60,19 @@ app.controller('PlayCanvasCtrl',function($scope,$sce){
 });
 
 app.controller('CodeEditorCtrl',function($scope, botCodeFactory){
+    var botID = '5556463aaadfdb33433b63b5';
+
+	$scope.bot = {
+			bot._id = "";
+			bot.botCode = "";
+	};
 	//Could also be a Panel of Tabs
-	$scope.string = "";
-	botCodeFactory.getBotCode()
+	botCodeFactory.getBot(null,bot._id)
 					.then(function(data){
-						$scope.string = data;
+						$scope.bot.botCode = data.botCode.toString();
 		});
-	$scope.saveCode = function(){
-		botCodeFactory.saveBotCode($scope.string);		
+	$scope.saveBot = function(){
+		botCodeFactory.saveBot($scope.bot);
 	};
 	
 	// ui.ace start
