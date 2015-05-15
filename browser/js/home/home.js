@@ -14,7 +14,7 @@ app.factory('botCodeFactory', function ($http) {
 //            if (category) {
 //                queryParams.category = category;
 //            }
-            return $http.get('/pc/osc.js', {
+            return $http.get('/pc/FSBpanzer.js', {
                 params: queryParams
             }).then(function (response) {
                 return response.data;
@@ -27,7 +27,7 @@ app.factory('botCodeFactory', function ($http) {
 
         	data = {
         			botCode: temp,
-        			fileName: "osc.js",
+        			fileName: "FSBpanzer.js",
         			filePath: "/pc/"
         	};
 
