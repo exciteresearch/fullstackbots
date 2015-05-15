@@ -6,6 +6,8 @@ var tankIds = 0;
 
 
 function Tank(client) {
+    /* This allows us to change the dimensions and other
+    stats of the tank, no visual change */
     this.deleted = false;
 
     this.id = ++tankIds;
@@ -13,6 +15,12 @@ function Tank(client) {
     client.tank = this;
     // this.hue = Math.floor(Math.random() * 360);
     this.radius = .75;
+    this.sightRadius=5; //ian edit: gave tanks a "sight" range of "5"
+    this.oldPos=[]; //ian edit: stopped detection
+    this.brakePatience=10;
+    this.braked=false;
+    this.movementOne=Math.round(Math.random()*2-1);
+    this.movementTwo=Math.round(Math.random()*2-1);
 
     this.scoreLast = 0;
     this.score = 0;
@@ -52,7 +60,47 @@ Tank.prototype.delete = function() {
 };
 
 
+// ian edit: 
+ // Tank Enhancements: 
+
+ // 1): Recoil: 
+var recoil=function(initial){
+
+    if(initial.angle>45 && initial.angle < 135){
+        initial.pos[0]=initial.pos[0]-1
+    }
+    if(initial.angle<-45 && initial.angle > -135){
+        initial.pos[0]=initial.pos[0]+1
+    }
+    if(initial.angle<45 && initial.angle > -45){
+        initial.pos[1]=initial.pos[1]-1
+    }
+    if(initial.angle > 135 || initial.angle < -135){
+        initial.pos[1]=initial.pos[1]+1
+    }
+    return initial;
+}
+
+var enhancements=[];
 Tank.prototype.shoot = function() {
+
+    //
+    // { '0': -1.1102230246251565e-16, '1': 1.4142135381698608 } downleft
+    // { '0': 1.1102230246251565e-16, '1': -1.4142135381698608 } upright
+    // { '0': -1.4142135381698608, '1': -1.1102230246251565e-16 } upleft
+    // { '0': 0.7071067690849304, '1': 0.7071067690849304 } down
+    // { '0': -0.7071067690849304, '1': -0.7071067690849304 } up
+    // { '0': -0.7071067690849304, '1': 0.7071067690849304 } left
+    // { '0': 0.7071067690849304, '1': -0.7071067690849304 } right
+
+
+    for(var i=0; i<enhancements.length; i++){
+        var here=enhancements[i]
+        here(this);
+    }
+
+        recoil(this)
+
     if (this.deleted || this.dead) return;
 
     var now = Date.now();
@@ -86,14 +134,15 @@ Tank.prototype.update = function() {
     if (! this.dead) {
         // movement
         if (this.movementDirection.len())
+                
             this.pos.add(Vec2.alpha.setV(this.movementDirection).norm().mulS(this.speed));
 
         // reloading
-        if (this.reloading && now - this.lastShot > 400)
+        if (this.reloading && now - this.lastShot > 100)
             this.reloading = false;
 
         // auto recover
-        if (this.hp < 10 && now - this.tHit > 3000 && now - this.tRecover > 1000) {
+        if (this.hp < 10 && now - this.tHit > 10000 && now - this.tRecover > 2000) {
             this.hp = Math.min(this.hp + 1, 10);
             this.tRecover = now;
         }

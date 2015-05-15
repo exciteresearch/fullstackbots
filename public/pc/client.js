@@ -99,7 +99,7 @@ pc.script.create('client', function (context) {
             var self = this;
             var servers = {
                 'local': 'http://localhost:30043/socket', // local
-                'fsb':  'http://192.168.1.216:30043/socket', // local
+                'fsb': 'http://localhost:30043/socket',
                 'us': 'http://54.67.22.188:30043/socket', // us
                 'default': 'https://tanx.playcanvas.com/socket' // load balanced
             };
@@ -132,6 +132,7 @@ pc.script.create('client', function (context) {
             
             socket.on('tank.delete', function(data) {
                 self.tanks.delete(data);
+
             });
             
             var dataQueue = [ ];
@@ -213,22 +214,136 @@ pc.script.create('client', function (context) {
     
     
         update: function (dt) {
-        	
-        	//calls the FSB Middleware in FSBpanzer.js "takeAction" every 700ms
-        	if (Date.now() > this.entity.script.FSBpanzer.tickTime+700) {
-                this.entity.script.FSBpanzer.tickTime = Date.now();
-                this.entity.script.FSBpanzer.tankPosition = [tankPosition[0], tankPosition[2]];
-                this.entity.script.FSBpanzer.takeAction();
-            }        
+           this.entity.script.TankAI.takeAction( tankPosition);
+           // if(this.angle<180){
+           //              this.angle+=3
+           //              if(shootNow===true){
+           //                  console.log("test")
+           //                 this.angle-=3
+           //              }
+           //          }else{
+           //              this.angle=-180;
+           //          }
+           // this.socket.send('target', 47); 
+            // if(newPath===true){
+            //     newPath=false;
+            //     // console.log("pathing initiated");
+            //     easystar.findPath(Math.round(tankPosition[0]), Math.round(tankPosition[2]), destinationX, destinationY, function( path ) {
+            //         if (path === null) {
+            //             console.log("Path was not found.");
+            //         } else {
+            //             // console.log("tank position: ", [tankPosition[0], tankPosition[2]],"destination: ", [destinationX, destinationY], path);
+            //             myPath=path;
+            //         }
+            //     });
+                
+            //     easystar.calculate();
+            //     destination=true;
+            // }
+            
+            // this.pastLocations.push(tankPosition[0])
+            // this.pastLocations.push(tankPosition[2])
+            // if(this.pastLocations.length>80){
+            //     this.pastLocations.shift()
+            //     this.pastLocations.shift()
+            // }
+            // if(this.unstick>0){
+            //     this.unstick--
+            // }else{
+            //     if(Math.abs(this.pastLocations[0]-this.pastLocations[78])+Math.abs(this.pastLocations[1]-this.pastLocations[79])<0.5){
+
+            //         this.movementOne=Math.round(Math.random()*2-1)
+            //         this.movementTwo=Math.round(Math.random()*2-1)
+            //         this.unstick=100;
+            //     }else{
+            //         if (l>myPath.length-2){
+            //            destination=false;
+            //            l=0;
+            //            currentPriority=0;
+            //         //   console.log("No current destination")
+            //         }
+            //         if(destination===true&&myPath.length>0){
         
+            //             if (Math.abs(tankPosition[0]-(myPath[l].x))+Math.abs(tankPosition[2]-(myPath[l].y))<1){ 
+        
+            //                 l++; 
+            //             }
+            //             if (tankPosition[0]<myPath[l].x&&tankPosition[2]>myPath[l].y){
+            //                this.movementOne=1
+            //                 this.movementTwo=(((Math.abs(tankPosition[2]-myPath[l].y)/(Math.abs(tankPosition[0]-myPath[l].x)+Math.abs(tankPosition[2]-myPath[l].y)))*-2)+1)
+        
+            //             }
+            //             if (tankPosition[0]>myPath[l].x&&tankPosition[2]<myPath[l].y){
+            //                 this.movementOne=-1
+            //                 this.movementTwo=(((Math.abs(tankPosition[2]-myPath[l].y)/(Math.abs(tankPosition[0]-myPath[l].x)+Math.abs(tankPosition[2]-myPath[l].y)))*2)-1)
+            //             }
+            //             if(tankPosition[0]>myPath[l].x&&tankPosition[2]>myPath[l].y){
+            //                this.movementTwo=-1
+            //                this.movementOne=(((Math.abs(tankPosition[0]-myPath[l].x)/(Math.abs(tankPosition[0]-myPath[l].x)+Math.abs(tankPosition[2]-myPath[l].y)))*-2)+1)
+        
+            //             }
+            //             if(tankPosition[0]<myPath[l].x&&tankPosition[2]<myPath[l].y){
+            //                this.movementTwo=1
+            //                this.movementOne=(((Math.abs(tankPosition[0]-myPath[l].x)/(Math.abs(tankPosition[0]-myPath[l].x)+Math.abs(tankPosition[2]-myPath[l].y)))*2)-1)
+            //             }
+            //         }else{
+                    
+            //             if (! this.connected)
+            //                 return;
+            //             //ian edit: Motion script
+            
+            //             if(shootNow===true){
+            //                 this.shoot(true);
+            //                 this.angle--;
+            //             }else{
+            //              this.shoot(false);   
+            //             }
+            //             if (this.moved===undefined){
+            //                 this.moved=0;
+            //             }
+            //             if(this.braked===true){
+            //                 this.moved=200;
+            //             }
+            //                     // console.log("too far", Math.abs(tankPosition[0]-(repairLoc.data[0]))+Math.abs(tankPosition[2]-(repairLoc.data[2])))
+            //         }
+            //         if(this.moved%200===0||this.moved===0){
+            //         this.movementOne=Math.round(Math.random()*2-1)
+            //         this.movementTwo=Math.round(Math.random()*2-1)
+            //         while(this.movementOne===0 && this.movementTwo===0){
+            //             this.movementOne=Math.round(Math.random()*2-1)
+            //             this.movementTwo=Math.round(Math.random()*2-1)
+            //             }
+            //         }
+            //     }
+            // }
+            
+            
+            // movement=[this.movementOne,this.movementTwo];
+             
+            // this.moved++;
+            
+
+            
+            // // rotate vector
+            // var t =       movement[0] * Math.sin(Math.PI * 0.75) - movement[1] * Math.cos(Math.PI * 0.75);
+            // movement[1] = movement[1] * Math.sin(Math.PI * 0.75) + movement[0] * Math.cos(Math.PI * 0.75);
+            // movement[0] = t;
+            
+            // // check if it is changed
+            // if (movement[0] !== this.movement[0] || movement[1] != this.movement[1]) {
+            //     this.movement = movement;
+            //     this.socket.send('move', this.movement);
+            // }
         },
         
         onMouseDown: function() {
             this.shoot(true);
+            shootNow=true;
         },
         
         onMouseUp: function() {
             this.shoot(false);
+            shootNow=false;
         },
         
         shoot: function(state) {
@@ -237,7 +352,7 @@ pc.script.create('client', function (context) {
                 
             if (this.shootingState !== state) {
                 this.shootingState = state;
-                
+                // console.log(this.tank)
                 this.socket.send('shoot', this.shootingState);
             }
         }

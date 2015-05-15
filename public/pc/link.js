@@ -9,7 +9,7 @@ pc.script.create('link', function (context) {
         this.entity.link = this.link.bind(this);
         this.link = null;
         this.vec = new pc.Vec2();
-        this.angle = 0;
+        //this.angle = 0;
         this.lastAngle = 0;
         this.lastSend = 0;
         this.mPos = [ 0, 0 ];
@@ -22,7 +22,7 @@ pc.script.create('link', function (context) {
                 x: 0,
                 y: 0
             };
-            
+            //ian edit: is this line messing things up? check later:
             context.mouse.on(pc.input.EVENT_MOUSEMOVE, this.onMouseMove, this);
             this.client = context.root.getChildren()[0].script.client;
             
@@ -102,26 +102,26 @@ pc.script.create('link', function (context) {
         				// this.angle = Math.floor(Math.atan2(pickedPos.x, pickedPos.z) / (Math.PI / 180));
         				
         				
-        				//ian edit: this rotates the cannon in 360 degrees:
-        				if(this.angle<180){
-        				    this.angle+=3
-        				    if(shootNow===true){
-        				       this.angle-=3
-        				    }
-        				}else{
-        				    this.angle=-180;
-        				}
-        				this.link.targeting(this.angle);
+        				// // ian edit: this rotates the cannon in 360 degrees:
+        				// if(this.angle<180){
+        				//     this.angle+=3
+        				//     if(shootNow===true){
+        				//        this.angle-=3
+        				//     }
+        				// }else{
+        				//     this.angle=-180;
+        				// }
+        				// this.link.targeting(this.angle);
                     }
                 }
             }
             
-            if (Date.now() - this.lastSend > 100 && this.angle !== this.lastAngle) {
-                this.lastSend = Date.now();
-                this.lastAngle = this.angle;
+            // if (Date.now() - this.lastSend > 100 && this.angle !== this.lastAngle) {
+            //     this.lastSend = Date.now();
+            //     this.lastAngle = this.angle;
                 
-                this.client.socket.send('target', this.angle);
-            }
+                // this.client.socket.send('target', this.angle);
+            //}
         },
         
         onMouseMove: function(evt) {

@@ -17,7 +17,7 @@ var Vec2 = {
     },
     alpha:   null,
     charlie: null,
-    bet:     null
+    beta:     null
 };
 Vec2.alpha   = Vec2.new();
 Vec2.charlie = Vec2.new();
