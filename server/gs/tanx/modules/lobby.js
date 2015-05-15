@@ -65,6 +65,22 @@ Lobby.prototype.update = function() {
 
                 // check for collision
                 var dist = tank.pos.dist(tankOther.pos);
+
+                //ian edit: Fire when in sight range: 
+
+                if (dist < tank.sightRadius){
+                    // if (! tank.dead && ! tank.reloading) {
+                    //     // new bullet
+                    //     var bullet = tank.shoot();
+                    //     world.add('bullet', bullet);
+
+                    //     // publish
+                    //     state.bullets = state.bullets || [ ];
+                    //     state.bullets.push(bullet.data);
+                    // }
+
+                }
+
                 if (dist < tank.radius + tankOther.radius) {
                     // collided
                     Vec2.alpha
@@ -80,6 +96,63 @@ Lobby.prototype.update = function() {
 
             // tank-block collision
             world.forEachAround('block', tank, function(block) {
+
+                //ian edit: trying to get tanks to see walls
+
+                var distance=tank.pos.dist(block.pos);
+                if (distance<tank.sightRadius){
+                    
+                    // if (! tank.dead  && ! tank.reloading) {
+                    //     var bullet = tank.shoot();
+                    //     world.add('bullet', bullet);
+
+                    //     // publish
+                    //     state.bullets = state.bullets || [ ];
+                    //     state.bullets.push(bullet.data);
+                    // }
+                }
+
+                if (tank.oldPos.length > tank.brakePatience*2){
+                  tank.oldPos.shift()  
+                  tank.oldPos.shift() 
+                }
+                //ian edit: detects when stuck and shoots
+                var saver=function(position){
+                    positionTwo=position[0].toString()
+                    positionThree=position[1].toString();
+                    tank.oldPos.push(positionTwo)
+                    tank.oldPos.push(positionThree)
+                    // if(position[0].toString()===tank.oldPos[0]&&position[1].toString()===tank.oldPos[1]){
+                    //     if (! tank.dead  && ! tank.reloading) {
+                    //         var bullet = tank.shoot();
+                    //         world.add('bullet', bullet);
+
+                    //         // publish
+                    //         state.bullets = state.bullets || [ ];
+                    //         state.bullets.push(bullet.data);
+                    //     }
+                    //     tank.braked=true;
+                    //     console.log(world);
+                    // }else{tank.braked=false}
+                    
+                    
+                }
+                saver(tank.pos);
+
+                //Ian Edit: wall collision:
+                
+                // if (distance<2){
+                //     Vec2.alpha
+                //         .setV(tank.pos)
+                //         .sub(block.pos)
+                //         .norm()
+                //         .mulS(distance - (tank.radius + 1));
+                //         // move apart
+                //         tank.pos.sub(Vec2.alpha);
+                //         block.pos.add(Vec2.alpha);
+                // }
+
+                //Original code:
                 var point = block.collideCircle(tank);
                 if (point)
                     tank.pos.add(point);
@@ -109,6 +182,58 @@ Lobby.prototype.update = function() {
                             return;
                         // set full shield
                         tank.shield = 10;
+                        break;
+                        //ian edit: scoring via coins
+                    case 'mine':
+
+                        tank.score++;
+                        tank.team.score++;
+                        // winner?
+                        if (tank.team.score === 32)
+                            winner = tank.owner.team;
+                        // total score
+                        room.score++;
+                        break;
+                    case 'coin':
+                        // damage tank
+                        var damage = 3;
+
+                        tank.tHit = now;
+
+                        // if has shield
+                        if (tank.shield) {
+                            if (tank.shield > damage) {
+                                // enough to sustain whole damage
+                                tank.shield -= damage;
+                                damage = 0;
+                            } else {
+                                // shielded only some damage
+                                damage -= tank.sheild;
+                                tank.sheild = 0;
+                            }
+                        }
+
+                        if (damage) {
+                            tank.hp -= damage;
+
+                            // killed, give point
+                            if (tank.hp <= 0) {
+                                // add score
+                                bullet.owner.score+=3;
+                                bullet.owner.team.score+=3;
+                                // winner?
+                                if (bullet.owner.team.score === 32)
+                                    winner = bullet.owner.team;
+                                // total score
+                                room.score++;
+                                // bullet.owner.owner.send('point', 1);
+                                // remember killer
+                                tank.killer = bullet.owner.id;
+                                // respawn
+                                tank.respawn();
+                            }
+                        }
+                        
                         break;
                 }
 
@@ -215,8 +340,8 @@ Lobby.prototype.update = function() {
                         // killed, give point
                         if (tank.hp <= 0) {
                             // add score
-                            bullet.owner.score++;
-                            bullet.owner.team.score++;
+                            bullet.owner.score+=3;
+                            bullet.owner.team.score+=3;
                             // winner?
                             if (bullet.owner.team.score === 32)
                                 winner = bullet.owner.team;
@@ -234,7 +359,8 @@ Lobby.prototype.update = function() {
                 // bullet delete
                 deleting = true;
                 bullet.publish = true;
-            });
+            }
+            );
 
             if (! deleting) {
                 // for each block around

@@ -1,9 +1,12 @@
 var EventEmitter = require('events').EventEmitter;
 var sockjs = require('sockjs');
 
+
 // var ws = require('ws');
 
+
 var Client = require('./socket-client');
+
 
 function Server(args) {
     EventEmitter.call(this);
@@ -33,7 +36,6 @@ Server.prototype = Object.create(EventEmitter.prototype);
 
 
 Server.prototype._onconnection = function(socket) {
-//	console.log("_onconnection socket-server.js",socket);
     this.emit('connection', new Client(socket));
 };
 

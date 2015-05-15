@@ -5,6 +5,7 @@ var Block = require('./block');
 var Tank = require('./tank');
 var Bullet = require('./bullet');
 var uuid = require('node-uuid');
+var userScript="original"
 
 
 function Room() {
@@ -14,8 +15,8 @@ function Room() {
     this.clients = [ ];
 
     this.world = new World({
-        width: 48,
-        height: 48,
+        width: 48,  // map width
+        height: 48, //map height
         clusterSize: 4,
         indexes: [ 'tank', 'bullet', 'pickable', 'block' ]
     });
@@ -24,6 +25,9 @@ function Room() {
     this.scoreLast = 0;
     this.teams = [ ];
 
+
+    /*Makes each team, gives them individaul Ids, 
+    and starts them with no points or tanks */
     for(var i = 0; i < 4; i++) {
         this.teams.push({
             id: i,
@@ -33,6 +37,16 @@ function Room() {
     }
 
     this.level = [
+        /*This creates the phisycal, albiet invisible walls of the
+        world. There are two pairs of numbers, the first determine
+        the location of a wall being built and the second pair
+        determine its dimensions.  The first number of each pair 
+        uses the top left to bottom right axis. In the second pair 
+        of numbers the numbers are dimensions, one being width the 
+        other being the length of the wall, both expanding from the 
+        first pair of number's location.*/
+
+
         [ 13.5, 2, 1, 4 ],
         [ 13.5, 12, 1, 2 ],
         [ 12.5, 13.5, 3, 1 ],
@@ -147,6 +161,69 @@ function Room() {
             y: 24,
             type: 'shield',
             item: null,
+            delay: 50000,
+            picked: 0
+        }, {
+            x: Math.random()*12,
+            y: Math.random()*12,
+            type: 'coin',
+            item: null,
+            delay: 30000,
+            picked: 0
+        }, {
+            x: 22+Math.random()*5,
+            y: Math.random()*10,
+            type: 'coin',
+            item: null,
+            delay: 30000,
+            picked: 0
+        }, {
+            x: 35+Math.random()*12,
+            y: Math.random()*12,
+            type: 'coin',
+            item: null,
+            delay: 30000,
+            picked: 0
+        }, {
+            x: 37+Math.random()*10,
+            y: 22+Math.random()*5,
+            type: 'coin',
+            item: null,
+            delay: 30000,
+            picked: 0
+        }, {
+            x: 19+Math.random()*10,
+            y: 19+Math.random()*10,
+            type: 'coin',
+            item: null,
+            delay: 30000,
+            picked: 0
+        }, {
+            x: Math.random()*10,
+            y: 21+Math.random()*5,
+            type: 'coin',
+            item: null,
+            delay: 30000,
+            picked: 0
+        }, {
+            x: Math.random()*12,
+            y: 35+Math.random()*12,
+            type: 'coin',
+            item: null,
+            delay: 30000,
+            picked: 0
+        }, {
+            x: 21+Math.random()*5,
+            y: 37+Math.random()*10,
+            type: 'coin',
+            item: null,
+            delay: 30000,
+            picked: 0
+        }, {
+            x: 35+Math.random()*12,
+            y: 35+Math.random()*12,
+            type: 'coin',
+            item: null,
             delay: 30000,
             picked: 0
         }
@@ -236,6 +313,7 @@ Room.prototype.join = function(client) {
     // targeting
     client.on('target', function(angle) {
         if (angle && typeof(angle) == 'number')
+            console.log(angle)
             tank.angle = angle;
     });
 
@@ -243,10 +321,17 @@ Room.prototype.join = function(client) {
     client.on('shoot', function(state) {
         tank.shooting = state;
     });
+    // client.on('target', function(state) {
+    //      console.log(state)
+    //     tank.angle = state;
+    // });
 
     client.on('user.name', function(text) {
+        client.userScript=userScript;
+        client.userScript=text;
         if (/^([a-z0-9\-_]){4,8}$/i.test(text)) {
             client.name = text;
+
 
             room.publish('user.name', {
                 id: client.id,
@@ -258,7 +343,7 @@ Room.prototype.join = function(client) {
     // user.add
     this.publish('user.add', {
         id: client.id,
-        name: 'guest'
+        name: 'guest2'
     });
 
     // user.sync
@@ -266,8 +351,10 @@ Room.prototype.join = function(client) {
     for(var i = 0; i < this.clients.length; i++) {
         users.push({
             id: this.clients[i].id,
-            name: this.clients[i].name || 'guest'
-        });
+            name: this.clients[i].name || 'guest2'
+
+        })
+        console.log(this.clients[i].name)
     }
     client.send('user.sync', users);
 

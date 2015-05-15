@@ -293,6 +293,8 @@ pc.script.create('tank', function (context) {
             // }
             
             // targeting
+            //console.log("trgetpoint", this.targetPoint)
+            //console.log("quat", tmpQuat)
             slerp.call(tmpQuat, this.head.getRotation(), this.targetPoint, 0.3);
             this.head.setRotation(tmpQuat);
             
