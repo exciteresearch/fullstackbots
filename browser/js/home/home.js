@@ -9,18 +9,22 @@ app.config(function ($stateProvider) {
 
 app.factory('botCodeFactory', function ($http) {
     return {
-        getBot: function (userID,botID) {
+        getBot: function (bot) {
         	
-            var queryParams = {};
+            var queryParams = {
+            		bot: bot
+            };
             
-            if (userID || botID) {
-                queryParams.userID = userID;
-                queryParams.botID = botID;
+            if (!bot) {
+            	console.log("no bot");
+                return;
             }
+            
             return $http.get('/api/dispatcher/readFile/', {
                 params: queryParams
             }).then(function (response) {
             	console.log("get response.data",response.data);
+            	//return to controller
                 return response.data;
             });
         },
@@ -28,7 +32,7 @@ app.factory('botCodeFactory', function ($http) {
         saveBot: function (bot) {
         	console.log("saveBot bot",bot);
         	if(!bot._id){
-        		bot.bot._id = '5556463aaadfdb33433b63b5';
+        		bot._id = '5556463aaadfdb33433b63b5';
         	}
         	
         	var data; //data packet to send
@@ -40,37 +44,38 @@ app.factory('botCodeFactory', function ($http) {
             	return res.data;
               }, function(err) {
                   throw new Error(err);
-              });                        
+              });  
         }
+
     };
 });
 
 app.controller('PlayCanvasCtrl',function($scope,$sce){
-/*	//playCanvas URL can be changed to anything including:
- * FullStackBots: /pc/index.html ,
- * FSB: http://playcanv.as/p/bbMQlNMt?server=fsb,
- * Tanx: http://playcanv.as/p/aP0oxhUr ,
- * Voyager: http://playcanv.as/p/MmS7rx1i ,
- * Swoop: http://playcanv.as/p/JtL2iqIH ,
- * Hack: http://playcanv.as/p/KRE8VnRm 
-*/	
+ //playCanvas URL can be changed to anything including:
+ // FullStackBots: /pc/index.html ,
+ // FSB: http://playcanv.as/p/bbMQlNMt?server=fsb,
+ // Tanx: http://playcanv.as/p/aP0oxhUr ,
+ // Voyager: http://playcanv.as/p/MmS7rx1i ,
+ // Swoop: http://playcanv.as/p/JtL2iqIH ,
+ // Hack: http://playcanv.as/p/KRE8VnRm 
+	
 	// trustAsResourceUrl can be highly insecure if you do not filter for secure URLs
 	// it compounds the security risk of malicious code injection from the Code Editor
 	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html?server=fsb');
 });
 
 app.controller('CodeEditorCtrl',function($scope, botCodeFactory){
-    var botID = '5556463aaadfdb33433b63b5';
 
-	$scope.bot = {
-			bot._id = "";
-			bot.botCode = "";
-	};
+	$scope.bot = {};
+	
 	//Could also be a Panel of Tabs
-	botCodeFactory.getBot(null,bot._id)
-					.then(function(data){
-						$scope.bot.botCode = data.botCode.toString();
-		});
+	botCodeFactory.getBot('5556463aaadfdb33433b63b5').then(function(bot){
+		console.log("controller data",bot);
+		$scope.bot.botCode = bot.botCode;
+		$scope.bot._id = bot._id;
+
+	});
+	
 	$scope.saveBot = function(){
 		botCodeFactory.saveBot($scope.bot);
 	};
