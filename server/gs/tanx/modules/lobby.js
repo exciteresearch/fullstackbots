@@ -118,10 +118,10 @@ Lobby.prototype.update = function() {
                 }
                 //ian edit: detects when stuck and shoots
                 var saver=function(position){
-                    positionTwo=position[0].toString()
-                    positionThree=position[1].toString();
-                    tank.oldPos.push(positionTwo)
-                    tank.oldPos.push(positionThree)
+                var positionTwo=position[0].toString();
+                var positionThree=position[1].toString();
+                tank.oldPos.push(positionTwo)
+                tank.oldPos.push(positionThree)
                     // if(position[0].toString()===tank.oldPos[0]&&position[1].toString()===tank.oldPos[1]){
                     //     if (! tank.dead  && ! tank.reloading) {
                     //         var bullet = tank.shoot();
