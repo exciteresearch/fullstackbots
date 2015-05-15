@@ -32,11 +32,10 @@ router.get('/readFile', function (req, res, next) {
 
 router.post('/saveFile', function(req, res, next) {
 	console.log("/saveFile req.body",req.body);
-	var bot = req.body;
-	
-	Bot.findById({ _id: bot._id }, function(err,found) {
+	Bot.findById(req.body._id, function(err,found) {
+		console.log("/saveFile found",found);
 			    if (err) return next(err);
-			    found.botCode = bot.botCode.toString();
+			    found.botCode = req.body.botCode;
 			    found.save(function (err,saved) {
 			        if (err) return next(err);
 			        res.send(saved);
