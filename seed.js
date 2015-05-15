@@ -30,19 +30,52 @@ var getCurrentUserData = function () {
 };
 
 var seedUsers = function () {
-
+	
     var users = [
         {
-            email: 'testing@fsa.com',
-            password: 'password'
+            email: 'gwb@gmail.com',
+            password: 'pass',
+            username: "GWB"
         },
         {
             email: 'obama@gmail.com',
-            password: 'potus'
+            password: 'pass',
+            username: "POTUS"
         }
     ];
 
     return q.invoke(User, 'create', users);
+
+};
+
+var seedBots = function () {
+
+var userIDs= [];
+return User.findOne({email:'gwb@gmail.com'}).exec()
+.then(function(user) {
+    userIDs.push(user._id);
+})
+.then(function() {
+    return User.findOne({email:'obama@gmail.com'}).exec()
+})
+.then(function(user) {
+    userIDs.push(user._id);
+})
+.then(function(userIDs){
+    var bots = [
+        {
+        	codedBy: userIDs[0],
+        	botname: "SFAQL",
+        	botCode: "this.goTowards( this.tankPosition, [24, 24] );"
+        },
+        {
+        	codedBy: userIDs[1],
+        	botname: "potusBot",
+        	botCode: "this.goTowards( this.tankPosition, [24, 24] );"
+        }
+    ];
+    return q.invoke(Product, 'create', bots);
+    });
 
 };
 
@@ -54,6 +87,9 @@ connectToDb.then(function () {
             console.log(chalk.magenta('Seems to already be user data, exiting!'));
             process.kill(0);
         }
+    }).then(function () {
+    	console.log(chalk.green('Seeding bots!'));
+        return seedBots();
     }).then(function () {
         console.log(chalk.green('Seed successful!'));
         process.kill(0);
