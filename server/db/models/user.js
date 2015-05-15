@@ -35,7 +35,7 @@ var schema = new mongoose.Schema({
     	id: String
     },
     points: {
-    	type: Number
+    	type: Number, default: 0
     },
 	bots: [{
 		type: mongoose.Schema.Types.ObjectId, ref: 'Bot'
@@ -45,7 +45,7 @@ var schema = new mongoose.Schema({
 		default: Date.now
 	},
 	resetHash: {
-		type: String, expires: 4320 // 60*24*3days
+		type: String, expires: 4320 // 3days*60secs*24hrs
 	},
 //	restExpires: {
 //		type: Date,
@@ -53,7 +53,8 @@ var schema = new mongoose.Schema({
 //	},
     rank: {
     	type: String,
-    	enum: ["Expert","Advanced","Intermediate","Beginner"]
+    	enum: ["Expert","Advanced","Intermediate","Beginner"],
+    	default: "Beginner"
     },
     school: {
     	type: String
