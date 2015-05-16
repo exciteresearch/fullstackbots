@@ -100,7 +100,7 @@ pc.script.create('TankAI', function (context) {
         this.pastLocations=[]
         
     };
-
+    var layingMines=false;
     TankAI.prototype = {
         // Called once after all resources are loaded and before the first update
         initialize: function () {
@@ -118,22 +118,34 @@ pc.script.create('TankAI', function (context) {
             
             this.tankPosition = tankPosition;
             if(newPath===true){
-               
                     newPath=false;
                     easystar.findPath(Math.round(tankPosition[0]), Math.round(tankPosition[2]), destinationX, destinationY, function( path ) { //destinationX, destinationY
                         if (path === null) {
                             console.log("Path was not found.");
                         } else {
                             myPath=path;
-                             console.log(currentPriority);
                         }
                     });
                     easystar.calculate();
                     destination=true;
                 }
                 
+                
+                
+                if(this.tankPosition[0]>18 && this.tankPosition[0]<28 && this.tankPosition[2]>18 && this.tankPosition[2]<28){
+                    _self.socket.send('layMine', true);
+                    layingMines=true;
+                }else if( layingMines===true){
+                    _self.socket.send('layMine', false);
+                    layingMines=false;
+                }
+                
+                
                 this.pastLocations.push(tankPosition[0])
                 this.pastLocations.push(tankPosition[2])
+                
+                
+                
                 if(this.pastLocations.length>40){
                     this.pastLocations.shift()
                     this.pastLocations.shift()
@@ -219,6 +231,21 @@ pc.script.create('TankAI', function (context) {
                 
 
                 this.entity.script.tanks.own.targeting(this.angle);
+                 //var angle = Math.floor(Math.atan2(pos.x - this.movePoint.x, pos.z - this.movePoint.z) / (Math.PI / 180));
+                
+                // var tmpQuat = new pc.Quat();
+                // tmpQuat = tmpQuat.setFromEulerAngles(0, this.angle + 180, 0);
+                // slerp.call(tmpQuat, this.entity.script.tanks.own._children[4].getRotation(), tmpQuat, 0.3);
+                // //slerp.call(tmpQuat, this.entity.script.tanks.own._children[4], new pc.Quat(0,30,0), 0.3);
+                // this.entity.script.tanks.own._children[4].setRotation(tmpQuat);
+
+                
+
+
+
+                //this.entity.script.tanks.own._children[4].rotate(0,this.angle,0);
+
+                //console.log(this.entity.script.tanks.own._children[4].getLocalEulerAngles().data);
                 if(this.angle<=0){
                     var neg=(this.angle+180)
                 }else{
