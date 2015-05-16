@@ -5,7 +5,7 @@ var Block = require('./block');
 var Tank = require('./tank');
 var Bullet = require('./bullet');
 var uuid = require('node-uuid');
-var userScript="original"
+var userScript="original";
 
 
 function Room() {
