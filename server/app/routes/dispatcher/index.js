@@ -17,12 +17,11 @@ module.exports = router;
 //	edit loads botCode into codeEditor <= router.get('/readFile'
 	
 router.get('/readFile', function (req, res, next) {
-	console.log("/readFile req.query",req.query);
 	var botID = req.query.bot;
 	Bot.findOne(botID, function(err, found){
         if (err) return next(err);
-        console.log("Bot found",found);
 		res.send(found);
+		next();
 	});
 });
 
@@ -31,38 +30,16 @@ router.get('/readFile', function (req, res, next) {
 //if not save then cannot modal to alert changes not saved before any action
 
 router.post('/saveFile', function(req, res, next) {
-	console.log("/saveFile req.body",req.body);
-	Bot.findById(req.body._id, function(err,found) {
-		console.log("/saveFile found",found);
-			    if (err) return next(err);
-			    found.botCode = req.body.botCode;
-			    found.save(function (err,saved) {
-			        if (err) return next(err);
-			        res.send(saved);
-			      });
-			    next();
+	Bot.findById(req.body.bot._id, function(err,found) {
+		if (err) return next(err);
+		found.botCode = req.body.bot.botCode;
+		found.save(function (err,saved) {
+		    if (err) return next(err);
+		    res.send(saved);
+		    next();
+		});
 	});
-	
-//	Bot.findAndModify(
-//			//query
-//			{ "_id": bot._id },
-//			//update
-//			{ 
-//				"$set": { 
-//				"botCode": bot.botCode
-//		  		}
-//			},
-//			//params return new or original, upsert etc.
-//			{ "new": true },
-//			function(err,updated) {
-//			    if (err) next(err);
-//			    console.log( "updated bot:",updated );
-//			    res.send(updated);
-//	});
-
 });
-
-
 
 //TODO launch simulation
 
