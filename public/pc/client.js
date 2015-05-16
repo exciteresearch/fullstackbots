@@ -336,13 +336,13 @@ pc.script.create('client', function (context) {
             // }
         },
         
-        onMouseDown: function() {
-            this.shoot(true);
+       onMouseDown: function() {
+            this.layMine(true);
             shootNow=true;
         },
         
         onMouseUp: function() {
-            this.shoot(false);
+            this.layMine(false);
             shootNow=false;
         },
         
@@ -354,6 +354,16 @@ pc.script.create('client', function (context) {
                 this.shootingState = state;
                 // console.log(this.tank)
                 this.socket.send('shoot', this.shootingState);
+            }
+        },
+        layMine: function(state) {
+            if (! this.connected)
+                return;
+                
+            if (this.shootingState !== state) {
+                this.shootingState = state;
+                // console.log(this.tank)
+                this.socket.send('layMine', this.shootingState);
             }
         }
     };
