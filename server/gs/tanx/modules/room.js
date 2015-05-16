@@ -313,7 +313,7 @@ Room.prototype.join = function(client) {
     // targeting
     client.on('target', function(angle) {
         if (angle && typeof(angle) == 'number')
-            console.log(angle)
+//            console.log(angle);
             tank.angle = angle;
     });
 

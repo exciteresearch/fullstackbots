@@ -23,17 +23,15 @@ app.factory('botCodeFactory', function ($http) {
             return $http.get('/api/dispatcher/readFile/', {
                 params: queryParams
             }).then(function (response) {
-            	console.log("get response.data",response.data);
             	//return to controller
                 return response.data;
             });
         },
 
         saveBot: function (bot) {
-        	console.log("saveBot bot",bot);
-        	if(!bot._id){
-        		bot._id = '5556463aaadfdb33433b63b5';
-        	}
+//        	if(!bot._id){
+//        		bot._id = '5556463aaadfdb33433b63b5';
+//        	}
         	
         	var data; //data packet to send
         	data = { bot: bot };
