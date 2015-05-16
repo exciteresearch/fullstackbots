@@ -313,13 +313,17 @@ Room.prototype.join = function(client) {
     // targeting
     client.on('target', function(angle) {
         if (angle && typeof(angle) == 'number')
-//            console.log(angle);
             tank.angle = angle;
     });
 
     // shooting
     client.on('shoot', function(state) {
         tank.shooting = state;
+    });
+
+        // laying mines
+    client.on('layMine', function(state) {
+        tank.layingMine = state;
     });
     // client.on('target', function(state) {
     //      console.log(state)

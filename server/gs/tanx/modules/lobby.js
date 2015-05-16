@@ -53,6 +53,27 @@ Lobby.prototype.update = function() {
     // game state to send
     var state = { };
 
+    var o=0
+        // respawn pickables
+    for(o; o < this.pickables.length; o++) {
+        var pickable = this.pickables[o];
+        if (! pickable.item && (now - pickable.picked) > pickable.delay) {
+            pickable.item = new Pickable({
+                type: pickable.type,
+                x: pickable.x,
+                y: pickable.y
+            });
+            pickable.item.ind = o;
+            world.add('pickable', pickable.item);
+
+            state.pickable = state.pickable || [ ];
+            state.pickable.push(pickable.item.data);
+        }
+    }
+
+
+
+
     // for each tank
     world.forEach('tank', function(tank) {
         tank.update();
@@ -66,20 +87,6 @@ Lobby.prototype.update = function() {
                 // check for collision
                 var dist = tank.pos.dist(tankOther.pos);
 
-                //ian edit: Fire when in sight range: 
-
-                if (dist < tank.sightRadius){
-                    // if (! tank.dead && ! tank.reloading) {
-                    //     // new bullet
-                    //     var bullet = tank.shoot();
-                    //     world.add('bullet', bullet);
-
-                    //     // publish
-                    //     state.bullets = state.bullets || [ ];
-                    //     state.bullets.push(bullet.data);
-                    // }
-
-                }
 
                 if (dist < tank.radius + tankOther.radius) {
                     // collided
@@ -97,62 +104,6 @@ Lobby.prototype.update = function() {
             // tank-block collision
             world.forEachAround('block', tank, function(block) {
 
-                //ian edit: trying to get tanks to see walls
-
-                var distance=tank.pos.dist(block.pos);
-                if (distance<tank.sightRadius){
-                    
-                    // if (! tank.dead  && ! tank.reloading) {
-                    //     var bullet = tank.shoot();
-                    //     world.add('bullet', bullet);
-
-                    //     // publish
-                    //     state.bullets = state.bullets || [ ];
-                    //     state.bullets.push(bullet.data);
-                    // }
-                }
-
-                if (tank.oldPos.length > tank.brakePatience*2){
-                  tank.oldPos.shift()  
-                  tank.oldPos.shift() 
-                }
-                //ian edit: detects when stuck and shoots
-                var saver=function(position){
-                var positionTwo=position[0].toString();
-                var positionThree=position[1].toString();
-                tank.oldPos.push(positionTwo)
-                tank.oldPos.push(positionThree)
-                    // if(position[0].toString()===tank.oldPos[0]&&position[1].toString()===tank.oldPos[1]){
-                    //     if (! tank.dead  && ! tank.reloading) {
-                    //         var bullet = tank.shoot();
-                    //         world.add('bullet', bullet);
-
-                    //         // publish
-                    //         state.bullets = state.bullets || [ ];
-                    //         state.bullets.push(bullet.data);
-                    //     }
-                    //     tank.braked=true;
-                    //     console.log(world);
-                    // }else{tank.braked=false}
-                    
-                    
-                }
-                saver(tank.pos);
-
-                //Ian Edit: wall collision:
-                
-                // if (distance<2){
-                //     Vec2.alpha
-                //         .setV(tank.pos)
-                //         .sub(block.pos)
-                //         .norm()
-                //         .mulS(distance - (tank.radius + 1));
-                //         // move apart
-                //         tank.pos.sub(Vec2.alpha);
-                //         block.pos.add(Vec2.alpha);
-                // }
-
-                //Original code:
                 var point = block.collideCircle(tank);
                 if (point)
                     tank.pos.add(point);
@@ -183,8 +134,8 @@ Lobby.prototype.update = function() {
                         // set full shield
                         tank.shield = 10;
                         break;
-                        //ian edit: scoring via coins
-                    case 'mine':
+                        //ian edit: scoring via coins and added mines
+                    case 'coin':
 
                         tank.score++;
                         tank.team.score++;
@@ -194,48 +145,55 @@ Lobby.prototype.update = function() {
                         // total score
                         room.score++;
                         break;
-                    case 'coin':
+                    case 'mine':
                         // damage tank
-                        var damage = 3;
+                        if(pickable.owner===tank.owner.id){
 
-                        tank.tHit = now;
+                            tank.mines++
+                        }else{
+                            var damage = 3;
 
-                        // if has shield
-                        if (tank.shield) {
-                            if (tank.shield > damage) {
-                                // enough to sustain whole damage
-                                tank.shield -= damage;
-                                damage = 0;
-                            } else {
-                                // shielded only some damage
-                                damage -= tank.sheild;
-                                tank.sheild = 0;
+                            tank.tHit = now;
+
+                            // if has shield
+                            if (tank.shield) {
+                                if (tank.shield > damage) {
+                                    // enough to sustain whole damage
+                                    tank.shield -= damage;
+                                    damage = 0;
+                                } else {
+                                    // shielded only some damage
+                                    damage -= tank.sheild;
+                                    tank.sheild = 0;
+                                }
                             }
-                        }
 
-                        if (damage) {
-                            tank.hp -= damage;
+                            if (damage) {
+                                tank.hp -= damage;
 
-                            // killed, give point
-                            if (tank.hp <= 0) {
-                                // add score
-                                bullet.owner.score+=3;
-                                bullet.owner.team.score+=3;
-                                // winner?
-                                if (bullet.owner.team.score === 32)
-                                    winner = bullet.owner.team;
-                                // total score
-                                room.score++;
-                                // bullet.owner.owner.send('point', 1);
-                                // remember killer
-                                tank.killer = bullet.owner.id;
-                                // respawn
-                                tank.respawn();
+                                // killed, give point
+                                if (tank.hp <= 0) {
+                                    // add score
+
+                                    pickable.owner.score+=3;
+                                    pickable.owner.team.score+=3;
+                                    // winner?
+                                    if (pickable.owner.team.score === 32)
+                                        winner = pickable.owner.team;
+                                    // total score
+                                    room.score++;
+                                    // bullet.owner.owner.send('point', 1);
+                                    // remember killer
+                                    tank.killer = pickable.owner.id;
+                                    // respawn
+                                    tank.respawn();
+                                }
                             }
+                            
+                            break;
                         }
+                    }
                         
-                        break;
-                }
 
                 world.remove('pickable', pickable);
 
@@ -253,6 +211,32 @@ Lobby.prototype.update = function() {
 
         // update in world
         tank.node.root.updateItem(tank);
+        // ian edit: lay mine
+        if (! tank.dead && tank.layingMine && ! tank.reloadingMines && tank.mines>0) {
+            // new mine
+            var now = Date.now();
+            tank.tHit = now;
+            tank.reloadingMines = true;
+            tank.lastMine = now;
+            tank.mines--;
+            var pickable = new Pickable({
+                owner: tank.owner.id,
+                type: 'mine',
+                x: tank.pos[0]-tank.movementDirection[0]*2,
+                y: tank.pos[1]-tank.movementDirection[1]*2,
+                picked:0
+            });
+
+            pickable.ind=o;
+
+            world.add('pickable', pickable);
+            state.pickable = state.pickable || [ ];
+            state.pickable.push(pickable.data);
+            self.pickables.push(pickable);
+            o++;     
+
+        }
+
 
         // shoot
         if (! tank.dead && tank.shooting && ! tank.reloading) {
@@ -264,25 +248,13 @@ Lobby.prototype.update = function() {
             state.bullets = state.bullets || [ ];
             state.bullets.push(bullet.data);
         }
+
     });
 
 
-    // respawn pickables
-    for(var i = 0; i < this.pickables.length; i++) {
-        var pickable = this.pickables[i];
-        if (! pickable.item && (now - pickable.picked) > pickable.delay) {
-            pickable.item = new Pickable({
-                type: pickable.type,
-                x: pickable.x,
-                y: pickable.y
-            });
-            pickable.item.ind = i;
-            world.add('pickable', pickable.item);
+   
 
-            state.pickable = state.pickable || [ ];
-            state.pickable.push(pickable.item.data);
-        }
-    }
+
 
 
     // for each bullet

@@ -1,6 +1,11 @@
 * {
+
   box-sizing: border-box;
+  	body{
+  		background: black;
+  	}
 }
+
 
 @mixin clearfix {
   &:after {
@@ -15,3 +20,4 @@
 @import 'about/main';
 @import 'tutorial/main';
 @import 'login/main';
+@import 'navbar/main';
