@@ -1,6 +1,7 @@
 var Vec2 = require('./vec2');
 var color = require('./color');
 var Bullet = require('./bullet');
+var Mine = require('./mine');
 
 var tankIds = 0;
 
@@ -14,6 +15,7 @@ function Tank(client) {
     this.owner = client;
     client.tank = this;
     // this.hue = Math.floor(Math.random() * 360);
+
     this.radius = .75;
     this.sightRadius=5; //ian edit: gave tanks a "sight" range of "5"
     this.oldPos=[]; //ian edit: stopped detection
@@ -37,10 +39,14 @@ function Tank(client) {
     this.hp = 10.0;
     this.shield = 0;
     this.bullets = 0;
+    this.mines=3;
 
     this.shooting = false;
+    this.layingMine=false;
     this.lastShot = 0;
     this.reloading = false;
+    this.reloadingMines= false;
+    this.lastMine=0;
 
     this.killer = null;
     this.died = Date.now();
@@ -117,6 +123,15 @@ Tank.prototype.shoot = function() {
     return bullet;
 };
 
+// Tank.prototype.layMine = function() {
+
+//     if (this.deleted || this.dead) return;
+
+//     var now = Date.now();
+//     this.tHit = now;
+//     this.reloadingMines = true;
+//     this.lastMine = now;
+// };
 
 Tank.prototype.respawn = function() {
     if (this.deleted || this.dead) return;
@@ -138,8 +153,12 @@ Tank.prototype.update = function() {
             this.pos.add(Vec2.alpha.setV(this.movementDirection).norm().mulS(this.speed));
 
         // reloading
-        if (this.reloading && now - this.lastShot > 100)
+        if (this.reloading && now - this.lastShot > 100){
             this.reloading = false;
+        }
+        if (this.reloadingMines && now - this.lastMine > 5000){
+            this.reloadingMines = false;
+        }
 
         // auto recover
         if (this.hp < 10 && now - this.tHit > 10000 && now - this.tRecover > 2000) {

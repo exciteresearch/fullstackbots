@@ -7,6 +7,7 @@ var pickableIds = 0;
 function Pickable(args) {
     this.deleted = false;
     this.id = ++pickableIds;
+    this.owner= args.owner;
     this.radius = .3;
     this.pos = Vec2.new(args.x, args.y);
     this.type = args.type;
@@ -33,6 +34,7 @@ Object.defineProperty(
         get: function() {
             return {
                 id: this.id,
+                owner: this.owner,
                 t: this.type,
                 r: parseFloat(this.radius.toFixed(2), 10),
                 x: parseFloat(this.pos[0].toFixed(2), 10),
