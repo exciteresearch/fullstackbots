@@ -17,7 +17,7 @@ function Room() {
     this.world = new World({
         width: 48,  // map width
         height: 48, //map height
-        clusterSize: 4,
+        clusterSize: 4, //clusterSize ? is it number of teams ? not tanks ?
         indexes: [ 'tank', 'bullet', 'pickable', 'block' ]
     });
 
@@ -232,6 +232,7 @@ function Room() {
     this.createBlocks(this.level);
 
     this.loop = new Loop({
+    	//ups is update? 20 milliseconds? this === tick
         ups: 20
     });
 
@@ -256,11 +257,12 @@ Room.prototype.createBlocks = function(data) {
 
 
 Room.prototype.pickWeakestTeam = function() {
+	// DJ may need to update to make selectable teams also at present only weakest by number of tanks
     var list = this.teams.filter(function(item) {
         return item.tanks < 4;
     });
 
-    // sort by number of tanks and then score
+    // sort asc by number of tanks and then score - DJ this is where we can "remember" team for schools or selected team battles
     list.sort(function(a, b) {
         var t = a.tanks - b.tanks;
         if (t === 0) {
@@ -281,6 +283,8 @@ Room.prototype.pickWeakestTeam = function() {
 
 
 Room.prototype.join = function(client) {
+	
+	// DJ and Miguel this is where we can add a new tank if we want more than one tank per client
     if (this.clients.indexOf(client) !== -1)
         return;
 
@@ -295,7 +299,7 @@ Room.prototype.join = function(client) {
     var tank = new Tank(client);
     this.world.add('tank', tank);
 
-    tank.team = this.pickWeakestTeam();
+    tank.team = this.pickWeakestTeam(); //DJ first time random then by weaskest team
     tank.team.tanks++;
 
     // movement
@@ -321,7 +325,7 @@ Room.prototype.join = function(client) {
         tank.shooting = state;
     });
 
-        // laying mines
+        // Ian laying mines
     client.on('layMine', function(state) {
         tank.layingMine = state;
     });
@@ -345,12 +349,14 @@ Room.prototype.join = function(client) {
     });
 
     // user.add
+    // DJ and Miguel look into this it might be helpful for creating an event/battle
     this.publish('user.add', {
         id: client.id,
         name: 'guest2'
     });
 
     // user.sync
+    // DJ and Miguel look into this it might be helpful for creating an event/battle
     var users = [ ];
     for(var i = 0; i < this.clients.length; i++) {
         users.push({
@@ -371,6 +377,7 @@ Room.prototype.join = function(client) {
     });
 
     // teams
+    // DJ and Miguel look into this it might be helpful for creating an event/battle
     var teams = [ ];
     for(var i = 0; i < 4; i++)
         teams[i] = this.teams[i].score;
@@ -382,15 +389,18 @@ Room.prototype.join = function(client) {
     });
 
     // send data
+    // DJ and Miguel look into this it might be helpful for creating an event/battle
     client.send('update', {
         teams: teams,
         pickable: pickables
     });
 
     // publish new tank
+    // DJ and Miguel look into this it might be helpful for creating an event/battle
     this.publish('tank.new', tank.data);
 
     // event
+    // DJ Miguel Ian what does this do?
     this.emit('join');
 };
 

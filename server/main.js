@@ -30,6 +30,7 @@ startDb.then(createApplication).then(startServer).catch(function (err) {
     process.kill(1);
 });
 
+// DJ and Migeul, fully integrate the fsb and gs "fsi-gameserverIntegration-#49"
 // Sloppy integration of GameServer (successful) [does not account for use of games other than tanx]
 // refactoring and mergin gs GamesServer into FSB socket/lobby code below
 // npm install socket-server --save (successful) need test
@@ -68,11 +69,11 @@ var lobby = new Lobby();
 
 // socket connection
 ws.on('connection', function(client) {
-    // console.log('connected', client.id);
-
+	
     client.send('init', {
         id: client.id
     });
 
     lobby.join(client);
+    
 });
