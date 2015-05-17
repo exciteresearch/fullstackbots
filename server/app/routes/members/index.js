@@ -1,5 +1,6 @@
 'use strict';
 var router = require('express').Router();
+var Events = require('../../../db/models/eventsMiguel.js');
 module.exports = router;
 var _ = require('lodash');
 
@@ -29,4 +30,63 @@ router.get('/secret-stash', ensureAuthenticated, function (req, res) {
 
     res.send(_.shuffle(theStash));
 
+});
+
+//GET pending events
+router.get('/pending', ensureAuthenticated, function (req, res, next) {
+  
+  var obj = {};
+  obj.slots = {$gt: 0};
+ 
+  Events.find(obj, function(err, events) {
+    if (err) return next(err);
+    res.send(events);
+  });
+});
+
+//GET live events
+router.get('/live', ensureAuthenticated, function (req, res, next) {
+  
+  var obj = {};
+  obj.slots = {$eq: 0};
+  obj.dateOfEnding = null;
+ 
+  Events.find(obj, function(err, events) {
+    if (err) return next(err);
+    res.send(events);
+  });
+});
+
+//Create an Event
+router.post('/', ensureAuthenticated, function (req, res, next) {
+  
+  Events.create(req.body, function (err, event) {
+    if (err) return next(err);
+    res.send(event);
+  });
+});
+
+//Join to an Event
+router.put('/:id', ensureAuthenticated, function (req, res, next) {
+
+    var event_to_join = req.body;
+    event_to_join.slots = event_to_join.slots - 1;
+    //event_to_join.usersParticipants.push (user._id);
+
+  Events.findByIdAndUpdate(req.params.id, event_to_join, function(err, event){
+     if (err) return next(err);
+
+     //if open slots are 0 we should launch the game
+
+     res.send(event);
+   });
+});
+
+
+//Delete event
+router.delete('/:id', ensureAuthenticated, function (req, res, next) {
+  Events.findByIdAndRemove(req.params.id, function (err, event) {
+    if (err) {  console.log(err); return next(err); }
+    res.send(event);
+  });
 });
