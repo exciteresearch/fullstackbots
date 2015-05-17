@@ -54,7 +54,7 @@ gameServer.listen(port, host, function () {
 
 // socket
 //var WebSocketServer = require('./modules/socket-server');
-var WebSocketServer = require('./gs/tanx/modules/socket-server');
+var WebSocketServer = require('./gs/tanx/socket-server');
 var ws = new WebSocketServer({
     http: gameServer,
     prefix: '/socket'
@@ -63,7 +63,7 @@ var ws = new WebSocketServer({
 
 // lobby
 //var Lobby = require('./modules/lobby');
-var Lobby = require('./gs/tanx/modules/lobby');
+var Lobby = require('./gs/tanx/lobby');
 var lobby = new Lobby();
 
 
