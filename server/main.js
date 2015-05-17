@@ -68,15 +68,11 @@ var lobby = new Lobby();
 
 // socket connection
 ws.on('connection', function(client) {
-    
-	//added lines
-    client.tanksArr= [];
-    console.log('connected client', client, "client.id", client.id);
-    //end added
-
+	
     client.send('init', {
         id: client.id
     });
 
     lobby.join(client);
+    
 });
