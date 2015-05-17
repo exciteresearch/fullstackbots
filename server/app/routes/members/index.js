@@ -33,7 +33,7 @@ router.get('/secret-stash', ensureAuthenticated, function (req, res) {
 });
 
 //GET pending events
-router.get('/pending', ensureAuthenticated, function (req, res, next) {
+router.get('/pending', function (req, res, next) {
   
   var obj = {};
   obj.slots = {$gt: 0};
@@ -58,20 +58,26 @@ router.get('/live', ensureAuthenticated, function (req, res, next) {
 });
 
 //Create an Event
-router.post('/', ensureAuthenticated, function (req, res, next) {
+router.post('/', function (req, res, next) {
   
-  Events.create(req.body, function (err, event) {
+console.log("Hi"); 
+var event = req.body;
+event.createdBy("5558f55d28db30a4394d4234");
+
+console.log(event);
+
+  Events.create(event, function (err, event) {
     if (err) return next(err);
     res.send(event);
   });
 });
 
 //Join to an Event
-router.put('/:id', ensureAuthenticated, function (req, res, next) {
+router.put('/:id', function (req, res, next) {
 
     var event_to_join = req.body;
     event_to_join.slots = event_to_join.slots - 1;
-    //event_to_join.usersParticipants.push (user._id);
+    //event_to_join.usersParticipants.push (req.user.id);
 
   Events.findByIdAndUpdate(req.params.id, event_to_join, function(err, event){
      if (err) return next(err);
@@ -84,7 +90,7 @@ router.put('/:id', ensureAuthenticated, function (req, res, next) {
 
 
 //Delete event
-router.delete('/:id', ensureAuthenticated, function (req, res, next) {
+router.delete('/:id', function (req, res, next) {
   Events.findByIdAndRemove(req.params.id, function (err, event) {
     if (err) {  console.log(err); return next(err); }
     res.send(event);

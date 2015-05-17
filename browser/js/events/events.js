@@ -38,15 +38,16 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
     $scope.challenges = [];
 
 	
-	//SCOPE METHODS
-    $scope.createNewEvent() {
+	// //SCOPE METHODS
+    $scope.createNewEvent = function() {
+
         var newEvent = { 
-            preferences: data.preferences,
-            slots: data.slots
+            preferences: $scope.data.preferences,
+            slots: $scope.data.slots
         }
 
         EventsFactory.createEvent( newEvent )
-        .then( function (event)
+        .then( function ( event )
             {
                 console.log("EVENT ADDED!");
                 $scope.pendingEvents.push(event);
@@ -56,7 +57,7 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
             });
     }
 
-    $scope.deleteEvent( index ) {
+    $scope.deleteEvent = function( index ) {
         EventsFactory.deleteEvent( $scope.pendingEvents[index] )
         .then( function (event)
             {
@@ -64,7 +65,7 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
             });
     }
 
-    $scope.joinEvent( index ) {
+    $scope.joinEvent = function( index ) {
 
         EventsFactory.joinEvent( $scope.pendingEvents[index] )
         .then( function (event)
