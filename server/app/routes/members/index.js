@@ -1,6 +1,7 @@
 'use strict';
 var router = require('express').Router();
-var Events = require('../../../db/models/eventsMiguel.js');
+var mongoose = require('mongoose');
+var Event = require('mongoose').model("Event");
 module.exports = router;
 var _ = require('lodash');
 
@@ -38,7 +39,7 @@ router.get('/pending', function (req, res, next) {
   var obj = {};
   obj.slots = {$gt: 0};
  
-  Events.find(obj, function(err, events) {
+  Event.find(obj, function(err, events) {
     if (err) return next(err);
     res.send(events);
   });
@@ -51,7 +52,7 @@ router.get('/live', ensureAuthenticated, function (req, res, next) {
   obj.slots = {$eq: 0};
   obj.dateOfEnding = null;
  
-  Events.find(obj, function(err, events) {
+  Event.find(obj, function(err, events) {
     if (err) return next(err);
     res.send(events);
   });
@@ -62,11 +63,11 @@ router.post('/', function (req, res, next) {
   
 console.log("Hi"); 
 var event = req.body;
-event.createdBy("5558f55d28db30a4394d4234");
+event.createdBy = mongoose.Types.ObjectId("5558f55d28db30a4394d4234");
 
 console.log(event);
 
-  Events.create(event, function (err, event) {
+  Event.create(event, function (err, event) {
     if (err) return next(err);
     res.send(event);
   });
@@ -79,7 +80,7 @@ router.put('/:id', function (req, res, next) {
     event_to_join.slots = event_to_join.slots - 1;
     //event_to_join.usersParticipants.push (req.user.id);
 
-  Events.findByIdAndUpdate(req.params.id, event_to_join, function(err, event){
+  Event.findByIdAndUpdate(req.params.id, event_to_join, function(err, event){
      if (err) return next(err);
 
      //if open slots are 0 we should launch the game
@@ -91,7 +92,7 @@ router.put('/:id', function (req, res, next) {
 
 //Delete event
 router.delete('/:id', function (req, res, next) {
-  Events.findByIdAndRemove(req.params.id, function (err, event) {
+  Event.findByIdAndRemove(req.params.id, function (err, event) {
     if (err) {  console.log(err); return next(err); }
     res.send(event);
   });
