@@ -1,3 +1,4 @@
+console.log("getPickables.js");
 var shield=false;
 var itemLoc=[];
 

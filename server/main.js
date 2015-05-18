@@ -38,7 +38,7 @@ startDb.then(createApplication).then(startServer).catch(function (err) {
 // npm install node-uuid --save (successful) need test
 process.on('uncaughtException', function(err) {
     console.log('Caught exception: ' + err);
-    console.log(err.stack);
+    console.log('uncaughtException',err.stack);
 });
 
 //http
@@ -69,11 +69,18 @@ var lobby = new Lobby();
 
 // socket connection
 ws.on('connection', function(client) {
-	
+	console.log("client.id",client.id);
     client.send('init', {
-        id: client.id
+        id: client.id,
+        roomId: 'blahlbahlbah'
     });
-
-    lobby.join(client);
     
+    client.on('eventID', function(data) {
+        if (!! data ) {
+        	console.log('request roomID for eventID',data);
+        	client.send('eventID',data);
+        }
+    });
+    
+    lobby.join(client);
 });

@@ -1,4 +1,6 @@
 pc.script.create('teams', function (context) {
+	console.log('teams.js');
+
     var Teams = function (entity) {
         var css = function() {/*
             .teams {

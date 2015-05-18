@@ -302,6 +302,14 @@ Room.prototype.join = function(client) {
     tank.team = this.pickWeakestTeam(); //DJ first time random then by weaskest team
     tank.team.tanks++;
 
+    // room
+//    client.on('eventID', function(data) {
+//        if (!! data ) {
+//        	console.log('request roomID for eventID',data);
+//        	client.send('eventID',data);
+//        }
+//    });
+    
     // movement
     client.on('move', function(data) {
         if (data &&
@@ -363,8 +371,7 @@ Room.prototype.join = function(client) {
             id: this.clients[i].id,
             name: this.clients[i].name || 'guest2'
 
-        })
-        console.log(this.clients[i].name)
+        });
     }
     client.send('user.sync', users);
 

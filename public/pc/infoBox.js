@@ -1,4 +1,5 @@
 pc.script.create('infoBox', function (context) {
+	console.log("infoBox.js");
     var InfoBox = function (entity) {
         this.entity = entity;
         

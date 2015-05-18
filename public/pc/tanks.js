@@ -1,3 +1,4 @@
+console.log('tanks.js');
 var tankPosition=[0,0,0];
 pc.script.create('tanks', function (context) {
     var Tanks = function (entity) {

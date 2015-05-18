@@ -1,3 +1,4 @@
+console.log("detection.js");
 var shootNow= false;
 
 pc.script.create("trigger", function (app) {

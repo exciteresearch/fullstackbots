@@ -2,13 +2,18 @@ var Vec2 = require('./vec2');
 var Room = require('./room');
 var Pickable = require('./pickable');
 
-
 function Lobby() {
     this.rooms = [ ];
 }
 
-
 Lobby.prototype.join = function(client) {
+	
+//    client.on('eventID', function(data) {
+//        if (!! data ) {
+//        	console.log('request roomID for eventID',data);
+//        	client.send('eventID',data);
+//        }
+//    });
 	
 	//console.log("Lobby.join client",client);
 	/*{ _uuid: '6c839c7d-ca76-452b-a27e-c461e8f5ea80',
@@ -43,7 +48,7 @@ Lobby.prototype.join = function(client) {
     var room = null;
     for(var i = 0; i < this.rooms.length; i++) {
     	// roomsize of 12 max
-        if (this.rooms[i].clients.length < 12) {
+        if (this.rooms[i].clients.length < 2) {
             room = this.rooms[i];
             break;
         }

@@ -1,4 +1,5 @@
 pc.script.create('fullscreen', function (context) {
+	console.log("fullscreen.js");
     // Creates a new Fullscreen instance
     var Fullscreen = function (entity) {
         this.entity = entity;

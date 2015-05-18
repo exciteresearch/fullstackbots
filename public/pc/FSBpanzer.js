@@ -1,4 +1,5 @@
 pc.script.create('FSBpanzer', function (app) {
+	console.log("FBpanzer.js");
     // Creates a new FSBpanzer instance
     var FSBpanzer = function (entity) {
         this.entity = entity;
