@@ -4,6 +4,7 @@ var World = require('./world');
 var Block = require('./block');
 var Tank = require('./tank');
 var Bullet = require('./bullet');
+var Flame = require('./flame');
 var uuid = require('node-uuid');
 var userScript="original"
 
@@ -18,7 +19,7 @@ function Room() {
         width: 48,  // map width
         height: 48, //map height
         clusterSize: 4,
-        indexes: [ 'tank', 'bullet', 'pickable', 'block' ]
+        indexes: [ 'tank', 'bullet', 'pickable', 'block', 'flame' ]
     });
 
     this.score = 0;
@@ -321,6 +322,10 @@ Room.prototype.join = function(client) {
         tank.shooting = state;
     });
 
+    //flaming
+    client.on('flameOn', function(state) {
+        tank.flaming = state;
+    });
         // laying mines
     client.on('layMine', function(state) {
         tank.layingMine = state;

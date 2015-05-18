@@ -1,6 +1,29 @@
 <section id="tutorial">
     <tutorial-section-menu ng-model="currentSection.section" sections="sections"></tutorial-section-menu>
-    <tutorial-section
+    <tutorial-section>
+		<div ng-controller="PlayCanvasCtrl" class="col-lg-6 col-sm-12">
+			<iframe ng-src="{{playCanvasURL}}" style="width:100%;height:500px;"></iframe>
+		</div>
+	    <div class="col-lg-6 col-sm-12">	    
+		    <div ng-controller="CodeEditorCtrl" class="col-lg-6 col-sm-12" style="width:100%;height:280px;border: dashed black 1px;">
+				<h4>Code Editor</h4>
+					<div ng-model="bot.botCode" ui-ace="{
+													useWrapMode : true,
+													showGutter: true,
+													theme:'monokai',
+													mode: 'javascript',
+													showPrintMargins: true,
+													onLoad: aceLoaded,
+													onChange: aceChanged
+													}" style="height:70%; width: 100%; font-family: monospace;">
+					</div>
+                <button ng-click="saveBot()" type="submit" class="btn btn-success">Save</button>
+			</div>
+		    <div class="col-lg-6 col-sm-12" style="width:100%;height:200px;border: dashed black 1px;"><h4>Console</h4></div>
+	<div class="col-lg-6 col-sm-12" style="width:100%;height:20px;">
+		<button>PRACTICE</button><button>COMPETE</button>
+	</div>
+
             id="{{ section }}"
             name="{{ section }}"
             videos="videos[section]"
