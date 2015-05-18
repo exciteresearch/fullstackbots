@@ -18,9 +18,9 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
         slots: 1,
         createEvent: false
     };
-
+    
+    $scope.eventLaunched = false;
     $scope.waiting = false;
-
     if (!$scope.pendingEvents) EventsFactory.getPendingEvents().then(function(events){
         $scope.pendingEvents = events;
     });
@@ -66,12 +66,21 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
     }
 
     $scope.joinEvent = function( index ) {
-
-        EventsFactory.joinEvent( $scope.pendingEvents[index] )
-        .then( function (event)
-            {
-               $scope.waiting = true;
-            });
+        if($scope.eventLaunched) {
+        	console.log("toggle from",$scope.eventLaunched);
+        	$scope.eventLaunched = false;
+        }
+        else {
+        	console.log("toggle from",$scope.eventLaunched);
+        	$scope.eventLaunched = true;        	
+        }
+//        EventsFactory.joinEvent( $scope.pendingEvents[index] )
+//        .then(function (event) {
+//        	$scope.waiting = true;
+//            $scope.eventLaunched = true;
+//        }).catch(function(err){
+//            	console.log(err);
+//        });
     }
 });
 

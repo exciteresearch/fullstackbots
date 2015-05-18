@@ -25,28 +25,32 @@
 	
 	<div class="row">
 		<h2>Pending Events</h2>
-		<table>
+		<table  ng-repeat="event in pendingEvents" ng-controller="EventsController">
 			<tr>
-				<th>Player Name</th><th>Rank</th><th>Specifications</th><th>Empty Slots</th>
+				<th>Player Name</th>
+				<th>Rank</th>
+				<th>Specifications</th>
+				<th>Empty Slots</th>
 				<th></th>
 			</tr>
-			<tr>
-			
-				<div ng-show="true" ng-controller="PlayCanvasCtrl" class="col-lg-12 col-sm-12">
-					<iframe ng-src="{{playCanvasURL}}" style="width:100%;height:500px;"></iframe>
-				</div>				
-			
+			<tr> 
+				<td colspan='5'>
+				
+					<div  ng-if="eventLaunched" ng-controller="PlayCanvasCtrl" class="col-lg-12 col-sm-12"><iframe ng-src="{{playCanvasURL}}" style="width:100%;height:500px;"></iframe>
+					</div>
+				
+				</td>							
 			</tr>
-			<tr ng-repeat="event in pendingEvents" ng-controller="EventsController">
-				<!-- Showing PENDING events -->
-				<!-- <td>{{event.createdBy.name}}</td>
-				<td>{{event.createdBy.rank}}</td> -->
+			<tr>
 				<td>{{event.createdBy}}</td>
 				<td>{{event.preferences}}</td>
 				<td>{{event.slots}}</td>
-				<!-- !event.owner && --><td><a ng-if="!waiting"><button class="btn-success" ng-click="joinEvent($index)">Launch</button></a>
-				<!-- !event.owner && --> <a ng-if="waiting"><button class="btn-default">Waiting</button></a>
-				<!-- ng-if="event.owner" --><a><button class="btn-danger" ng-click="deleteEvent($index)">Remove</button></a></td>
+				<td>
+					<a ng-if="!waiting"><button class="btn-success" ng-click="joinEvent($index)">Launch</button></a>
+					<a ng-if="waiting"><button class="btn-default">Waiting</button></a>
+					<a><button class="btn-danger" ng-click="deleteEvent($index)">Remove</button></a>
+				</td>
+				<td></td>
 			</tr>
 		</table>
 
