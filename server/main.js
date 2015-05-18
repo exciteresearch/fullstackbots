@@ -69,18 +69,23 @@ var lobby = new Lobby();
 
 // socket connection
 ws.on('connection', function(client) {
+	
+	
+	
 	console.log("client.id",client.id);
     client.send('init', {
         id: client.id,
         roomId: 'blahlbahlbah'
     });
     
-    client.on('eventID', function(data) {
+    client.on('eventID', function(data) {    	
         if (!! data ) {
+        	client.eventID = data;
         	console.log('request roomID for eventID',data);
         	client.send('eventID',data);
+        	lobby.join(client);
         }
-    });
+    });    
     
-    lobby.join(client);
+//    lobby.join(client);
 });
