@@ -47,6 +47,7 @@ Lobby.prototype.join = function(client) {
      _events: { close: [Function], error: [Function], data: [Function] } } } */
 	
     var room = null;
+
     
     // assign to room with matching client.eventID or create a room with that eventID
     if(this.rooms[client.eventID]){

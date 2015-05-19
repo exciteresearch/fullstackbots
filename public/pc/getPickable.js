@@ -27,7 +27,6 @@ pc.script.create("trigger", function (app) {
         },
 
         onTriggerEnter: function (entity) {
-            // console.log("something detected", this.entity._parent.destination)
             if (entity.name==="pickable-shield"){
                 thisPriority=shieldPriority;
             }else if(entity.name==="pickable-repair"){
