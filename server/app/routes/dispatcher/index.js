@@ -18,7 +18,7 @@ module.exports = router;
 	
 router.get('/readFile', function (req, res, next) {
 	console.log('/readFile req.query',req.query);
-	var botID = req.query.bot;
+	var botID = req.query.botOneID;
 	Bot.findOne(botID, function(err, found){
         if (err) return next(err);
 		res.send(found);

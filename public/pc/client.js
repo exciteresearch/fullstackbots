@@ -1,6 +1,9 @@
 console.log("client.js");
 
 //var eventID = "5559f60123b028a5143b6e63";
+var botOneID = '55568ea41d2989172705bb9d';
+var botCode = "";
+
 
 var test=false;
 var l=0;
@@ -67,12 +70,13 @@ pc.script.create('client', function (context) {
             var eventID = getParameterByName('eventID') || '';
             var url = env && servers[env] || servers['default'];
             console.log("client.js eventID",eventID);
-            var botOneID = '55568ea41d2989172705bb9c';
+
             $.ajax({
             	  url: "/api/dispatcher/readFile?botOneID="+botOneID,
             	  context: document.body
             	}).done(function(data) {
             		console.log("client.js ajax data",data);
+            		botCode = data.botCode;
 //            	  $( this ).addClass( "done" );
             	});
             
@@ -201,7 +205,18 @@ pc.script.create('client', function (context) {
                 
             // }
             // p++
-           this.entity.script.TankAI.takeAction( tankPosition);
+        	// botCode applied using eval()
+        	if(!this.entity.script.TankAI.takeAction){
+        		var evalCode = "this.entity.script.TankAI.takeAction = function(tankPosition){"+botCode+"}";
+        		eval(evalCode);
+        	} else {
+                this.entity.script.TankAI.takeAction(tankPosition);
+        	}
+//        	this.entity.script.TankAI.callBotCode = function(takeAction){
+//        		self = takeAction;
+//        		takeAction.call(this,botCode);
+//        	};
+        	
            this.opponent.tanks.entity.script.FSBpanzer.takeAction(opponentTankPosition);
 
         },
