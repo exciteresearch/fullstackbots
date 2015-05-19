@@ -17,9 +17,9 @@ function Room() {
 
     this.world = new World({
         width: 48,  // map width
-        height: 48, //map height
+        height: 48, //map height	
         clusterSize: 4, //clusterSize ? is it number of teams ? not tanks ?
-        indexes: [ 'tank', 'bullet', 'pickable', 'block', 'flame']
+        indexes: [ 'tank', 'bullet', 'pickable', 'block', 'flame' ]
     });
 
     this.score = 0;
@@ -303,6 +303,14 @@ Room.prototype.join = function(client) {
 
     tank.team = this.pickWeakestTeam(); //DJ first time random then by weaskest team
     tank.team.tanks++;
+    
+    // room
+//    client.on('eventID', function(data) {
+//        if (!! data ) {
+//        	console.log('request roomID for eventID',data);
+//        	client.send('eventID',data);
+//        }
+//    });
     
     // movement
     client.on('move', function(data) {
