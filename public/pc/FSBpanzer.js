@@ -113,19 +113,19 @@ pc.script.create('FSBpanzer', function (context) {
     FSBpanzer.prototype = {
         // Called once after all resources are loaded and before the first update
         initialize: function () {
-
+            this.opponentAngle=0
             this.pathingMap=generatePathingMap()
-            this.angle = 0;
+            // this.angle = 0;
             this.previousTime=Date.now()
         },
 
         // Called every frame, dt is time in seconds since last update
         takeAction: function (tankPosition) {
-            if(p<299&&p>290){
-                console.log("this",this)
-                console.log("tankPosition",tankPosition)  
-            }
-            p++
+            // if(p<299&&p>290){
+            //     console.log("this",this)
+            //     console.log("tankPosition",tankPosition)  
+            // }
+            // p++
             this.destinationY=destinationY;
             this.destinationX=destinationX;
             this.destination=destination;
@@ -236,27 +236,26 @@ pc.script.create('FSBpanzer', function (context) {
             }  
             
             //turns turret based on where enemies are detected.
-            // if(shootNow==="right"){
-            //     if(this.angle>-180){
-                    this.angle=1
-            //     }else{
-            //         this.angle=180;
-            //     } 
-            // }else if(shootNow==="left"){
-            //     if (this.angle<180){
-            //         this.angle+=3
-            //     }else{
-            //         this.angle=-180;
-            //     }
-            // }        
-                
-
-            this.entity.script.tanks.opp.targeting(this.angle);
+            if(shootNow==="right"){
+                if(this.angle>-180){
+                    this.opponentAngle=1
+                }else{
+                    this.angle=180;
+                } 
+            }else if(shootNow==="left"){
+                if (this.angle<180){
+                    this.angle+=3
+                }else{
+                    this.angle=-180;
+                }
+            }                 
+//            this.entity.script.tanks.opp.targeting(this.angle);
             // game server angle data is reversed, this takes that into account:
-            if(this.angle<=neg){
-                var neg=(this.angle+180)
+            
+            if(this.opponentAngle<=neg){
+                var neg=(this.opponentAngle+180)
             }else{
-                var neg=(this.angle-180)
+                var neg=(this.opponentAngle-180)
             }
                                         
             _self.socket.send('opponent.target', neg);

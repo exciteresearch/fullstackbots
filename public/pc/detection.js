@@ -34,18 +34,15 @@ pc.script.create("trigger", function (app) {
         },
          onTriggerLeave: function (entity) {
             if (this.entity.name=="gun-sight"){
-                shootNow= false;
-                flameNow=false;
+                if(entity.name.includes("tank")){
+                    shootNow= false;
+                    flameNow=false;
+                }
             }
-            shootNow="left"
+            // shootNow="left"
             
         }
     };
 
     return Trigger;
 })
-
-
-
-
-

@@ -11,7 +11,7 @@ pc.script.create("trigger", function (app) {
     var damagePriority=2;
     var repairPriority=0;
     var thisPriority=0;
-    var enemyPriority=3;
+    var enemyPriority=5;
     var coinPriority=4;
 
     var zeroVec = pc.Vec3.ZERO;
@@ -44,6 +44,7 @@ pc.script.create("trigger", function (app) {
             
             itemLoc = entity.getPosition();
             if (currentPriority < thisPriority){
+                console.log(thisPriority)
                 destinationX=Math.round(itemLoc.data[0]);
                 destinationY=Math.round(itemLoc.data[2]);
                 this.entity._parent.destinationX=Math.round(itemLoc.data[0]);
@@ -55,30 +56,31 @@ pc.script.create("trigger", function (app) {
             }
         },
          onTriggerLeave: function (entity) {
-        //     if (entity.name==="pickable-shield"){
+            if (entity.name==="pickable-shield"){
  
-        //         thisPriority=shieldPriority
-        //     }else if(entity.name==="pickable-repair"){
+                thisPriority=shieldPriority
+            }else if(entity.name==="pickable-repair"){
 
-        //         thisPriority=repairPriority
-        //     }else if(entity.name==="pickable-damage"){
+                thisPriority=repairPriority
+            }else if(entity.name==="pickable-damage"){
 
-        //         thisPriority=damagePriority
-        //     }
-        //     else if(entity.name.includes("tank")){
-        //         thisPriority=enemyPriority
-        //     }
-        //     itemLoc = entity.getPosition();
-        //     if (currentPriority <= thisPriority){
-        //         destinationX=Math.round(itemLoc.data[0])
-        //         destinationY=Math.round(itemLoc.data[2])
-        //         this.entity._parent.destinationX=Math.round(itemLoc.data[0])
-        //         this.entity._parent.destinationY=Math.round(itemLoc.data[2])
-        //         newPath=true;
-        //         destination=true;
-        //         this.entity._parent.destination=true;
-        //         currentPriority=thisPriority;    
-        //     }
+                thisPriority=damagePriority
+            }
+            else if(entity.name.includes("tank")){
+                thisPriority=enemyPriority
+            }
+            itemLoc = entity.getPosition();
+            if (currentPriority < thisPriority){
+                console.log(thisPriority)
+                destinationX=Math.round(itemLoc.data[0])
+                destinationY=Math.round(itemLoc.data[2])
+                this.entity._parent.destinationX=Math.round(itemLoc.data[0])
+                this.entity._parent.destinationY=Math.round(itemLoc.data[2])
+                newPath=true;
+                destination=true;
+                this.entity._parent.destination=true;
+                currentPriority=thisPriority;    
+            }
         }
     };
 
