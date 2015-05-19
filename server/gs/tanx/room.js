@@ -305,8 +305,6 @@ Room.prototype.join = function(client) {
 
     tank.team = this.pickWeakestTeam(); //DJ first time random then by weaskest team
     tank.team.tanks++;
-<<<<<<< HEAD:server/gs/tanx/modules/room.js
-=======
 
     // room
 //    client.on('eventID', function(data) {
@@ -315,8 +313,7 @@ Room.prototype.join = function(client) {
 //        	client.send('eventID',data);
 //        }
 //    });
->>>>>>> master:server/gs/tanx/room.js
-    
+
     // movement
     client.on('move', function(data) {
         if (data &&
