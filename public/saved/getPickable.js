@@ -1,4 +1,3 @@
-console.log("getPickables.js");
 var shield=false;
 var itemLoc=[];
 var destinationX=0;

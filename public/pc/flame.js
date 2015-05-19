@@ -1,13 +1,12 @@
-console.log("bullet.js pc.script.create('bullet', function(context){...");
 var tmpVec = new pc.Vec3();
 
-pc.script.create('bullet', function (context) {
-    var Bullet = function (entity) {
+pc.script.create('flame', function (context) {
+    var Flame = function (entity) {
         this.entity = entity;
         this.speed = 1;
     };
 
-    Bullet.prototype = {
+    Flame.prototype = {
         initialize: function () {
             this.fires = context.root.getChildren()[0].script.fires;
             // this.entity.audiosource.pitch = Math.random() * 0.2 + 0.7;
@@ -21,9 +20,13 @@ pc.script.create('bullet', function (context) {
         },
 
         update: function (dt) {
-            if (this.finished)
+            if (this.finished){
                 return;
-                
+            }
+
+            if(this.entity.targetPosition===undefined){
+                return;
+            }
             var pos = this.entity.getPosition();
             tmpVec.copy(this.entity.targetPosition).sub(pos).normalize().scale(this.entity.speed * dt);
             this.entity.setPosition(tmpVec.add(pos));
@@ -67,7 +70,7 @@ pc.script.create('bullet', function (context) {
                 self.entity.audiosource.stop();
                 self.hidden(false);
                 self.entity.fire('finish');
-            }, 1000);
+            }, 500);
         },
         
         hidden: function(state) {
@@ -79,10 +82,10 @@ pc.script.create('bullet', function (context) {
 
             this._hidden = state;
             
-            this.shadow.enabled = ! this._hidden;
+            // this.shadow.enabled = ! this._hidden;
             this.entity.model.enabled = ! this._hidden;
         }
     };
 
-    return Bullet;
+    return Flame;
 });

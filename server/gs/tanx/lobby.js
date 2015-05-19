@@ -233,7 +233,7 @@ Lobby.prototype.update = function() {
                                 } else {
                                     // shielded only some damage
                                     damage -= tank.sheild;
-                                    tank.sheild = 0;
+                                    tank.shield = 0;
                                 }
                             }
 
@@ -306,7 +306,15 @@ Lobby.prototype.update = function() {
 
         }
 
+        if (! tank.dead && tank.flaming && ! tank.reloadingFlame) {
+            // new flame
+            var flame = tank.flameOn();
+            world.add('flame', flame);
 
+            // publish
+            state.flames = state.flames || [ ];
+            state.flames.push(flame.data);
+        }
         // shoot
         if (! tank.dead && tank.shooting && ! tank.reloading) {
             // new bullet
@@ -441,6 +449,123 @@ Lobby.prototype.update = function() {
             // remove from world
             world.remove('bullet', bullet);
             bullet.delete();
+        }
+    });
+    // for each flame
+    world.forEach('flame', function(flame) {
+        // flame update
+        flame.update();
+
+        var deleting = false;
+        if (flame.pos.dist(flame.target) < 1) {
+            deleting = true;
+        } else if (flame.pos[0] <= 0 ||
+                   flame.pos[1] <= 0 ||
+                   flame.pos[0] >= world.width ||
+                   flame.pos[1] >= world.height) {
+            deleting = true;
+        } else {
+            // for each tank around
+            world.forEachAround('tank', flame, function(tank) {
+                // refuse tank if any of conditions not met
+                if (deleting ||  // flame already hit the target
+                    tank.dead ||  // tank is dead
+                    tank === flame.owner ||  // own flame
+                    tank.team === flame.owner.team || // friendly tank
+                    now - tank.respawned <= 2000 ||  // tank just respawned
+                    tank.pos.dist(flame.pos) > (tank.radius + flame.radius)) {  // no collision
+                    return;
+                }
+
+                // hit
+                flame.hit = true;
+                flame.pos.setV(tank.pos);
+
+                if (! flame.owner.deleted) {
+                    // damage tank
+                    var damage = flame.damage;
+
+                    tank.tHit = now;
+
+                    // Flames penetrate shields:
+                    // if (tank.shield) {
+                    //     if (tank.shield > damage) {
+                    //         // enough to sustain whole damage
+                    //         tank.shield -= damage;
+                    //         damage = 0;
+                    //     } else {
+                    //         // shielded only some damage
+                    //         damage -= tank.sheild;
+                    //         tank.shield = 0;
+                    //     }
+                    // }
+
+                    if (damage) {
+                        tank.hp -= damage;
+
+                        // killed, give point
+                        if (tank.hp <= 0) {
+                            // add score
+                            flame.owner.score+=3;
+                            flame.owner.team.score+=3;
+                            // winner?
+                            if (flame.owner.team.score === 32)
+                                winner = flame.owner.team;
+                            // total score
+                            room.score++;
+                            // flame.owner.owner.send('point', 1);
+                            // remember killer
+                            tank.killer = flame.owner.id;
+                            // respawn
+                            tank.respawn();
+                        }
+                    }
+                }
+
+                // flame delete
+                deleting = true;
+                flame.publish = true;
+            }
+            );
+
+            if (! deleting) {
+                // for each block around
+                world.forEachAround('block', flame, function(block) {
+                    if (deleting)
+                        return;
+
+                    // collision with level block
+                    var point = block.collideCircle(flame);
+                    if (point) {
+                        flame.pos.add(point);
+                        flame.publish = true;
+                        deleting = true;
+                    }
+                });
+            }
+        }
+
+        if (! deleting) {
+            // update in world
+            flame.node.root.updateItem(flame);
+
+        } else {
+            // delete flame
+
+            // publish
+            if (flame.publish) {
+                state.flamesDelete = state.flamesDelete || [ ];
+
+                state.flamesDelete.push({
+                    id: flame.id,
+                    x: parseFloat(flame.pos[0].toFixed(2), 10),
+                    y: parseFloat(flame.pos[1].toFixed(2), 10)
+                });
+            }
+
+            // remove from world
+            world.remove('flame', flame);
+            flame.delete();
         }
     });
 

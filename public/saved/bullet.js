@@ -1,4 +1,3 @@
-console.log("bullet.js pc.script.create('bullet', function(context){...");
 var tmpVec = new pc.Vec3();
 
 pc.script.create('bullet', function (context) {
@@ -12,6 +11,7 @@ pc.script.create('bullet', function (context) {
             this.fires = context.root.getChildren()[0].script.fires;
             // this.entity.audiosource.pitch = Math.random() * 0.2 + 0.7;
             this.shadow = this.entity.findByName('shadow');
+            console.log("bullet",this.entity)
             var self = this;
             this.entity.on('culled', function(state) {
                 self.hidden(state);
