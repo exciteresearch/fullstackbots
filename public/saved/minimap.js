@@ -65,7 +65,6 @@ pc.script.create('minimap', function (context) {
         },
         
         initialize: function () {
-            this.flames = context.root.findByName('flames');
             this.bullets = context.root.findByName('bullets');
             this.tanks = context.root.findByName('tanks');
             this.pickables = context.root.findByName('pickables');
@@ -170,25 +169,6 @@ pc.script.create('minimap', function (context) {
             ctx.setTransform(1, 0, 0, 1, 0, 0);            
             ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-            // flames
-            ctx.beginPath();
-            var flames = this.flames.getChildren();
-            i = flames.length;
-            while(i--) {
-                pos = [ flames[i].getPosition().x, flames[i].getPosition().z ];
-                pos[0] = pos[0] / 48 * this.canvas.width;
-                pos[1] = pos[1] / 48 * this.canvas.width;
-
-                if (flames[i].lastX !== undefined) {
-                    ctx.moveTo(flames[i].lastX, flames[i].lastZ);
-                    ctx.lineTo(pos[0], pos[1]);
-                }
-                
-                flames[i].lastX = pos[0];
-                flames[i].lastZ = pos[1];
-            }
-            ctx.strokeStyle = 'rgba(255, 255, 255, .8)';
-            ctx.stroke();
             // bullets
             ctx.beginPath();
             var bullets = this.bullets.getChildren();

@@ -30,6 +30,7 @@ startDb.then(createApplication).then(startServer).catch(function (err) {
     process.kill(1);
 });
 
+// DJ and Migeul, fully integrate the fsb and gs "fsi-gameserverIntegration-#49"
 // Sloppy integration of GameServer (successful) [does not account for use of games other than tanx]
 // refactoring and mergin gs GamesServer into FSB socket/lobby code below
 // npm install socket-server --save (successful) need test
@@ -53,7 +54,7 @@ gameServer.listen(port, host, function () {
 
 // socket
 //var WebSocketServer = require('./modules/socket-server');
-var WebSocketServer = require('./gs/tanx/modules/socket-server');
+var WebSocketServer = require('./gs/tanx/socket-server');
 var ws = new WebSocketServer({
     http: gameServer,
     prefix: '/socket'
@@ -62,7 +63,7 @@ var ws = new WebSocketServer({
 
 // lobby
 //var Lobby = require('./modules/lobby');
-var Lobby = require('./gs/tanx/modules/lobby');
+var Lobby = require('./gs/tanx/lobby');
 var lobby = new Lobby();
 
 

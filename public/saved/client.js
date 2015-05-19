@@ -36,12 +36,11 @@ pc.script.create('client', function (context) {
             this.pickables = context.root.getChildren()[0].script.pickables;
             this.teams = context.root.getChildren()[0].script.teams;
             this.profile = context.root.getChildren()[0].script.profile;
-            console.log("flames: ",this.flames)
-            console.log("bulets: ", this.bullets)
+            
             var self = this;
             var servers = {
                 'local': 'http://localhost:30043/socket', // local
-                'fsb': 'http://192.168.1.216:30043/socket', //fsb
+                'fsb': 'http://localhost:30043/socket',
                 'us': 'http://54.67.22.188:30043/socket', // us
                 'default': 'https://tanx.playcanvas.com/socket' // load balanced
             };
@@ -82,7 +81,6 @@ pc.script.create('client', function (context) {
             socket.on('update', function(data) {
                 // flames add
                 if (data.flames) {
-                    console.log("new flames: ",self.flames)
                     for(var i = 0; i < data.flames.length; i++)
                         self.flames.new(data.flames[i]);
                 }
@@ -94,7 +92,6 @@ pc.script.create('client', function (context) {
                 }
                 // bullets add
                 if (data.bullets) {
-                    console.log("new bullets: ",self.bullets)
                     for(var i = 0; i < data.bullets.length; i++)
                         self.bullets.new(data.bullets[i]);
                 }
@@ -175,7 +172,6 @@ pc.script.create('client', function (context) {
         },
         
        onMouseDown: function() {
-            // console.log("test");
             // this.layMine(true);
             // shootNow=true;
             flameNow=true;
@@ -193,7 +189,8 @@ pc.script.create('client', function (context) {
                 
             if (this.flamingState !== state) {
                 this.flamingState = state;
-                this.socket.send('flaming', this.shootingState);
+                // console.log(this.tank)
+                this.socket.send('flaming', this.flamingState);
             }
         },
         shoot: function(state) {
@@ -202,6 +199,7 @@ pc.script.create('client', function (context) {
                 
             if (this.shootingState !== state) {
                 this.shootingState = state;
+                // console.log(this.tank)
                 this.socket.send('shoot', this.shootingState);
             }
         },
@@ -211,6 +209,7 @@ pc.script.create('client', function (context) {
                 
             if (this.shootingState !== state) {
                 this.shootingState = state;
+                // console.log(this.tank)
                 this.socket.send('layMine', this.shootingState);
             }
         }

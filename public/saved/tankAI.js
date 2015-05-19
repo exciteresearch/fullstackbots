@@ -105,7 +105,6 @@ pc.script.create('TankAI', function (context) {
         this.destinationY=0;
 
     };
-    // TankAI.prototype.layingMines=false;
     var layingMines=false;
     TankAI.prototype = {
         // Called once after all resources are loaded and before the first update
@@ -255,9 +254,6 @@ pc.script.create('TankAI', function (context) {
             _self.socket.send('target', neg);
             if(shootNow==true||shootNow==false){
                 _self.socket.send('shoot', shootNow);
-            }   
-            if(flameNow==true||flameNow==false){
-                _self.socket.send('flameOn', flameNow);
             }   
             movement=[this.movementOne,this.movementTwo];
             

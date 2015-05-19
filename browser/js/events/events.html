@@ -1,0 +1,85 @@
+<section id="events"> 
+<div class="container">
+	<div class="col-lg-8 col-sm-12">
+		<div class="row">
+		<h2>Live Events</h2>
+		<table>
+			<tr>
+				<th>Player One</th><th>Rank</th><th>Player Two</th><th>Rank</th>
+				<th>Watch</th>
+			</tr>
+		<tr ng-repeat="event in liveEvents" ng-controller="EventsController">
+			<!-- Showing LIVE events -->
+			<td>{{event.p1_user_name}}</td>
+			<td>{{event.p1_rank}}</td>
+			<td>{{event.p2_user_name}}</td>
+			<td>{{event.p2_rank}}</td>
+			<td><a ng-if="!event.owner"><button ng-click="watch(event)">Watch</button></a></td>
+		</tr>
+		</table>
+		
+	</div>
+	
+	<hr>
+	
+	<div class="row">
+		<h2>Pending Events</h2>
+		<table>
+			<tr>
+				<th>Player Name</th><th>Rank</th><th>Specifications</th><th>Empty Slots</th>
+				<th></th>
+			</tr>
+		<tr ng-repeat="event in pendingEvents" ng-controller="EventsController">
+			<!-- Showing PENDING events -->
+			<!-- <td>{{event.createdBy.name}}</td>
+			<td>{{event.createdBy.rank}}</td> -->
+			<td>{{event.createdBy}}</td>
+			<td>{{event.createdBy}}</td>
+			<td>{{event.preferences}}</td>
+			<td>{{event.slots}}</td>
+			<!-- !event.owner && --><td><a ng-if="!waiting"><button class="btn-success" ng-click="joinEvent($index)">Join</button></a>
+			<!-- !event.owner && --> <a ng-if="waiting"><button class="btn-default">Waiting</button></a>
+			<!-- ng-if="event.owner" --><a><button class="btn-danger" ng-click="deleteEvent($index)">Remove</button></a></td>
+		</tr>
+		</table>
+
+		<hr>
+
+		<button ng-hide="data.createEvent" ng-click="data.createEvent = true">
+			Create a new event</button>
+		<button ng-click="createNewChallenge()">Challenge</button>
+
+		<h2 ng-show="data.createEvent">New Event</h2>
+		<form ng-show="data.createEvent" ng-submit="createNewEvent(data)">
+			<textarea rows="6" cols="50" placeholder="Player Preferences"
+				ng-model="data.preferences"></textarea>
+			<input required placeholder="Open Slots" ng-model="data.slots" size="10">
+				</input>
+			<button type="submit" class="btn btn-default">Confirm Creation</button>
+		</form>
+	</div>
+	</div>
+
+	<div class="col-lg-4 col-sm-12">
+		<div class="row">
+		<h2>Challenges</h2>
+		<table>
+			<tr>
+				<th>Challenger</th><th>Rank</th><th>Challenged</th><th>Rank</th>
+				<th>Time DeadLine</th>
+			</tr>
+		<tr ng-repeat="challenge in challenges" ng-controller="EventsController">
+			<!-- Showing LIVE challenges -->
+			<td>{{challenge.p1_user_name}}</td>
+			<td>{{challenge.p1_rank}}</td>
+			<td>{{challenge.p2_user_name}}</td>
+			<td>{{challenge.p2_rank}}</td>
+			<td><a ng-if="challenge.challenged"><button ng-click="accept(challenge)">Accept</button></a></td>
+		</tr>
+		</table>
+		
+	</div>
+	</div>
+	
+</div>
+</section>
