@@ -54,10 +54,10 @@ Server.prototype = Object.create(EventEmitter.prototype);
 
 
 Server.prototype._onconnection = function(socket) {
-    //console.log("Server _onconnection",socket);
-
+	//console.log("Server _onconnection",socket);
     this.emit('connection', new Client(socket));
 };
+
 
 /*
  * Server _onconnection { _session: 

@@ -1,4 +1,5 @@
 pc.script.create('profile', function (app) {
+	console.log('profile.js');
     var Profile = function (entity) {
         this.entity = entity;
         

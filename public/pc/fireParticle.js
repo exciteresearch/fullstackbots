@@ -1,4 +1,5 @@
 pc.script.create('fireParticle', function (context) {
+	console.log("fireParticle.js");
     var FireParticle = function (entity) {
         this.entity = entity;
     };
