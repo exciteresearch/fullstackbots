@@ -15,11 +15,10 @@ pc.script.create("trigger", function (app) {
         },
 
         onTriggerEnter: function (entity) {
-            var detedtedEntity=entity.name.split()
+            
             // Reset back to roughly the position the entity started in.
             if(this.entity.name=="gun-sight"){
                 if(entity.name.includes("tank")){
-
                 shootNow= true;
                 flameNow=true;
                 }
@@ -30,13 +29,14 @@ pc.script.create("trigger", function (app) {
             if (this.entity.name=="left-detection"&&entity.name.includes("tank")){
                 shootNow="left"
             }
-
+            shootNow="left"
         },
          onTriggerLeave: function (entity) {
             if (this.entity.name=="gun-sight"){
                 shootNow= false;
                 flameNow=false;
             }
+            shootNow="left"
             
         }
     };

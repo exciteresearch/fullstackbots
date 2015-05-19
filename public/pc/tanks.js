@@ -1,5 +1,8 @@
 var tankPosition=[0,0,0];
+var p=0;
+var opponentTankPosition=[0,0,0];
 pc.script.create('tanks', function (context) {
+        
     var Tanks = function (entity) {
         this.entity = entity;
         this.ind = 0;
@@ -20,6 +23,7 @@ pc.script.create('tanks', function (context) {
 
             
             this.own = null;
+            this.opp = null;
         },
         
         new: function(args) {
@@ -34,7 +38,12 @@ pc.script.create('tanks', function (context) {
             
             if (args.owner == this.client.id) {
                 this.camera.script.link.link = newTank;
-                this.own = newTank;
+                if(p===0){
+                    this.opp = newTank;
+                    p++
+                }else{
+                    this.own= newTank;
+                }
             }
             
             this.tanks.addChild(newTank);
@@ -49,6 +58,7 @@ pc.script.create('tanks', function (context) {
         },
         
         updateData: function(data) {
+            
             for(var i = 0; i < data.length; i++) {
                 var tankData = data[i];
                 
@@ -64,7 +74,13 @@ pc.script.create('tanks', function (context) {
                 if (! tank.own && tankData.hasOwnProperty('a'))
                     tank.targeting(tankData.a);
                 //ian edit: gravitate to repairs    
-                    tankPosition=tank.entity.position.data
+                if(i===0){
+                   tankPosition=tank.entity.position.data 
+                }else if(i===1)
+                {
+                   opponentTankPosition=tank.entity.position.data 
+                }
+
                 // hp
                 if (tankData.hasOwnProperty('hp'))
                     tank.setHP(tankData.hp);
@@ -73,10 +89,11 @@ pc.script.create('tanks', function (context) {
                 tank.setSP(tankData.sp || 0);
 
                 // killer
-                if (tank.own && tankData.hasOwnProperty('killer')) {
+                if (tank.own && tankData.hasOwnProperty('killer')||tank.own && tankData.hasOwnProperty('killer')) {
                     // find killer
                     tank.killer = this.tanks.findByName('tank_' + tankData.killer);
                 }
+
                 
                 // dead/alive
                 tank.setDead(tankData.dead || false);

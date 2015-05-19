@@ -92,9 +92,7 @@ var generatePathingMap=function(){
 }
 var myPath=[];
 var l=0;
-
-pc.script.create('TankAI', function (context) {
-    var p=0;
+pc.script.create('OpponentAI', function (context) {
     // Creates a new TankAI instance
     var TankAI = function (entity) {
         this.entity = entity;
@@ -118,11 +116,8 @@ pc.script.create('TankAI', function (context) {
 
         // Called every frame, dt is time in seconds since last update
         takeAction: function (tankPosition) {
-            if(p<299&&p>290){
-                console.log("this",this)
-                console.log("tankPosition",tankPosition)  
-            }
-            p++
+            console.log("OpponentAI");
+            // console.log(destinationX);
             this.destinationY=destinationY;
             this.destinationX=destinationX;
             this.destination=destination;
@@ -156,6 +151,9 @@ pc.script.create('TankAI', function (context) {
                 easystar.calculate();
                 this.destination=true;
             }
+                
+            
+            
             //checks whether tank is stuck or stopped and changes directions if so:
             this.pastLocations.push(this.tankPosition[0])
             this.pastLocations.push(this.tankPosition[2])
@@ -231,30 +229,29 @@ pc.script.create('TankAI', function (context) {
             }  
             
             //turns turret based on where enemies are detected.
-            // if(shootNow==="right"){
-            //     if(this.angle>-180){
-            //         this.angle-=3
-            //     }else{
-            //         this.angle=180;
-            //     } 
-            // }else if(shootNow==="left"){
-            //     if (this.angle<180){
-                    this.angle-=9
-            //     }else{
-            //         this.angle=-180;
-            //     }
-            // }        
+            if(shootNow==="right"){
+                if(this.angle>-180){
+                    this.angle-=3
+                }else{
+                    this.angle=180;
+                } 
+            }else if(shootNow==="left"){
+                if (this.angle<180){
+                    this.angle+=3
+                }else{
+                    this.angle=-180;
+                }
+            }        
                 
 
             this.entity.script.tanks.own.targeting(this.angle);
-
             // game server angle data is reversed, this takes that into account:
             if(this.angle<=0){
                 var neg=(this.angle+180)
             }else{
                 var neg=(this.angle-180)
             }
-
+            
             _self.socket.send('target', neg);
             if(shootNow==true||shootNow==false){
                 _self.socket.send('shoot', shootNow);
@@ -280,5 +277,5 @@ pc.script.create('TankAI', function (context) {
         }
     };
 
-    return TankAI;
+    return OpponentAI;
 });

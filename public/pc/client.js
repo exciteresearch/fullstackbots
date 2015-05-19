@@ -4,19 +4,26 @@ var l=0;
 
 
 pc.script.create('client', function (context) {
-    
+    var p=0;
     var counter=0;
     var tmpVec = new pc.Vec3();
     var uri = new pc.URI(window.location.href);
     var query = uri.getQuery();
-    var gamepadNum = query.gamepad;
+    // var gamepadNum = query.gamepad;
 
     var Client = function (entity) {
         this.entity = entity;
         this.id = null;
         this.moved=0;
         this.movement = [ 0, 0 ];
-        this.pastLocations=[]
+        this.pastLocations=[];
+        this.opponent={
+            id : null,
+            moved: 0,
+            movement :[ 0, 0 ],
+            pastLocations:[],
+            parent: this
+        };
         context.keyboard = new pc.input.Keyboard(document.body);
         
         document.body.style.cursor = 'none';
@@ -36,13 +43,19 @@ pc.script.create('client', function (context) {
             this.pickables = context.root.getChildren()[0].script.pickables;
             this.teams = context.root.getChildren()[0].script.teams;
             this.profile = context.root.getChildren()[0].script.profile;
-            console.log("flames: ",this.flames)
-            console.log("bulets: ", this.bullets)
+
+            this.opponent.tanks = context.root.getChildren()[0].script.tanks;
+            this.opponent.bullets = context.root.getChildren()[0].script.bullets;
+            this.opponent.flames = context.root.getChildren()[0].script.flames;
+            this.opponent.pickables = context.root.getChildren()[0].script.pickables;
+            this.opponent.teams = context.root.getChildren()[0].script.teams;
+            this.opponent.profile = context.root.getChildren()[0].script.profile;
+
             var self = this;
             var servers = {
                 'local': 'http://localhost:30043/socket', // local
                 'fsb': 'http://localhost:30043/socket',
-                'us': 'http://54.67.22.188:30043/socket', // us
+                'us': 'http://192.168.1.216:1337/socket', // us
                 'default': 'https://tanx.playcanvas.com/socket' // load balanced
             };
 
@@ -82,7 +95,6 @@ pc.script.create('client', function (context) {
             socket.on('update', function(data) {
                 // flames add
                 if (data.flames) {
-                    console.log("new flames: ",self.flames)
                     for(var i = 0; i < data.flames.length; i++)
                         self.flames.new(data.flames[i]);
                 }
@@ -94,7 +106,6 @@ pc.script.create('client', function (context) {
                 }
                 // bullets add
                 if (data.bullets) {
-                    console.log("new bullets: ",self.bullets)
                     for(var i = 0; i < data.bullets.length; i++)
                         self.bullets.new(data.bullets[i]);
                 }
@@ -119,6 +130,11 @@ pc.script.create('client', function (context) {
                 
                 // tanks update
                 if (data.tanks)
+                    // if(p<4){
+                    //     console.log("data",data.tanks)
+                    //     console.log("this",this)
+                    //     p++
+                    // }
                     self.tanks.updateData(data.tanks);
 
                 // tanks respawn
@@ -147,20 +163,6 @@ pc.script.create('client', function (context) {
             
             this.gamepadConnected = false;
             this.gamepadActive = false;
-            
-            window.addEventListener('gamepadconnected', function () {
-                this.gamepadConnected = true;
-            }.bind(this));
-            window.addEventListener('gamepaddisconnected', function () {
-                this.gamepadConnected = false;
-            }.bind(this));
-            
-            // Chrome doesn't have the gamepad events, and we can't
-            // feature detect them in Firefox unfortunately.
-            if ('chrome' in window) {
-                // This is a lie, but it lets us begin polling.
-                this.gamepadConnected = true;
-            }
         },
     
     
@@ -168,10 +170,16 @@ pc.script.create('client', function (context) {
     
 
     
-    
+        
         update: function (dt) {
+            // if(p<299&&p>290){
+            //     console.log("this",this)
+            //     console.log("tankPosition",tankPosition)
+                
+            // }
+            // p++
            this.entity.script.TankAI.takeAction( tankPosition);
-           
+           this.opponent.tanks.entity.script.FSBpanzer.takeAction(opponentTankPosition);
         },
         
        onMouseDown: function() {

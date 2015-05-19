@@ -12,6 +12,13 @@ var ReservedNames = {
 
 function Client(socket) {
     this._uuid = uuid.v4();
+    this.isClient=true;
+    console.log("my parent: ",this.parent)
+    // this.opponent._uuid=uuid.v4();
+    this.opponent={
+        id : null,
+        isClient: false
+        };
     this.socket = socket;
 
     this.socket.on('close', this._onclose.bind(this));
