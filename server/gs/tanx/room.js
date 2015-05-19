@@ -296,8 +296,6 @@ Room.prototype.join = function(client) {
     client.on('disconnect', function() {
         self.leave(client);
     });
-    console.log("client: ",client)
-    console.log("opponent: ",client.opponent)
     var tank = new Tank(client);
 
 
