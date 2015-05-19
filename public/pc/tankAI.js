@@ -119,11 +119,12 @@ pc.script.create('TankAI', function (context) {
 
         // Called every frame, dt is time in seconds since last update
         takeAction: function (tankPosition) {
-            if(p<299&&p>290){
-                console.log("this",this)
-                console.log("tankPosition",tankPosition)  
-            }
-            p++
+            // console.log(tankPosition)
+            // if(p<299&&p>290){
+            //     console.log("this",this)
+            //     console.log("tankPosition",tankPosition)  
+            // }
+            // p++
             this.destinationY=destinationY;
             this.destinationX=destinationX;
             this.destination=destination;
@@ -231,20 +232,20 @@ pc.script.create('TankAI', function (context) {
                 }
             }  
             
-            //turns turret based on where enemies are detected.
-            // if(shootNow==="right"){
-            //     if(this.angle>-180){
-            //         this.angle-=3
-            //     }else{
-            //         this.angle=180;
-            //     } 
-            // }else if(shootNow==="left"){
-            //     if (this.angle<180){
-                    this.angle-=9
-            //     }else{
-            //         this.angle=-180;
-            //     }
-            // }        
+            // turns turret based on where enemies are detected.
+            if(shootNow==="right"){
+                if(this.angle>-180){
+                    this.angle-=3
+                }else{
+                    this.angle=180;
+                } 
+            }else if(shootNow==="left"){
+                if (this.angle<180){
+                    this.angle-=3
+                }else{
+                    this.angle=-180;
+                }
+            }        
                 
 
             this.entity.script.tanks.own.targeting(this.angle);

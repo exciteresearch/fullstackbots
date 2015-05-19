@@ -19,7 +19,7 @@ function Room() {
         width: 48,  // map width
         height: 48, //map height
         clusterSize: 4, //clusterSize ? is it number of teams ? not tanks ?
-        indexes: [ 'tank', 'bullet', 'pickable', 'block' ]
+        indexes: [ 'tank', 'bullet', 'pickable', 'block', 'flame']
     });
 
     this.score = 0;
@@ -296,8 +296,6 @@ Room.prototype.join = function(client) {
     client.on('disconnect', function() {
         self.leave(client);
     });
-    console.log("client: ",client)
-    console.log("opponent: ",client.opponent)
     var tank = new Tank(client);
 
 
@@ -305,17 +303,6 @@ Room.prototype.join = function(client) {
 
     tank.team = this.pickWeakestTeam(); //DJ first time random then by weaskest team
     tank.team.tanks++;
-<<<<<<< HEAD:server/gs/tanx/modules/room.js
-=======
-
-    // room
-//    client.on('eventID', function(data) {
-//        if (!! data ) {
-//        	console.log('request roomID for eventID',data);
-//        	client.send('eventID',data);
-//        }
-//    });
->>>>>>> master:server/gs/tanx/room.js
     
     // movement
     client.on('move', function(data) {

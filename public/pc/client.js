@@ -27,6 +27,7 @@ pc.script.create('client', function (context) {
             movement :[ 0, 0 ],
             pastLocations:[],
             parent: this
+            
         };
         context.keyboard = new pc.input.Keyboard(document.body);
         
@@ -59,7 +60,7 @@ pc.script.create('client', function (context) {
             var servers = {
                 'local': 'http://localhost:30043/socket', // local
 
-                'fsb': 'http://192.168.1.216:30043/socket', //fsb
+                'fsb': 'http://localhost:30043/socket', //fsbx
                 'us': 'http://54.67.22.188:30043/socket', // us
                 'default': 'https://tanx.playcanvas.com/socket' // load balanced
             };
