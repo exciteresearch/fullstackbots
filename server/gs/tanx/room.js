@@ -296,12 +296,17 @@ Room.prototype.join = function(client) {
     client.on('disconnect', function() {
         self.leave(client);
     });
-
+    console.log("client: ",client)
+    console.log("opponent: ",client.opponent)
     var tank = new Tank(client);
+
+
     this.world.add('tank', tank);
 
     tank.team = this.pickWeakestTeam(); //DJ first time random then by weaskest team
     tank.team.tanks++;
+<<<<<<< HEAD:server/gs/tanx/modules/room.js
+=======
 
     // room
 //    client.on('eventID', function(data) {
@@ -310,6 +315,7 @@ Room.prototype.join = function(client) {
 //        	client.send('eventID',data);
 //        }
 //    });
+>>>>>>> master:server/gs/tanx/room.js
     
     // movement
     client.on('move', function(data) {
@@ -328,6 +334,7 @@ Room.prototype.join = function(client) {
         if (angle && typeof(angle) == 'number')
             tank.angle = angle;
     });
+    
 
     // shooting
     client.on('shoot', function(state) {
@@ -342,10 +349,7 @@ Room.prototype.join = function(client) {
     client.on('layMine', function(state) {
         tank.layingMine = state;
     });
-    // client.on('target', function(state) {
-    //      console.log(state)
-    //     tank.angle = state;
-    // });
+
 
     client.on('user.name', function(text) {
         client.userScript=userScript;
@@ -365,7 +369,7 @@ Room.prototype.join = function(client) {
     // DJ and Miguel look into this it might be helpful for creating an event/battle
     this.publish('user.add', {
         id: client.id,
-        name: 'guest2'
+        name: 'Your Tank'
     });
 
     // user.sync
@@ -374,7 +378,7 @@ Room.prototype.join = function(client) {
     for(var i = 0; i < this.clients.length; i++) {
         users.push({
             id: this.clients[i].id,
-            name: this.clients[i].name || 'guest2'
+            name: this.clients[i].name || 'Your Tank'
 
         });
     }
@@ -387,6 +391,59 @@ Room.prototype.join = function(client) {
 
         client.send('tank.new', tank.data);
     });
+
+
+
+    //ian edit: attempt to make tank opponent with 1 client:
+    var opponentTank= new Tank(client.opponent);
+    this.world.add('tank', opponentTank);
+    opponentTank.team = this.pickWeakestTeam();
+    opponentTank.team.tanks++;
+    client.on('opponent.move', function(data) {
+        if (data &&
+            data instanceof Array &&
+            data.length == 2 &&
+            typeof(data[0]) == 'number' &&
+            typeof(data[1]) == 'number') {
+
+            opponentTank.movementDirection.setV(data);
+        }
+    });
+    client.on('opponent.target', function(angle) {
+        if (angle && typeof(angle) == 'number')
+            opponentTank.angle = angle;
+    });
+    client.on('opponent.shoot', function(state) {
+        tank.shooting = state;
+    });
+    client.on('opponent.flameOn', function(state) {
+        tank.flaming = state;
+    });
+    client.on('opponent.layMine', function(state) {
+        tank.layingMine = state;
+    });
+    client.on('opponent.user.name', function(text) {
+        client.opponent.userScript=userScript;
+        client.opponent.userScript=text;
+        if (/^([a-z0-9\-_]){4,8}$/i.test(text)) {
+            client.opponent.name = text;
+
+
+            room.publish('opponent.user.name', {
+                id: client.opponent.id,
+                name: text
+            });
+        }
+    });
+
+    // user.add
+    this.publish('opponent.user.add', {
+        id: client.opponent.id,
+        name: 'opponentTank'
+    });
+
+
+/////////////////////////////////////////////////////////
 
     // teams
     // DJ and Miguel look into this it might be helpful for creating an event/battle
@@ -410,6 +467,7 @@ Room.prototype.join = function(client) {
     // publish new tank
     // DJ and Miguel look into this it might be helpful for creating an event/battle
     this.publish('tank.new', tank.data);
+    this.publish('tank.new', opponentTank.data);
 
     // event
     // DJ Miguel Ian what does this do?
@@ -426,14 +484,16 @@ Room.prototype.leave = function(client) {
     this.clients.splice(ind, 1);
 
     client.tank.team.tanks--;
+    client.opponent.tank.team.tanks--;
 
     this.publish('tank.delete', {
         id: client.tank.id
     });
 
     this.world.remove('tank', client.tank);
+    this.world.remove('tank', client.opponent.tank);
     client.tank.delete();
-
+    client.opponent.tank.delete();
     // event
     this.emit('leave');
 

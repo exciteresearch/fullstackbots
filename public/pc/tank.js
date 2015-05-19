@@ -200,6 +200,8 @@ pc.script.create('tank', function (context) {
                 // this.uiHP = context.root.getChildren()[0].script.hp;
                 this.overlay = context.root.getChildren()[0].script.overlay;
                 this.minimap = context.root.getChildren()[0].script.minimap;
+            }else{//ian edit: trying to make an opponent tank.
+                this.own=false;
             }
             this.teams = context.root.getChildren()[0].script.teams;
             
@@ -355,6 +357,14 @@ pc.script.create('tank', function (context) {
             
             // if (this.own)
             //     this.uiHP.set(hp);
+        },
+        //ian edit: sets whether a bot belongs to the player or his opponent:
+        setTeam: function(who){
+            if(who===0){
+                this.team=client;
+            }else{
+                this.team=opponent;
+            }
         },
         
         setSP: function(sp) {
