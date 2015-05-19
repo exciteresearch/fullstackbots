@@ -255,9 +255,6 @@ pc.script.create('TankAI', function (context) {
             if(shootNow==true||shootNow==false){
                 _self.socket.send('shoot', shootNow);
             }   
-            if(flameNow==true||flameNow==false){
-                _self.socket.send('flameOn', flameNow);
-            }   
             movement=[this.movementOne,this.movementTwo];
             
             this.moved++;

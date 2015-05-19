@@ -1,6 +1,7 @@
 var Vec2 = require('./vec2');
 var color = require('./color');
 var Bullet = require('./bullet');
+var Flame = require('./flame');
 var Mine = require('./mine');
 
 var tankIds = 0;
@@ -17,10 +18,6 @@ function Tank(client) {
     // this.hue = Math.floor(Math.random() * 360);
 
     this.radius = .75;
-    this.sightRadius=5; //ian edit: gave tanks a "sight" range of "5"
-    this.oldPos=[]; //ian edit: stopped detection
-    this.brakePatience=10;
-    this.braked=false;
     this.movementOne=Math.round(Math.random()*2-1);
     this.movementTwo=Math.round(Math.random()*2-1);
 
@@ -39,12 +36,16 @@ function Tank(client) {
     this.hp = 10.0;
     this.shield = 0;
     this.bullets = 0;
+    this.flames = 0;
     this.mines=3;
 
     this.shooting = false;
+    this.flaming = false;
     this.layingMine=false;
     this.lastShot = 0;
+    this.lastFlame = 0;
     this.reloading = false;
+    this.reloadingFlame = false;
     this.reloadingMines= false;
     this.lastMine=0;
 
@@ -122,6 +123,17 @@ Tank.prototype.shoot = function() {
     }
     return bullet;
 };
+Tank.prototype.flameOn = function() {
+
+    if (this.deleted || this.dead) return;
+
+    var now = Date.now();
+    this.tHit = now;
+    this.reloadingFlame = true;
+    this.lastFlame = now;
+    var flame = new Flame(this);
+    return flame;
+};
 
 // Tank.prototype.layMine = function() {
 
@@ -156,6 +168,9 @@ Tank.prototype.update = function() {
         if (this.reloading && now - this.lastShot > 100){
             this.reloading = false;
         }
+        if (this.reloadingFlame && now - this.lastFlame > 50){
+            this.reloadingFlame = false;
+        }
         if (this.reloadingMines && now - this.lastMine > 5000){
             this.reloadingMines = false;
         }
@@ -171,6 +186,7 @@ Tank.prototype.update = function() {
             this.dead = false;
             this.hp = 10;
             this.shield = 0;
+            this.mines = 3;
             this.bullets = 0;
             this.respawned = now;
             this.pos.setXY(2.5 + ((this.team.id % 2) * 35) + Math.floor(Math.random() * 9), 2.5 + (Math.floor(this.team.id / 2) * 35) + Math.floor(Math.random() * 9));

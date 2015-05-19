@@ -1,5 +1,5 @@
 var shootNow= false;
-var flameNow= false;
+
 pc.script.create("trigger", function (app) {
 
     var zeroVec = pc.Vec3.ZERO;
@@ -21,7 +21,6 @@ pc.script.create("trigger", function (app) {
                 if(entity.name.includes("tank")){
 
                 shootNow= true;
-                flameNow=true;
                 }
             }
             if (this.entity.name=="right-detection"&&entity.name.includes("tank")){
@@ -35,7 +34,6 @@ pc.script.create("trigger", function (app) {
          onTriggerLeave: function (entity) {
             if (this.entity.name=="gun-sight"){
                 shootNow= false;
-                flameNow=false;
             }
             
         }

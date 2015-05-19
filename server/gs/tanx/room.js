@@ -4,6 +4,7 @@ var World = require('./world');
 var Block = require('./block');
 var Tank = require('./tank');
 var Bullet = require('./bullet');
+var Flame = require('./flame');
 var uuid = require('node-uuid');
 var userScript="original"
 
@@ -325,7 +326,11 @@ Room.prototype.join = function(client) {
         tank.shooting = state;
     });
 
-        // Ian laying mines
+    //flaming
+    client.on('flameOn', function(state) {
+        tank.flaming = state;
+    });
+        // laying mines
     client.on('layMine', function(state) {
         tank.layingMine = state;
     });
