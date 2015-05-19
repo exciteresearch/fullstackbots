@@ -17,6 +17,7 @@ module.exports = router;
 //	edit loads botCode into codeEditor <= router.get('/readFile'
 	
 router.get('/readFile', function (req, res, next) {
+	console.log('/readFile req.query',req.query);
 	var botID = req.query.bot;
 	Bot.findOne(botID, function(err, found){
         if (err) return next(err);

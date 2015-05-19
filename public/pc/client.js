@@ -58,7 +58,6 @@ pc.script.create('client', function (context) {
             var self = this;
             var servers = {
                 'local': 'http://localhost:30043/socket', // local
-
                 'fsb': 'http://192.168.1.216:30043/socket', //fsb
                 'us': 'http://54.67.22.188:30043/socket', // us
                 'default': 'https://tanx.playcanvas.com/socket' // load balanced
@@ -68,7 +67,16 @@ pc.script.create('client', function (context) {
             var eventID = getParameterByName('eventID') || '';
             var url = env && servers[env] || servers['default'];
             console.log("client.js eventID",eventID);
-
+            var botOneID = '55568ea41d2989172705bb9c';
+            $.ajax({
+            	  url: "/api/dispatcher/readFile?botOneID="+botOneID,
+            	  context: document.body
+            	}).done(function(data) {
+            		console.log("client.js ajax data",data);
+//            	  $( this ).addClass( "done" );
+            	});
+            
+            
             var socket = this.socket = new Socket({ url: url });
             
             this.connected = false;
