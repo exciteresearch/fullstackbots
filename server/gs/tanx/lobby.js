@@ -2,15 +2,21 @@ var Vec2 = require('./vec2');
 var Room = require('./room');
 var Pickable = require('./pickable');
 
-
 function Lobby() {
-    this.rooms = [ ];
+//    this.rooms = [ ];
+	this.rooms = { };
 }
-
 
 Lobby.prototype.join = function(client) {
 	
-	//console.log("Lobby.join client",client);
+//    client.on('eventID', function(data) {
+//        if (!! data ) {
+//        	console.log('request roomID for eventID',data);
+//        	client.send('eventID',data);
+//        }
+//    });
+	
+//	console.log("Lobby.join client",client);
 	/*{ _uuid: '6c839c7d-ca76-452b-a27e-c461e8f5ea80',
   socket: 
    { _session: 
@@ -41,36 +47,66 @@ Lobby.prototype.join = function(client) {
      _events: { close: [Function], error: [Function], data: [Function] } } } */
 	
     var room = null;
-    for(var i = 0; i < this.rooms.length; i++) {
-    	// roomsize of 12 max
-        if (this.rooms[i].clients.length < 12) {
-            room = this.rooms[i];
-            break;
-        }
-    }
     
-    // rooms none so create a new room
-    if (! room) {
+    // assign to room with matching client.eventID or create a room with that eventID
+    if(this.rooms[client.eventID]){
+    	this.rooms[client.eventID].join(client);
+    }
+    else { 
+    	
         // console.log('room add');
-        room = new Room();
-        this.rooms.push(room);
+        var room = new Room();
         room.on('update', Lobby.prototype.update);
         room.loop.start();
 
         // destroy
         var self = this;
+        
         room.on('leave', function() {
             if (this.clients.length > 0)
                 return;
 
             room.loop.stop();
-            var ind = self.rooms.indexOf(room);
-            self.rooms.splice(ind, 1);
-            // console.log('room destroy');
+            delete this.rooms[client.eventID];
         });
-    }
+        
+        this.rooms[client.eventID] = room;
 
-    room.join(client);
+        room.join(client);
+    	
+    }
+    
+    // old code which adds to the first room which is not full
+//    for(var i = 0; i < this.rooms.length; i++) {
+//    	// roomsize of 12 max
+//        if (this.rooms[i].clients.length < 2) {
+//            room = this.rooms[i];
+//            break;
+//        }
+//    }
+    
+    // rooms none so create a new room
+//    if (! room) {
+//        // console.log('room add');
+//        room = new Room();
+//        this.rooms.push(room);
+//        room.on('update', Lobby.prototype.update);
+//        room.loop.start();
+//
+//        // destroy
+//        var self = this;
+//        room.on('leave', function() {
+//            if (this.clients.length > 0)
+//                return;
+//
+//            room.loop.stop();
+//            var ind = self.rooms.indexOf(room);
+//            self.rooms.splice(ind, 1);
+//            // console.log('room destroy');
+//        });
+//    }
+
+//    room.join(client);
 };
 
 

@@ -1,4 +1,5 @@
 pc.extend(pc, function () {
+	console.log("bootstrap.js pc.extend(pc, ...");
     var CANVAS_ID = 'application-canvas';
     var CONSOLE_ID = 'application-console';
 

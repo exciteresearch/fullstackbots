@@ -1,4 +1,5 @@
 pc.script.create('culling', function (app) {
+	console.log("culling.js pc.script.create('culling', function (app){...");
     // Creates a new Culling instance
     var Culling = function (entity) {
         this.entity = entity;

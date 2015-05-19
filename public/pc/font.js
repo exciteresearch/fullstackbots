@@ -1,4 +1,5 @@
 pc.script.create('font', function (context) {
+	console.log("font.js");
     var Font = function () {
         var css = [
             "@font-face {",

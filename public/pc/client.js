@@ -1,3 +1,7 @@
+console.log("client.js");
+
+//var eventID = "5559f60123b028a5143b6e63";
+
 var test=false;
 var l=0;
 
@@ -47,7 +51,9 @@ pc.script.create('client', function (context) {
             };
 
             var env = getParameterByName('server') || 'default';
+            var eventID = getParameterByName('eventID') || '';
             var url = env && servers[env] || servers['default'];
+            console.log("client.js eventID",eventID);
 
             var socket = this.socket = new Socket({ url: url });
             
@@ -58,12 +64,24 @@ pc.script.create('client', function (context) {
             });
             
             socket.on('init', function(data) {
+            	console.log("client.id",data.id);
+            	console.log("roomId",data.roomId);
                 self.id = data.id;
                 self.connected = true;
+                
+                if(self.connected){
+                	console.log("requesting room");
+                	this.socket.send(JSON.stringify({ n:'eventID', d: eventID }));
+//                	this.socket.send('message');
+                }
                 
                 users.on(self.id + ':name', function(name) {
                     self.profile.set(name);
                 });
+            });
+            
+            socket.on('eventID', function(data) {
+                console.log('rcvd evenID',data);
             });
             
             users.bind(socket);
@@ -162,16 +180,9 @@ pc.script.create('client', function (context) {
                 this.gamepadConnected = true;
             }
         },
-    
-    
-    
-    
-
-    
-    
+        
         update: function (dt) {
            this.entity.script.TankAI.takeAction( tankPosition);
-           
         },
         
        onMouseDown: function() {
@@ -186,7 +197,6 @@ pc.script.create('client', function (context) {
             // shootNow=false;
             flameNow=false;
         },
-        
         flameOn: function(state) {
             if (! this.connected)
                 return;
