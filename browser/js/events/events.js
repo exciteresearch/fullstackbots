@@ -11,7 +11,15 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('EventsController', function ($scope, $stateParams, EventsFactory) {
+app.controller('mainEventCtrl',function($rootScope, $stateParams){
+	$rootScope.eventsObj = {};
+	
+	$rootScope.$on('launchEvent',function(event, data){
+		$rootScope.eventsObj = data;
+	});
+});
+
+app.controller('EventsController', function ($scope, $stateParams, EventsFactory, $rootScope) {
 
     $scope.data = {
         preferences: "",
@@ -66,13 +74,15 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
     }
 
     $scope.joinEvent = function( index ) {
+    	
         if($scope.eventLaunched) {
         	console.log("toggle from",$scope.eventLaunched);
         	$scope.eventLaunched = false;
         }
         else {
-        	console.log("toggle from",$scope.eventLaunched);
-        	$scope.eventLaunched = true;        	
+        	console.log("event id",$scope.pendingEvents[index]._id);
+        	$scope.eventLaunched = true;
+        	$rootScope.$emit('launchEvent',{ eventID: $scope.pendingEvents[index]._id, eventType: 'pending' });
         }
 //        EventsFactory.joinEvent( $scope.pendingEvents[index] )
 //        .then(function (event) {

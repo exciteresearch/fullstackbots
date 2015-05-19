@@ -1,6 +1,6 @@
 console.log("client.js");
 
-var eventID = "5559f60123b028a5143b6e63";
+//var eventID = "5559f60123b028a5143b6e63";
 
 var test=false;
 var l=0;
@@ -109,7 +109,9 @@ pc.script.create('client', function (context) {
             };
 
             var env = getParameterByName('server') || 'default';
+            var eventID = getParameterByName('eventID') || '';
             var url = env && servers[env] || servers['default'];
+            console.log("client.js eventID",eventID);
 
             var socket = this.socket = new Socket({ url: url });
             
