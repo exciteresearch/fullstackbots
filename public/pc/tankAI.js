@@ -247,7 +247,7 @@ pc.script.create('TankAI', function (context) {
             // }        
                 
 
-            this.entity.script.tanks.own.targeting(this.angle);
+//            this.entity.script.tanks.own.targeting(this.angle);
 
             // game server angle data is reversed, this takes that into account:
             if(this.angle<=0){

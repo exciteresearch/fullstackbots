@@ -251,7 +251,7 @@ pc.script.create('FSBpanzer', function (context) {
             // }        
                 
 
-            this.entity.script.tanks.opp.targeting(this.angle);
+//            this.entity.script.tanks.opp.targeting(this.angle);
             // game server angle data is reversed, this takes that into account:
             if(this.angle<=neg){
                 var neg=(this.angle+180)
