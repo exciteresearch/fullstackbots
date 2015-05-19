@@ -11,12 +11,9 @@ Lobby.prototype.join = function(client) {
 	
 //    client.on('eventID', function(data) {
 //        if (!! data ) {
-//        	console.log('request roomID for eventID',data);
 //        	client.send('eventID',data);
 //        }
 //    });
-	
-//	console.log("Lobby.join client",client);
 	/*{ _uuid: '6c839c7d-ca76-452b-a27e-c461e8f5ea80',
   socket: 
    { _session: 
@@ -54,8 +51,6 @@ Lobby.prototype.join = function(client) {
     	this.rooms[client.eventID].join(client);
     }
     else { 
-    	
-        // console.log('room add');
         var room = new Room();
         room.on('update', Lobby.prototype.update);
         room.loop.start();
@@ -88,7 +83,6 @@ Lobby.prototype.join = function(client) {
     
     // rooms none so create a new room
 //    if (! room) {
-//        // console.log('room add');
 //        room = new Room();
 //        this.rooms.push(room);
 //        room.on('update', Lobby.prototype.update);
@@ -103,7 +97,6 @@ Lobby.prototype.join = function(client) {
 //            room.loop.stop();
 //            var ind = self.rooms.indexOf(room);
 //            self.rooms.splice(ind, 1);
-//            // console.log('room destroy');
 //        });
 //    }
 

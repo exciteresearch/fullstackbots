@@ -119,8 +119,168 @@ pc.script.create('TankAI', function (context) {
 
         // Called every frame, dt is time in seconds since last update
 //        takeAction: function (tankPosition) {
-//        	console.log("Take Action is Empty.");
+//            // console.log(tankPosition)
+//            // if(p<299&&p>290){
+//            //     console.log("this",this)
+//            //     console.log("tankPosition",tankPosition)  
+//            // }
+//            // p++
+//            this.destinationY=destinationY;
+//            this.destinationX=destinationX;
+//            this.destination=destination;
+//            var _self = this.entity.script.client;
+//            easystar.setGrid(this.pathingMap);
+//            easystar.setAcceptableTiles([0]);
+//            easystar.enableDiagonals();
+//            
+//
+//            this.tankPosition = tankPosition;
+//            //determines mine laying:
+//            if(this.tankPosition[0]>18 && this.tankPosition[0]<28 && this.tankPosition[2]>18 && this.tankPosition[2]<28){
+//                _self.socket.send('layMine', true);
+//                layingMines=true;
+//            }else if( layingMines===true){
+//                _self.socket.send('layMine', false);
+//                layingMines=false;
+//            }
+//
+//
+//            if(newPath===true){
+//                newPath=false;
+//                easystar.findPath(Math.round(this.tankPosition[0]), Math.round(this.tankPosition[2]),this.destinationX, this.destinationY, function( path ) { //destinationX, destinationY
+//                    if (path === null) {  //
+//                        console.log("Path was not found.");
+//                    } else {
+//                        myPath=path;
+//                        
+//                    }
+//                });
+//                easystar.calculate();
+//                this.destination=true;
+//            }
+//            //checks whether tank is stuck or stopped and changes directions if so:
+//            this.pastLocations.push(this.tankPosition[0])
+//            this.pastLocations.push(this.tankPosition[2])
+//            if(this.pastLocations.length>40){
+//                this.pastLocations.shift()
+//                this.pastLocations.shift()
+//            }
+//            if(this.unstick>0){
+//                this.unstick--
+//            }else{
+//                if(Math.abs(this.pastLocations[0]-this.pastLocations[38])+Math.abs(this.pastLocations[1]-this.pastLocations[39])<0.5){
+//                    this.movementOne=Math.round(Math.random()*2-1)
+//                    this.movementTwo=Math.round(Math.random()*2-1)
+//                    this.unstick=100;
+//                }else{
+//                    //Pathing:
+//                    if (l>myPath.length-2){
+//                       this.destination=false;
+//                       l=0;
+//                       currentPriority=0;
+//                    }
+//                    if(this.destination===true&&myPath.length>0){
+//        
+//                        if (Math.abs(this.tankPosition[0]-(myPath[l].x))+Math.abs(this.tankPosition[2]-(myPath[l].y))<1){ 
+//
+//                            l++; 
+//                        }
+//                        if (this.tankPosition[0]<myPath[l].x&&this.tankPosition[2]>myPath[l].y){
+//
+//                           this.movementOne=1
+//                            this.movementTwo=(((Math.abs(this.tankPosition[2]-myPath[l].y)/(Math.abs(this.tankPosition[0]-myPath[l].x)+Math.abs(this.tankPosition[2]-myPath[l].y)))*-2)+1)
+//        
+//                        }
+//                        if (this.tankPosition[0]>myPath[l].x&&this.tankPosition[2]<myPath[l].y){
+//                            this.movementOne=-1
+//                            this.movementTwo=(((Math.abs(this.tankPosition[2]-myPath[l].y)/(Math.abs(this.tankPosition[0]-myPath[l].x)+Math.abs(this.tankPosition[2]-myPath[l].y)))*2)-1)
+//                        }
+//                        if(this.tankPosition[0]>myPath[l].x&&this.tankPosition[2]>myPath[l].y){
+//                           this.movementTwo=-1
+//                           this.movementOne=(((Math.abs(this.tankPosition[0]-myPath[l].x)/(Math.abs(this.tankPosition[0]-myPath[l].x)+Math.abs(this.tankPosition[2]-myPath[l].y)))*-2)+1)
+//        
+//                        }
+//                        if(this.tankPosition[0]<myPath[l].x&&this.tankPosition[2]<myPath[l].y){
+//                           this.movementTwo=1
+//                           this.movementOne=(((Math.abs(this.tankPosition[0]-myPath[l].x)/(Math.abs(this.tankPosition[0]-myPath[l].x)+Math.abs(this.tankPosition[2]-myPath[l].y)))*2)-1)
+//                        }
+//                    }else{
+//                    
+//                        if (! this.connected)
+//                            return;
+//                        //ian edit: Motion script
+//            
+//                        if(shootNow===true){
+//                        }else{
+//                         this.shoot(false);   
+//                        }
+//                        if (this.moved===undefined){
+//                            this.moved=0;
+//                        }
+//                        if(this.braked===true){
+//                            this.moved=200;
+//                        }
+//                    }
+//                    if(this.moved%200===0||this.moved===0){
+//                    this.movementOne=Math.round(Math.random()*2-1)
+//                    this.movementTwo=Math.round(Math.random()*2-1)
+//                    while(this.movementOne===0 && this.movementTwo===0){
+//                        this.movementOne=Math.round(Math.random()*2-1)
+//                        this.movementTwo=Math.round(Math.random()*2-1)
+//                        }
+//                    }
+//                }
+//            }  
+//            
+//            // turns turret based on where enemies are detected.
+//            if(shootNow==="right"){
+//                if(this.angle>-180){
+//                    this.angle-=3
+//                }else{
+//                    this.angle=180;
+//                } 
+//            }else if(shootNow==="left"){
+//                if (this.angle<180){
+//                    this.angle-=3
+//                }else{
+//                    this.angle=-180;
+//                }
+//            }        
+//                
+//
+////            this.entity.script.tanks.own.targeting(this.angle);
+//
+//            // game server angle data is reversed, this takes that into account:
+//            if(this.angle<=0){
+//                var neg=(this.angle+180)
+//            }else{
+//                var neg=(this.angle-180)
+//            }
+//
+//            _self.socket.send('target', neg);
+//            if(shootNow==true||shootNow==false){
+//                _self.socket.send('shoot', shootNow);
+//            }   
+//            if(flameNow==true||flameNow==false){
+//                _self.socket.send('flameOn', flameNow);
+//            }   
+//            movement=[this.movementOne,this.movementTwo];
+//            
+//            this.moved++;
+//
+//            // rotate vector
+//            var t =       movement[0] * Math.sin(Math.PI * 0.75) - movement[1] * Math.cos(Math.PI * 0.75);
+//            movement[1] = movement[1] * Math.sin(Math.PI * 0.75) + movement[0] * Math.cos(Math.PI * 0.75);
+//            movement[0] = t;
+//            
+//            // check if it is changed
+//            if (movement[0] !== this.movement[0] || movement[1] != this.movement[1]) {
+//                this.movement = movement;
+//                _self.socket.send('move', this.movement);
+//            }
+//
 //        }
+
     };
 
     return TankAI;
