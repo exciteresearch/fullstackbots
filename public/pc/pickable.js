@@ -1,4 +1,5 @@
 pc.script.create('pickable', function (context) {
+	console.log('pickable.js');
     var Pickable = function (entity) {
         this.entity = entity;
     };

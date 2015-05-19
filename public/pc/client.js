@@ -1,3 +1,7 @@
+console.log("client.js");
+
+//var eventID = "5559f60123b028a5143b6e63";
+
 var test=false;
 var l=0;
 
@@ -54,13 +58,16 @@ pc.script.create('client', function (context) {
             var self = this;
             var servers = {
                 'local': 'http://localhost:30043/socket', // local
-                'fsb': 'http://localhost:30043/socket',
-                'us': 'http://192.168.1.216:1337/socket', // us
+
+                'fsb': 'http://192.168.1.216:30043/socket', //fsb
+                'us': 'http://54.67.22.188:30043/socket', // us
                 'default': 'https://tanx.playcanvas.com/socket' // load balanced
             };
 
             var env = getParameterByName('server') || 'default';
+            var eventID = getParameterByName('eventID') || '';
             var url = env && servers[env] || servers['default'];
+            console.log("client.js eventID",eventID);
 
             var socket = this.socket = new Socket({ url: url });
             
@@ -71,12 +78,24 @@ pc.script.create('client', function (context) {
             });
             
             socket.on('init', function(data) {
+            	console.log("client.id",data.id);
+            	console.log("roomId",data.roomId);
                 self.id = data.id;
                 self.connected = true;
+                
+                if(self.connected){
+                	console.log("requesting room");
+                	this.socket.send(JSON.stringify({ n:'eventID', d: eventID }));
+//                	this.socket.send('message');
+                }
                 
                 users.on(self.id + ':name', function(name) {
                     self.profile.set(name);
                 });
+            });
+            
+            socket.on('eventID', function(data) {
+                console.log('rcvd evenID',data);
             });
             
             users.bind(socket);
@@ -164,12 +183,8 @@ pc.script.create('client', function (context) {
             this.gamepadConnected = false;
             this.gamepadActive = false;
         },
-    
-    
-    
-    
 
-    
+
         
         update: function (dt) {
             // if(p<299&&p>290){
@@ -180,6 +195,7 @@ pc.script.create('client', function (context) {
             // p++
            this.entity.script.TankAI.takeAction( tankPosition);
            this.opponent.tanks.entity.script.FSBpanzer.takeAction(opponentTankPosition);
+
         },
         
        onMouseDown: function() {
@@ -194,7 +210,6 @@ pc.script.create('client', function (context) {
             // shootNow=false;
             flameNow=false;
         },
-        
         flameOn: function(state) {
             if (! this.connected)
                 return;

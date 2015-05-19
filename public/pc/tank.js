@@ -1,3 +1,4 @@
+console.log('tank.js');
 var tmpVec = new pc.Vec3();
 var tmpQuat = new pc.Quat();
 

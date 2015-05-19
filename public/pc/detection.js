@@ -1,3 +1,4 @@
+console.log("detection.js");
 var shootNow= false;
 var flameNow= false;
 pc.script.create("trigger", function (app) {

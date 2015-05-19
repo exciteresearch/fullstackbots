@@ -15,6 +15,7 @@ require('./models/user');
 require('./models/bot');
 require('./models/map');
 require('./models/event');
+//require('./models/eventsMiguel');
 
 var startDbPromise = new Q(function (resolve, reject) {
     db.on('open', resolve);

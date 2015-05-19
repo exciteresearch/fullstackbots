@@ -30,6 +30,7 @@ startDb.then(createApplication).then(startServer).catch(function (err) {
     process.kill(1);
 });
 
+// DJ and Migeul, fully integrate the fsb and gs "fsi-gameserverIntegration-#49"
 // Sloppy integration of GameServer (successful) [does not account for use of games other than tanx]
 // refactoring and mergin gs GamesServer into FSB socket/lobby code below
 // npm install socket-server --save (successful) need test
@@ -37,7 +38,7 @@ startDb.then(createApplication).then(startServer).catch(function (err) {
 // npm install node-uuid --save (successful) need test
 process.on('uncaughtException', function(err) {
     console.log('Caught exception: ' + err);
-    console.log(err.stack);
+    console.log('uncaughtException',err.stack);
 });
 
 //http
@@ -53,7 +54,7 @@ gameServer.listen(port, host, function () {
 
 // socket
 //var WebSocketServer = require('./modules/socket-server');
-var WebSocketServer = require('./gs/tanx/modules/socket-server');
+var WebSocketServer = require('./gs/tanx/socket-server');
 var ws = new WebSocketServer({
     http: gameServer,
     prefix: '/socket'
@@ -62,17 +63,29 @@ var ws = new WebSocketServer({
 
 // lobby
 //var Lobby = require('./modules/lobby');
-var Lobby = require('./gs/tanx/modules/lobby');
+var Lobby = require('./gs/tanx/lobby');
 var lobby = new Lobby();
 
 
 // socket connection
 ws.on('connection', function(client) {
-    // console.log('connected', client.id);
-
+	
+	
+	
+	console.log("client.id",client.id);
     client.send('init', {
-        id: client.id
+        id: client.id,
+        roomId: 'blahlbahlbah'
     });
-
-    lobby.join(client);
+    
+    client.on('eventID', function(data) {    	
+        if (!! data ) {
+        	client.eventID = data;
+        	console.log('request roomID for eventID',data);
+        	client.send('eventID',data);
+        	lobby.join(client);
+        }
+    });    
+    
+//    lobby.join(client);
 });

@@ -2,42 +2,112 @@ var Vec2 = require('./vec2');
 var Room = require('./room');
 var Pickable = require('./pickable');
 
-
 function Lobby() {
-    this.rooms = [ ];
+//    this.rooms = [ ];
+	this.rooms = { };
 }
 
-
 Lobby.prototype.join = function(client) {
+	
+//    client.on('eventID', function(data) {
+//        if (!! data ) {
+//        	console.log('request roomID for eventID',data);
+//        	client.send('eventID',data);
+//        }
+//    });
+	
+//	console.log("Lobby.join client",client);
+	/*{ _uuid: '6c839c7d-ca76-452b-a27e-c461e8f5ea80',
+  socket: 
+   { _session: 
+      { session_id: undefined,
+        heartbeat_delay: 25000,
+        disconnect_delay: 5000,
+        prefix: '/socket',
+        send_buffer: [],
+        is_closing: false,
+        readyState: 1,
+        timeout_cb: [Function],
+        to_tref: [Object],
+        connection: [Circular],
+        emit_open: null,
+        recv: [Object] },
+     id: '02ee63e9-208d-49ba-aea0-0a0b5fbec0ab',
+     headers: 
+      { host: '192.168.1.216:30043',
+        'user-agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36',
+        'accept-language': 'en-US,en;q=0.8' },
+     prefix: '/socket',
+     remoteAddress: '192.168.1.63',
+     remotePort: 50171,
+     address: { address: '192.168.1.216', family: 'IPv4', port: 30043 },
+     url: '/socket/329/8v9dxjov/websocket',
+     pathname: '/socket/329/8v9dxjov/websocket',
+     protocol: 'websocket',
+     _events: { close: [Function], error: [Function], data: [Function] } } } */
+	
     var room = null;
-    for(var i = 0; i < this.rooms.length; i++) {
-        if (this.rooms[i].clients.length < 1) {
-            room = this.rooms[i];
-            break;
-        }
-    }
 
-    if (! room) {
+    
+    // assign to room with matching client.eventID or create a room with that eventID
+    if(this.rooms[client.eventID]){
+    	this.rooms[client.eventID].join(client);
+    }
+    else { 
+    	
         // console.log('room add');
-        room = new Room();
-        this.rooms.push(room);
+        var room = new Room();
         room.on('update', Lobby.prototype.update);
         room.loop.start();
 
         // destroy
         var self = this;
+        
         room.on('leave', function() {
             if (this.clients.length > 0)
                 return;
 
             room.loop.stop();
-            var ind = self.rooms.indexOf(room);
-            self.rooms.splice(ind, 1);
-            // console.log('room destroy');
+            delete this.rooms[client.eventID];
         });
-    }
+        
+        this.rooms[client.eventID] = room;
 
-    room.join(client);
+        room.join(client);
+    	
+    }
+    
+    // old code which adds to the first room which is not full
+//    for(var i = 0; i < this.rooms.length; i++) {
+//    	// roomsize of 12 max
+//        if (this.rooms[i].clients.length < 2) {
+//            room = this.rooms[i];
+//            break;
+//        }
+//    }
+    
+    // rooms none so create a new room
+//    if (! room) {
+//        // console.log('room add');
+//        room = new Room();
+//        this.rooms.push(room);
+//        room.on('update', Lobby.prototype.update);
+//        room.loop.start();
+//
+//        // destroy
+//        var self = this;
+//        room.on('leave', function() {
+//            if (this.clients.length > 0)
+//                return;
+//
+//            room.loop.stop();
+//            var ind = self.rooms.indexOf(room);
+//            self.rooms.splice(ind, 1);
+//            // console.log('room destroy');
+//        });
+//    }
+
+//    room.join(client);
 };
 
 

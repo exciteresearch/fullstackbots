@@ -1,3 +1,4 @@
+console.log('tanks.js');
 var tankPosition=[0,0,0];
 var p=0;
 var opponentTankPosition=[0,0,0];
