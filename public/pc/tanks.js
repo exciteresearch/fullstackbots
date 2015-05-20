@@ -1,5 +1,6 @@
 console.log('tanks.js');
 var tankPosition=[0,0,0];
+var z=0;
 var p=0;
 var opponentTankPosition=[0,0,0];
 pc.script.create('tanks', function (context) {
@@ -28,26 +29,31 @@ pc.script.create('tanks', function (context) {
         },
         
         new: function(args) {
+            console.log("args", args);
             var newTank = this.tank.clone();
             newTank.setName('tank_' + args.id);
             newTank.owner = args.owner;
             newTank.enabled = true;
-            newTank.setPosition(args.pos[0], 0, args.pos[1]);
+            newTank.setPosition(args.pos[0], 0, args.pos[1], 0);
             newTank.rotate(0, Math.random() * 360, 0);
             
+            if(newTank.owner=null){
+                newTank.opponentIsTrue=true;
+            }
             this.teams.tankAdd(newTank.script.tank, args.team);
             
             if (args.owner == this.client.id) {
                 this.camera.script.link.link = newTank;
-                if(p===0){
-                    this.opp = newTank;
-                    p++
-                }else{
+                // if(p===0){
+                //     this.opp = newTank;
+                //     p++
+                // }else{
                     this.own= newTank;
-                }
+                // }
             }
             
             this.tanks.addChild(newTank);
+            console.log(newTank);
         },
         
         delete: function(args) {
@@ -59,49 +65,79 @@ pc.script.create('tanks', function (context) {
         },
         
         updateData: function(data) {
-            
             for(var i = 0; i < data.length; i++) {
-                var tankData = data[i];
-                
-                var tank = this.tanks.findByName('tank_' + tankData.id);
-                if (! tank) continue;
-                tank = tank.script.tank;
-                
-                // movement
-                if (tankData.hasOwnProperty('x'))
-                    tank.moveTo([ tankData.x, tankData.y ]);
-                
-                // targeting
-                if (! tank.own && tankData.hasOwnProperty('a'))
-                    tank.targeting(tankData.a);
-                //ian edit: gravitate to repairs    
-                if(i===0){
-                   tankPosition=tank.entity.position.data 
-                }else if(i===1)
-                {
-                   opponentTankPosition=tank.entity.position.data 
-                }
+                if(data[i].opponentTank===false){
+                    var tankData = data[i];
+                    
+                    var tank = this.tanks.findByName('tank_' + tankData.id);
+                    if (! tank) continue;
+                    tank = tank.script.tank;
 
-                // hp
-                if (tankData.hasOwnProperty('hp'))
-                    tank.setHP(tankData.hp);
-                
-                // shield
-                tank.setSP(tankData.sp || 0);
+                    // movement
+                    if (tankData.hasOwnProperty('x'))
+                        tank.moveTo([ tankData.x, tankData.y ]);
+                    
+                    // targeting
+                    if (! tank.own && tankData.hasOwnProperty('a'))
+                        tank.targeting(tankData.a);
+                    //ian edit: gravitate to repairs    
+                    if(tank.name.innerText="Your Tank"){
+                       tankPosition=tank.entity.position.data 
+                    }else {
+                       opponentTankPosition=tank.entity.position.data 
+                    }
 
-                // killer
-                if (tank.own && tankData.hasOwnProperty('killer')||tank.own && tankData.hasOwnProperty('killer')) {
-                    // find killer
-                    tank.killer = this.tanks.findByName('tank_' + tankData.killer);
-                }
+                    // hp
+                    if (tankData.hasOwnProperty('hp'))
+                        tank.setHP(tankData.hp);
+                    
+                    // shield
+                    tank.setSP(tankData.sp || 0);
 
-                
-                // dead/alive
-                tank.setDead(tankData.dead || false);
-                
-                // score
-                // if (tank.own && tankData.hasOwnProperty('s'))
-                    // this.hpBar.setScore(tankData.s);
+                    // killer
+                    if (tank.own && tankData.hasOwnProperty('killer')||tank.own && tankData.hasOwnProperty('killer')) {
+                        // find killer
+                        tank.killer = this.tanks.findByName('tank_' + tankData.killer);
+                    }
+
+                    
+                    // dead/alive
+                    tank.setDead(tankData.dead || false);
+                    
+                    // score
+                    // if (tank.own && tankData.hasOwnProperty('s'))
+                        // this.hpBar.setScore(tankData.s);
+                }else{
+                    var tankData = data[i];
+                    
+                    var tank = this.tanks.findByName('tank_' + tankData.id);
+                    if (! tank) continue;
+                    tank = tank.script.tank;
+
+                    // movement
+                    if (tankData.hasOwnProperty('x'))
+                        tank.moveTo([ tankData.x, tankData.y ]);
+                    
+                    // targeting
+                    if (! tank.own && tankData.hasOwnProperty('a'))
+                        tank.targeting(tankData.a);
+                    //ian edit: gravitate to pickables    
+                       opponentTankPosition=tank.entity.position.data 
+                    // hp
+                    if (tankData.hasOwnProperty('hp'))
+                        tank.setHP(tankData.hp);
+                    
+                    // shield
+                    tank.setSP(tankData.sp || 0);
+
+                    // killer
+                    if (tank.own && tankData.hasOwnProperty('killer')||tank.own && tankData.hasOwnProperty('killer')) {
+                        // find killer
+                        tank.killer = this.tanks.findByName('tank_' + tankData.killer);
+                    }
+                    // dead/alive
+                    tank.setDead(tankData.dead || false);
+                }       
             }
             
             this.minimap.draw();

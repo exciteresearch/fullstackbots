@@ -24,9 +24,9 @@
 	
 	<hr>
 	
-	<div class="row">
+	<div class="row" ng-controller="EventsController">
 		<h2>Pending Events</h2>
-		<table  ng-repeat="event in pendingEvents" ng-controller="EventsController">
+		<table  ng-repeat="event in pendingEvents" >
 			<tr>
 				<th>Player Name</th>
 				<th>Rank</th>
@@ -42,10 +42,7 @@
 			<tr> 
 				<td colspan='10'>
 					<!-- ng-if="eventLaunched" -->
-					<div ng-if="eventLaunched" ng-controller="PlayCanvasCtrl" class="col-lg-12 col-sm-12">
-						<pre>{{playCanvasURL}}</pre>
-						<iframe ng-src="{{playCanvasURL}}" style="width:100%;height:500px;"></iframe>
-					</div>
+					
 				
 				</td>							
 			</tr>
@@ -66,7 +63,10 @@
 				<td></td>
 			</tr>
 		</table>
-
+		<div ng-if="eventLaunched" ng-controller="PlayCanvasCtrl" class="col-lg-12 col-sm-12">
+						<pre>{{playCanvasURL}}</pre>
+						<iframe ng-src="{{playCanvasURL}}" style="width:100%;height:500px;"></iframe>
+		</div>
 		<hr>
 
 		<button ng-hide="data.createEvent" ng-click="data.createEvent = true">

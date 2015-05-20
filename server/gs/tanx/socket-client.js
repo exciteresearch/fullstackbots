@@ -54,7 +54,6 @@ Client.prototype._onmessage = function(data) {
         this._onerror(new Error('could not parse message - is it JSON?'));
         return;
     }
-
     if (ReservedNames[obj.n]) {
         this._onerror(new Error('could not receive message - name is reserved:', obj.n));
         return;
@@ -77,7 +76,6 @@ Client.prototype.send = function(name, data) {
     });
 
     this.socket.write(msg);
-
     return msg;
 };
 
