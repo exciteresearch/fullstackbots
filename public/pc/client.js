@@ -104,9 +104,16 @@ pc.script.create('client', function (context) {
             socket.on('tank.new', function(data) {
                 self.tanks.new(data);
             });
+            socket.on('opponentTank.new', function(data) {
+                self.opponent.tanks.new(data);
+            });
             
             socket.on('tank.delete', function(data) {
                 self.tanks.delete(data);
+
+            });
+            socket.on('opponentTank.delete', function(data) {
+                self.opponent.tanks.delete(data);
 
             });
             
@@ -149,13 +156,25 @@ pc.script.create('client', function (context) {
                 }
                 
                 // tanks update
-                if (data.tanks)
+                if (data.tanks){
+                    //ian edit: sends opponent vs client data to the appropriate locations.
+                    if(data.tanks[0].opponentTank===true){
+                        self.tanks.updateData(data.tanks[1]);
+                        // console.log(self)
+                        self.opponent.tanks.updateData(data.tanks[0]);
+                    }else{
+                        self.tanks.updateData(data.tanks[0]);
+                        self.opponent.tanks.updateData(data.tanks[1]);
+                    }
+                    self.tanks.updateData(data.tanks);
+                }
+
                     // if(p<4){
                     //     console.log("data",data.tanks)
                     //     console.log("this",this)
                     //     p++
                     // }
-                    self.tanks.updateData(data.tanks);
+                    
 
                 // tanks respawn
                 if (data.tanksRespawn) {

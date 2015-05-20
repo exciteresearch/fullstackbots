@@ -601,7 +601,13 @@ Lobby.prototype.update = function() {
             y: parseFloat(tank.pos[1].toFixed(2), 10),
             a: Math.floor(tank.angle)
         };
+        if (tank.owner.id===null){
 
+            obj.opponentTank=true;
+        }else{
+            // console.log("tank: ",tank)
+            obj.opponentTank=false;
+        }
         if (tank.dead) { // dead
             obj.dead = true;
             // killer

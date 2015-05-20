@@ -304,14 +304,6 @@ Room.prototype.join = function(client) {
     tank.team = this.pickWeakestTeam(); //DJ first time random then by weaskest team
     tank.team.tanks++;
     
-    // room
-//    client.on('eventID', function(data) {
-//        if (!! data ) {
-//        	console.log('request roomID for eventID',data);
-//        	client.send('eventID',data);
-//        }
-//    });
-    
     // movement
     client.on('move', function(data) {
         if (data &&
@@ -377,14 +369,13 @@ Room.prototype.join = function(client) {
 
         });
     }
+    // console.log("users",users)
     client.send('user.sync', users);
 
     // send other tanks
     this.world.forEach('tank', function(tank) {
         if (tank.owner === client)
             return;
-
-        client.send('tank.new', tank.data);
     });
 
 
@@ -462,7 +453,7 @@ Room.prototype.join = function(client) {
     // publish new tank
     // DJ and Miguel look into this it might be helpful for creating an event/battle
     this.publish('tank.new', tank.data);
-    this.publish('tank.new', opponentTank.data);
+    this.publish('opponentTank.new', opponentTank.data);
 
     // event
     // DJ Miguel Ian what does this do?

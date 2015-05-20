@@ -99,6 +99,7 @@ pc.script.create('FSBpanzer', function (context) {
     // Creates a new TankAI instance
 
     var FSBpanzer = function (entity) {
+        this.name = "Enemy Tank";
         this.entity = entity;
         this.moved=0;
         this.movement = [ 0, 0 ];
@@ -277,7 +278,7 @@ pc.script.create('FSBpanzer', function (context) {
             // check if it is changed
             if (movement[0] !== this.movement[0] || movement[1] != this.movement[1]) {
                 this.movement = movement;
-                _self.socket.send('opponent.move', this.movement);
+                _self.socket.send('opponent.move', [0,0]);
             }
 
         }
