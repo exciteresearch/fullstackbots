@@ -7,7 +7,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('mainEventCtrl',function($scope, $stateParams){
+app.controller('mainEditorCtrl',function($scope, $stateParams){
 	$scope.eventsObj = {};
 	console.log("revised mainEventCtrl");
 	$scope.$on('refreshEventObj',function(event, data){
@@ -16,7 +16,28 @@ app.controller('mainEventCtrl',function($scope, $stateParams){
 	});
 });
 
+app.controller('PlayCanvasEditorCtrl',function($scope,$sce,uuid4){
 
+	$scope.simLaunched = false;
+	
+    $scope.$on('simmulate',function(event, bot) {
+    	if(!bot._id) {
+        	$scope.simLaunched = false;
+        }
+        else {
+        	var eventID = uuid4.generate();
+        	$scope.$emit('refreshEventObj', { 
+        		eventID: eventID,
+        		botOneID: bot._id
+			});
+        	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html?server=fsb'
+				+'&eventID='+eventID
+				+"&botOneID="+bot._id
+			);
+        	$scope.simLaunched = true;
+        }
+    });
+});
 
 app.controller('CodeEditorCtrl',function($scope, BotCodeFactory){
 
@@ -33,6 +54,11 @@ app.controller('CodeEditorCtrl',function($scope, BotCodeFactory){
 	
 	$scope.saveBot = function(){
 		BotCodeFactory.saveBot($scope.bot);
+	};
+	
+	$scope.simBot = function(){
+		BotCodeFactory.saveBot($scope.bot);
+		$scope.$emit('simmulate', $scope.bot);
 	};
 	
 	// ui.ace start
@@ -54,33 +80,4 @@ app.controller('CodeConsoleCtrl',function($scope){
 app.controller('ButtonsCtrl',function($scope){
 	//Practice and/or Compete
 	
-});
-
-app.controller('SideMenuCtrl',function($scope){
-	//Chat, Repo, FAQ. etc
-	
-});
-
-app.controller('msgCtrl',function($scope) {
-    if (typeof(EventSource) !== "undefined") {
-    	
-        // Yes! Server-sent events support!
-        var source = new EventSource('/api/dispatcher/');
-        source.onopen = function(event) {
-        	console.log("open",event);
-        };
-        // creat an eventHandler for when a message is received
-        source.onmessage = function(event) {
-        	  console.log('messaage data:',event.data);
-        	  $scope.msg = JSON.parse(event.data);
-//            $scope.$apply();
-//            console.log($scope.msg);
-        };
-        source.onerror = function(event) {
-        	console.log("error",event);
-        };
-    } else {
-	    // Sorry! No server-sent events support..
-	    console.log('SSE not supported by browser.');
-	}
 });
