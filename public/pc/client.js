@@ -224,6 +224,7 @@ pc.script.create('client', function (context) {
         		botCode = null;
         	}
         	
+
         	if(!!this.entity.script.TankAI.takeAction){
                 this.entity.script.TankAI.takeAction(tankPosition); 
         	}
