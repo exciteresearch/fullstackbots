@@ -1,11 +1,11 @@
 console.log("client.js");
 
-var botCode = "";
-
-var test=false;
-var l=0;
+// Ian are these needed here? I don't think they are necessary anymore
+//var test=false;
+//var l=0;
 
 pc.script.create('client', function (context) {
+	var botCode = null; //do not remove or the orange PlayCanvas logo will remain on screen
     var p=0;
     var counter=0;
     var tmpVec = new pc.Vec3();
@@ -74,9 +74,7 @@ pc.script.create('client', function (context) {
             	  url: "/api/dispatcher/readFile?botOneID="+botOneID,
             	  context: document.body
             	}).done(function(data) {
-            		console.log("client.js ajax data",data);
             		botCode = data.botCode;
-//            	  $( this ).addClass( "done" );
             	});            
             
             var socket = this.socket = new Socket({ url: url });
@@ -88,13 +86,10 @@ pc.script.create('client', function (context) {
             });
             
             socket.on('init', function(data) {
-            	console.log("client.id",data.id);
-            	console.log("roomId",data.roomId);
                 self.id = data.id;
                 self.connected = true;
                 
                 if(self.connected){
-                	console.log("requesting room");
                 	this.socket.send(JSON.stringify({ n:'eventID', d: eventID }));
 //                	this.socket.send('message');
                 }
@@ -105,7 +100,7 @@ pc.script.create('client', function (context) {
             });
             
             socket.on('eventID', function(data) {
-                console.log('rcvd eventID',data);
+                console.log('room eventID=',data);
             });
             
             users.bind(socket);
@@ -113,6 +108,8 @@ pc.script.create('client', function (context) {
             socket.on('tank.new', function(data) {
                 self.tanks.new(data);
             });
+            
+            // request the spawning of an opponent tank AI
             socket.on('opponentTank.new', function(data) {
                 self.opponent.tanks.new(data);
             });
@@ -169,7 +166,6 @@ pc.script.create('client', function (context) {
                     //ian edit: sends opponent vs client data to the appropriate locations.
                     if(data.tanks[0].opponentTank===true){
                         self.tanks.updateData(data.tanks[1]);
-                        // console.log(self)
                         self.opponent.tanks.updateData(data.tanks[0]);
                     }else{
                         self.tanks.updateData(data.tanks[0]);
@@ -220,17 +216,15 @@ pc.script.create('client', function (context) {
                 
             // }
             // p++
+        	
         	// botCode applied using eval()
         	if(!!botCode){
         		var evalCode = "this.entity.script.TankAI.takeAction = function(tankPosition){"+botCode+"}";
         		eval(evalCode);
-        		console.log('evalCode function=',this.entity.script.TankAI.takeAction);
         		botCode = null;
-//        		debugger;
         	}
         	
-        	if(this.entity.script.TankAI.takeAction){
-                console.log('this.entity.script.TankAI.takeAction function=',this.entity.script.TankAI.takeAction);
+        	if(!!this.entity.script.TankAI.takeAction){
                 this.entity.script.TankAI.takeAction(tankPosition); 
         	}
 //        	this.entity.script.TankAI.callBotCode = function(takeAction){
@@ -243,7 +237,6 @@ pc.script.create('client', function (context) {
         },
         
        onMouseDown: function() {
-            // console.log("test");
             // this.layMine(true);
             // shootNow=true;
             flameNow=true;
