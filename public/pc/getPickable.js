@@ -7,12 +7,12 @@ destinationY=0;
 var currentPriority=0;
 var newPath=false;
 pc.script.create("trigger", function (app) {
-    var shieldPriority=1;
-    var damagePriority=2;
-    var repairPriority=0;
+    var shieldPriority=4;
+    var damagePriority=3;
+    var repairPriority=1;
     var thisPriority=0;
-    var enemyPriority=5;
-    var coinPriority=4;
+    var enemyPriority=2;
+    var coinPriority=5;
 
     var zeroVec = pc.Vec3.ZERO;
 
@@ -44,9 +44,9 @@ pc.script.create("trigger", function (app) {
             
             itemLoc = entity.getPosition();
             if (currentPriority < thisPriority){
-                console.log(thisPriority)
                 destinationX=Math.round(itemLoc.data[0]);
                 destinationY=Math.round(itemLoc.data[2]);
+                if(logging===true){console.log(this.entity._parent.name+" seeking "+entity.name+" at ["+Math.round(itemLoc.data[0])+","+Math.round(itemLoc.data[2])+"]")} //
                 this.entity._parent.destinationX=Math.round(itemLoc.data[0]);
                 this.entity._parent.destinationY=Math.round(itemLoc.data[2]);
                 newPath=true;
@@ -71,11 +71,12 @@ pc.script.create("trigger", function (app) {
             }
             itemLoc = entity.getPosition();
             if (currentPriority < thisPriority){
-                console.log(thisPriority)
+                
                 destinationX=Math.round(itemLoc.data[0])
                 destinationY=Math.round(itemLoc.data[2])
                 this.entity._parent.destinationX=Math.round(itemLoc.data[0])
                 this.entity._parent.destinationY=Math.round(itemLoc.data[2])
+                console.log(this.entity._parent.name+" seeking "+entity.name+" at ["+Math.round(itemLoc.data[0])+","+Math.round(itemLoc.data[2])+"]");               
                 newPath=true;
                 destination=true;
                 this.entity._parent.destination=true;
