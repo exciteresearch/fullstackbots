@@ -29,7 +29,7 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
         slots: 1,
         createEvent: false
     };
-    
+    $scope.botOneID = "555ba4d6a5f6226b30937fc4";
     $scope.eventLaunched = false;
     $scope.waiting = false;
     if (!$scope.pendingEvents) EventsFactory.getPendingEvents().then(function(events){
@@ -60,7 +60,6 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
         EventsFactory.createEvent( newEvent )
         .then( function ( event )
             {
-                console.log("EVENT ADDED!");
                 $scope.pendingEvents.push(event);
                 $scope.data.createEvent = false;
                 $scope.data.preferences = "";
@@ -80,7 +79,6 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
     $scope.joinEvent = function( index ) {
     	
         if($scope.eventLaunched) {
-        	console.log("toggle from",$scope.eventLaunched);
         	$scope.eventLaunched = false;
         }
         else {
@@ -94,7 +92,6 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
 //        		eventID: $scope.pendingEvents[index]._id, eventType: 'pending',
 //        		botOneID: $scope.botOneID
 //        	});
-        	console.log("EventsController 'launchEvent' $scope.pendingEvents[index]._id id",$scope.pendingEvents[index]._id);
         }
         
         
