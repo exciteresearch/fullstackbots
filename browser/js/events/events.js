@@ -75,6 +75,8 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
             });
     }
 
+	$scope.botOneID = '555ba4d6a5f6226b30937fc4';
+
     $scope.joinEvent = function( index ) {
     	
         if($scope.eventLaunched) {
@@ -85,11 +87,13 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
         	$scope.directEventID = $scope.pendingEvents[index]._id;
         	$scope.eventLaunched = true;
         	$scope.$emit('refreshEventObj', { 
-        		eventID: $scope.pendingEvents[index]._id, eventType: 'pending' 
+        		eventID: $scope.pendingEvents[index]._id, eventType: 'pending',
+        		botOneID: $scope.botOneID
     			});
-        	$scope.$emit('launchEvent',{ 
-        		eventID: $scope.pendingEvents[index]._id, eventType: 'pending' 
-        	});
+//        	$scope.$emit('launchEvent',{ 
+//        		eventID: $scope.pendingEvents[index]._id, eventType: 'pending',
+//        		botOneID: $scope.botOneID
+//        	});
         	console.log("EventsController 'launchEvent' $scope.pendingEvents[index]._id id",$scope.pendingEvents[index]._id);
         }
         
@@ -122,7 +126,11 @@ app.controller('PlayCanvasCtrl',function($scope,$sce){
 	// it compounds the security risk of malicious code injection from the Code Editor
 	
 	console.log('$scope.$parent.directEventID',$scope.$parent.directEventID);
-	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html?server=fsb&eventID='+$scope.$parent.directEventID);
+	console.log('$scope.$parent.botOneID',$scope.$parent.botOneID);
+	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html?server=fsb'
+			+'&eventID='+$scope.$parent.directEventID
+			+"&botOneID="+$scope.$parent.botOneID
+			);
 ////	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html?server=fsb&eventID='+'5559f60123b028a5143b6e63');
 ////	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html?server=fsb');
 //

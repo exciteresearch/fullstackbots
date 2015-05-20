@@ -1,11 +1,21 @@
 'use strict';
 
 app.config(function ($stateProvider) {
-    $stateProvider.state('home', {
-        url: '/',
-        templateUrl: 'js/home/home.html'
+    $stateProvider.state('editor', {
+        url: '/editor',
+        templateUrl: 'js/editor/editor.html'
     });
 });
+
+app.controller('mainEventCtrl',function($scope, $stateParams){
+	$scope.eventsObj = {};
+	console.log("revised mainEventCtrl");
+	$scope.$on('refreshEventObj',function(event, data){
+		console.log("mainEventCtrl data=",data);
+		$scope.eventsObj = data;
+	});
+});
+
 
 
 app.controller('CodeEditorCtrl',function($scope, BotCodeFactory){
@@ -13,10 +23,11 @@ app.controller('CodeEditorCtrl',function($scope, BotCodeFactory){
 	$scope.bot = {};
 	
 	//Could also be a Panel of Tabs, TODO upon selection or forking of a bot
-	BotCodeFactory.getBot('5556463aaadfdb33433b63b5').then(function(bot){
+	BotCodeFactory.getBot('555ba4d6a5f6226b30937fc4').then(function(bot){
 		console.log("controller data",bot);
-		$scope.bot.botCode = bot.botCode;
-		$scope.bot._id = bot._id;
+		$scope.bot = bot;
+//		$scope.bot.botCode = bot.botCode;
+//		$scope.bot._id = bot._id;
 
 	});
 	
