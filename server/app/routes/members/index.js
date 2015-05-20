@@ -61,7 +61,7 @@ router.get('/live', ensureAuthenticated, function (req, res, next) {
 //Create an Event
 router.post('/', function (req, res, next) {
   
-console.log("Hi"); 
+console.log("index.js route.post.('/',...");
 var event = req.body;
 event.createdBy = mongoose.Types.ObjectId("5558f55d28db30a4394d4234");
 

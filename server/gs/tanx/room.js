@@ -6,7 +6,7 @@ var Tank = require('./tank');
 var Bullet = require('./bullet');
 var Flame = require('./flame');
 var uuid = require('node-uuid');
-var userScript="original"
+var userScript="original";
 
 
 function Room() {
@@ -304,7 +304,17 @@ Room.prototype.join = function(client) {
 
     tank.team = this.pickWeakestTeam(); //DJ first time random then by weaskest team
     tank.team.tanks++;
-    
+
+
+    // room
+//    client.on('eventID', function(data) {
+//        if (!! data ) {
+//        	console.log('request roomID for eventID',data);
+//        	client.send('eventID',data);
+//        }
+//    });
+
+
     // movement
     client.on('move', function(data) {
         if (data &&

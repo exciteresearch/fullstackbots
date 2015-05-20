@@ -109,6 +109,7 @@ pc.script.create('TankAI', function (context) {
         this.destinationY=0;
 
     };
+    // TankAI.prototype.layingMines=false;
     var layingMines=false;
     TankAI.prototype = {
         // Called once after all resources are loaded and before the first update

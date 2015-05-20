@@ -1,14 +1,9 @@
 console.log("client.js");
 
-//var eventID = "5559f60123b028a5143b6e63";
-var botOneID = '55568ea41d2989172705bb9d';
 var botCode = "";
-
 
 var test=false;
 var l=0;
-
-
 
 pc.script.create('client', function (context) {
     var p=0;
@@ -69,9 +64,11 @@ pc.script.create('client', function (context) {
             };
 
             var env = getParameterByName('server') || 'default';
-            var eventID = getParameterByName('eventID') || '';
+            var eventID = getParameterByName('eventID') || ''; // if no event ID then AI don't move
+            var botOneID = getParameterByName('botOneID') || '';
+
             var url = env && servers[env] || servers['default'];
-            console.log("client.js eventID",eventID);
+            console.log("client.js eventID",eventID,"botOneID",botOneID);
 
             $.ajax({
             	  url: "/api/dispatcher/readFile?botOneID="+botOneID,
@@ -80,8 +77,7 @@ pc.script.create('client', function (context) {
             		console.log("client.js ajax data",data);
             		botCode = data.botCode;
 //            	  $( this ).addClass( "done" );
-            	});
-            
+            	});            
             
             var socket = this.socket = new Socket({ url: url });
             
@@ -109,7 +105,7 @@ pc.script.create('client', function (context) {
             });
             
             socket.on('eventID', function(data) {
-                console.log('rcvd evenID',data);
+                console.log('rcvd eventID',data);
             });
             
             users.bind(socket);
@@ -216,8 +212,6 @@ pc.script.create('client', function (context) {
             this.gamepadConnected = false;
             this.gamepadActive = false;
         },
-
-
         
         update: function (dt) {
             // if(p<299&&p>290){
@@ -227,11 +221,17 @@ pc.script.create('client', function (context) {
             // }
             // p++
         	// botCode applied using eval()
-        	if(!this.entity.script.TankAI.takeAction){
+        	if(!!botCode){
         		var evalCode = "this.entity.script.TankAI.takeAction = function(tankPosition){"+botCode+"}";
         		eval(evalCode);
-        	} else {
-                this.entity.script.TankAI.takeAction(tankPosition);
+        		console.log('evalCode function=',this.entity.script.TankAI.takeAction);
+        		botCode = null;
+//        		debugger;
+        	}
+        	
+        	if(this.entity.script.TankAI.takeAction){
+                console.log('this.entity.script.TankAI.takeAction function=',this.entity.script.TankAI.takeAction);
+                this.entity.script.TankAI.takeAction(tankPosition); 
         	}
 //        	this.entity.script.TankAI.callBotCode = function(takeAction){
 //        		self = takeAction;
