@@ -7,44 +7,6 @@ app.config(function ($stateProvider) {
     });
 });
 
-
-app.controller('CodeEditorCtrl',function($scope, BotCodeFactory){
-
-	$scope.bot = {};
-	
-	//Could also be a Panel of Tabs, TODO upon selection or forking of a bot
-	BotCodeFactory.getBot('5556463aaadfdb33433b63b5').then(function(bot){
-		console.log("controller data",bot);
-		$scope.bot.botCode = bot.botCode;
-		$scope.bot._id = bot._id;
-
-	});
-	
-	$scope.saveBot = function(){
-		BotCodeFactory.saveBot($scope.bot);
-	};
-	
-	// ui.ace start
-	$scope.aceLoaded = function(_editor) {
-		// Options
-		_editor.setReadOnly(false);
-	};
-	$scope.aceChanged = function(e) {
-		//
-	};
-	
-});
-
-app.controller('CodeConsoleCtrl',function($scope){
-	//Code output, console logs, errors etc.
-	
-});
-
-app.controller('ButtonsCtrl',function($scope){
-	//Practice and/or Compete
-	
-});
-
 app.controller('SideMenuCtrl',function($scope){
 	//Chat, Repo, FAQ. etc
 	
