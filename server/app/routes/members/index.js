@@ -1,8 +1,8 @@
 'use strict';
 var router = require('express').Router();
 var mongoose = require('mongoose');
-var Event = require('mongoose').model("User");
-var User = require('mongoose').model("Event");
+var Event = require('mongoose').model("Event");
+var User = require('mongoose').model("User");
 var Challenge = require('mongoose').model("Challenge");
 module.exports = router;
 var _ = require('lodash');
