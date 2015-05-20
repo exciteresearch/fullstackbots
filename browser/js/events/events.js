@@ -22,14 +22,14 @@ app.controller('mainEventCtrl',function($scope, $stateParams){
 	});
 });
 
-app.controller('EventsController', function ($scope, $stateParams, EventsFactory, $rootScope) {
+app.controller('EventsController', function ($scope, $stateParams, AuthService, EventsFactory, $rootScope) {
 
     $scope.data = {
         preferences: "",
         slots: 1,
         createEvent: false
     };
-    
+
     $scope.eventLaunched = false;
     $scope.waiting = false;
     if (!$scope.pendingEvents) EventsFactory.getPendingEvents().then(function(events){
@@ -52,7 +52,8 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
 	// //SCOPE METHODS
     $scope.createNewEvent = function() {
 
-        var newEvent = { 
+        var newEvent = {
+            createdBy: 
             preferences: $scope.data.preferences,
             slots: $scope.data.slots
         }

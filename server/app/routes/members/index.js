@@ -1,8 +1,8 @@
 'use strict';
 var router = require('express').Router();
 var mongoose = require('mongoose');
-var Event = require('mongoose').model("User");
-var User = require('mongoose').model("Event");
+var Event = require('mongoose').model("Event");
+var User = require('mongoose').model("User");
 var Challenge = require('mongoose').model("Challenge");
 module.exports = router;
 var _ = require('lodash');
@@ -62,12 +62,8 @@ router.get('/live', ensureAuthenticated, function (req, res, next) {
 
 //Create an Event
 router.post('/', function (req, res, next) {
-  
-console.log("index.js route.post.('/',...");
-var event = req.body;
-event.createdBy = mongoose.Types.ObjectId("5558f55d28db30a4394d4234");
 
-console.log(event);
+var event = req.body;
 
   Event.create(event, function (err, event) {
     if (err) return next(err);
