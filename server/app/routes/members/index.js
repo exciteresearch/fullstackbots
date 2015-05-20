@@ -1,7 +1,9 @@
 'use strict';
 var router = require('express').Router();
 var mongoose = require('mongoose');
-var Event = require('mongoose').model("Event");
+var Event = require('mongoose').model("User");
+var User = require('mongoose').model("Event");
+var Challenge = require('mongoose').model("Challenge");
 module.exports = router;
 var _ = require('lodash');
 
@@ -97,3 +99,43 @@ router.delete('/:id', function (req, res, next) {
     res.send(event);
   });
 });
+
+//**************** CHALLENGES
+
+//GET challenges
+router.get('/challenge', function (req, res, next) {
+   
+  Challenge.find({}).populate("User").exec(function(err, challenges) {
+    if (err) return next(err);
+    res.send(challenges);
+  });
+});
+
+//Create an Challenge
+router.post('/challenge', function (req, res, next) {
+
+var challenged = req.body;
+console.log("Post Challenge", req.user.id, challenged);
+
+var obj = {
+  challenged: challenged._id;
+  challenger: req.user.id
+};
+
+  Challenge.create(obj, function (err, event) {
+    if (err) return next(err);
+    res.send(event);
+  });
+});
+
+//Accept
+router.put('/challenges/:id', function (req, res, next) {
+
+var obj = { accepted : true };
+
+  Challenge.findByIdAndUpdate(req.params.id, obj, function(err, challenge){
+     if (err) return next(err);
+     res.send(challenge);
+   });
+});
+
