@@ -118,7 +118,7 @@ var challenged = req.body;
 console.log("Post Challenge", req.user.id, challenged);
 
 var obj = {
-  challenged: challenged._id;
+  challenged: challenged._id,
   challenger: req.user.id
 };
 
