@@ -464,6 +464,8 @@ Room.prototype.join = function(client) {
     // publish new tank
     // DJ and Miguel look into this it might be helpful for creating an event/battle
     this.publish('tank.new', tank.data);
+    
+    // publish new opponentTank
     this.publish('opponentTank.new', opponentTank.data);
 
     // event
