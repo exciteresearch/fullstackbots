@@ -6,6 +6,7 @@ router.use('/dispatcher', require('./dispatcher'));
 // router.use('/saveBotCode', require('./saveBotCode'));
 router.use('/tutorial', require('./tutorial'));
 router.use('/members', require('./members'));
+router.use('/leaderBoard', require('./leaderBoard'));
 
 // Make sure this is after all of
 // the registered routes!
