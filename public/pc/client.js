@@ -230,7 +230,7 @@ pc.script.create('client', function (context) {
         	}
         	
         	if(this.entity.script.TankAI.takeAction){
-                console.log('this.entity.script.TankAI.takeAction function=',this.entity.script.TankAI.takeAction);
+                // console.log('this.entity.script.TankAI.takeAction function=',this.entity.script.TankAI.takeAction);
                 this.entity.script.TankAI.takeAction(tankPosition); 
         	}
 //        	this.entity.script.TankAI.callBotCode = function(takeAction){
