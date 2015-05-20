@@ -19,7 +19,6 @@ app.factory('EventsFactory', function ($http) {
         },
 
         createEvent: function ( event ) {
-            console.log(event);
             return $http.post('/api/members/', event ).then(function (response) {
                 return response.data;
             });

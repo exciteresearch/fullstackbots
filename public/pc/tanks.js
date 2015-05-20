@@ -29,7 +29,6 @@ pc.script.create('tanks', function (context) {
         },
         
         new: function(args) {
-            console.log("args", args);
             var newTank = this.tank.clone();
             newTank.setName('tank_' + args.id);
             newTank.owner = args.owner;
