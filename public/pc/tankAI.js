@@ -118,6 +118,7 @@ pc.script.create('TankAI', function (context) {
             this.previousTime=Date.now()
         },
 
+
         // Called every frame, dt is time in seconds since last update
         // takeAction: function (tankPosition) {
         //     // console.log(tankPosition)

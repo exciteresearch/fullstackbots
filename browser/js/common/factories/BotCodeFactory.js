@@ -20,7 +20,7 @@ app.factory('BotCodeFactory', function ($http) {
         },
 
         saveBot: function (bot) {
-        	console.log("saveBot");
+        	console.log("saveBot",bot);
         	var data; //data packet to send
         	data = { bot: bot };
 

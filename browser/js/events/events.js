@@ -12,6 +12,8 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('mainEventCtrl',function($scope, $stateParams){
+    $scope.directEventID = "";
+    
 	$scope.eventsObj = {};
 	console.log("revised mainEventCtrl");
 	$scope.$on('refreshEventObj',function(event, data){
@@ -29,7 +31,6 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
     };
     
     $scope.eventLaunched = false;
-    $scope.directEventID = "";
     $scope.waiting = false;
     if (!$scope.pendingEvents) EventsFactory.getPendingEvents().then(function(events){
         $scope.pendingEvents = events;
@@ -75,7 +76,6 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
             });
     }
 
-	$scope.botOneID = '555ba4d6a5f6226b30937fc4';
 
     $scope.joinEvent = function( index ) {
     	
