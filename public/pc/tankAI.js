@@ -118,23 +118,6 @@ pc.script.create('TankAI', function (context) {
             this.previousTime=Date.now()
         },
 
-        // Called every frame, dt is time in seconds since last update
-        takeAction: function (tankPosition) {
-            // console.log(tankPosition)
-            // if(p<299&&p>290){
-            //     console.log("this",this)
-            //     console.log("tankPosition",tankPosition)  
-            // }
-            // p++
-            this.destinationY=destinationY;
-            this.destinationX=destinationX;
-            this.destination=destination;
-            var _self = this.entity.script.client;
-            easystar.setGrid(this.pathingMap);
-            easystar.setAcceptableTiles([0]);
-            easystar.enableDiagonals();
-            
-
             this.tankPosition = tankPosition;
             //determines mine laying:
             if(this.tankPosition[0]>18 && this.tankPosition[0]<28 && this.tankPosition[2]>18 && this.tankPosition[2]<28){
