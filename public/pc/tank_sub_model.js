@@ -1,5 +1,4 @@
 pc.script.create('tank_sub_model', function (context) {
-	console.log('tank_sub_model.js');
     // Creates a new Tank_sub_model instance
     var Tank_sub_model = function (entity) {
         this.entity = entity;

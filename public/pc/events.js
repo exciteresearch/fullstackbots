@@ -1,5 +1,5 @@
 "use strict";
-console.log("events.js");
+
 function Events() {
     // _world
     Object.defineProperty(

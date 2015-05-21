@@ -1,5 +1,4 @@
 pc.script.create('touch', function (context) {
-	console.log('touch.js');
 
     // Creates a new Touch instance
     var Touch = function (entity) {

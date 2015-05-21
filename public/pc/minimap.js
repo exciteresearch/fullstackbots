@@ -1,5 +1,4 @@
 pc.script.create('minimap', function (context) {
-	console.log('minimap.js');
     var Minimap = function (entity) {
         this.entity = entity;
         

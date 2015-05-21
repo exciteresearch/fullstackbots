@@ -10,6 +10,7 @@ var userScript="original";
 
 
 function Room() {
+
     EventEmitter.call(this);
 
     this.id = uuid.v4();
@@ -246,6 +247,7 @@ Room.prototype = Object.create(EventEmitter.prototype);
 
 
 Room.prototype.createBlocks = function(data) {
+
     for(var i = 0; i < data.length; i++) {
         this.world.add('block', new Block({
             x: data[i][0],
@@ -258,6 +260,7 @@ Room.prototype.createBlocks = function(data) {
 
 
 Room.prototype.pickWeakestTeam = function() {
+
 	// DJ may need to update to make selectable teams also at present only weakest by number of tanks
     var list = this.teams.filter(function(item) {
         return item.tanks < 4;
@@ -284,7 +287,7 @@ Room.prototype.pickWeakestTeam = function() {
 
 
 Room.prototype.join = function(client) {
-	
+
 	// DJ and Miguel this is where we can add a new tank if we want more than one tank per client
     if (this.clients.indexOf(client) !== -1)
         return;
@@ -411,13 +414,13 @@ Room.prototype.join = function(client) {
             opponentTank.angle = angle;
     });
     client.on('opponent.shoot', function(state) {
-        tank.shooting = state;
+        opponentTank.shooting = state;
     });
     client.on('opponent.flameOn', function(state) {
-        tank.flaming = state;
+        opponentTank.flaming = state;
     });
     client.on('opponent.layMine', function(state) {
-        tank.layingMine = state;
+        opponentTank.layingMine = state;
     });
     client.on('opponent.user.name', function(text) {
         client.opponent.userScript=userScript;
@@ -463,6 +466,7 @@ Room.prototype.join = function(client) {
 
     // publish new tank
     // DJ and Miguel look into this it might be helpful for creating an event/battle
+
     this.publish('tank.new', tank.data);
     
     // publish new opponentTank

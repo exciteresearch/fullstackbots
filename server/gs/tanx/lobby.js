@@ -344,6 +344,7 @@ Lobby.prototype.update = function() {
         } else {
             // for each tank around
             world.forEachAround('tank', bullet, function(tank) {
+                
                 // refuse tank if any of conditions not met
                 if (deleting ||  // bullet already hit the target
                     tank.dead ||  // tank is dead
@@ -353,7 +354,7 @@ Lobby.prototype.update = function() {
                     tank.pos.dist(bullet.pos) > (tank.radius + bullet.radius)) {  // no collision
                     return;
                 }
-
+                // console.log("bullet", bullet)
                 // hit
                 bullet.hit = true;
                 bullet.pos.setV(tank.pos);
@@ -372,7 +373,7 @@ Lobby.prototype.update = function() {
                             damage = 0;
                         } else {
                             // shielded only some damage
-                            damage -= tank.sheild;
+                            damage -= tank.shield;
                             tank.shield = 0;
                         }
                     }
@@ -447,6 +448,7 @@ Lobby.prototype.update = function() {
     });
     // for each flame
     world.forEach('flame', function(flame) {
+        
         // flame update
         flame.update();
 
@@ -470,7 +472,7 @@ Lobby.prototype.update = function() {
                     tank.pos.dist(flame.pos) > (tank.radius + flame.radius)) {  // no collision
                     return;
                 }
-
+                console.log("flame", flame)
                 // hit
                 flame.hit = true;
                 flame.pos.setV(tank.pos);

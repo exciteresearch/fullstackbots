@@ -1,4 +1,4 @@
-console.log("culling-item.js radius, single, etc");
+
 pc.script.attribute('radius', 'number', 1);
 pc.script.attribute('single', 'boolean', false);
 

@@ -1,4 +1,4 @@
-console.log('tank.js');
+
 var tmpVec = new pc.Vec3();
 var tmpQuat = new pc.Quat();
 
@@ -197,11 +197,13 @@ pc.script.create('tank', function (context) {
             
             if (context.root.getChildren()[0].script.client.id === this.entity.owner) {
                 this.own = true;
+                this.opp=false;
                 // this.uiHP = context.root.getChildren()[0].script.hp;
                 this.overlay = context.root.getChildren()[0].script.overlay;
                 this.minimap = context.root.getChildren()[0].script.minimap;
             }else{//ian edit: trying to make an opponent tank.
                 this.own=false;
+                this.opp=true;
             }
             this.teams = context.root.getChildren()[0].script.teams;
             
@@ -284,20 +286,7 @@ pc.script.create('tank', function (context) {
             // movement
             tmpVec.lerp(pos, this.movePoint, 0.1);
             this.entity.setPosition(tmpVec);
-            // if (! isNaN(tmpVec.x) && len > .001) {
-            //     var sp = 6;
-            //     if (len > 1)
-            //         sp = sp * 2;
-                    
-            //     if (len > sp * dt)
-            //         len = sp * dt;
-            //     tmpVec.normalize().scale(len);
-            //     this.entity.setPosition(pos.sub(tmpVec));
-            // }
-            
-            // targeting
-            //console.log("trgetpoint", this.targetPoint)
-            //console.log("quat", tmpQuat)
+
             slerp.call(tmpQuat, this.head.getRotation(), this.targetPoint, 0.3);
             this.head.setRotation(tmpQuat);
             
@@ -384,6 +373,13 @@ pc.script.create('tank', function (context) {
         
         setName: function(canvas) {
             this.name.model.material.emissiveMap.setSource(canvas);
+        },
+        setOwner: function(owner){
+            if (owner==null){
+                this.owner="opponent"
+            }else{
+                this.owner=owner;
+            } 
         },
         
         setDead: function(dead) {

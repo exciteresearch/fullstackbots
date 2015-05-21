@@ -14,9 +14,9 @@ function Flame(owner) {
     this.damage = 1.0;
 
     this.speed = 4;
-    this.radius = .75;
+    this.radius = 1.75;
     this.pos = Vec2.new(parseFloat(this.owner.pos[0].toFixed(3), 10), parseFloat(this.owner.pos[1].toFixed(3), 10));
-    this.target = Vec2.new().setR((-this.owner.angle + 90) * (Math.PI / 180.0)).mulS((this.owner.range)/4).add(this.pos);
+    this.target = Vec2.new().setR((-this.owner.angle + 90) * (Math.PI / 180.0)).mulS((this.owner.range)/**ian edit: range**/).add(this.pos);
 
     this.target[0] = parseFloat(this.target[0].toFixed(3), 10);
     this.target[1] = parseFloat(this.target[1].toFixed(3), 10);
@@ -56,9 +56,6 @@ Object.defineProperty(
                 ty: parseFloat(this.target[1].toFixed(2), 10),
                 sp: parseFloat(this.speed.toFixed(4), 10)
             };
-
-            if (this.special)
-                obj.s = true;
 
             return obj;
         },

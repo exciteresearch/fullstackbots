@@ -1,5 +1,4 @@
 pc.script.create('bullets', function (context) {
-	console.log("bullets.js pc.extend(pc, ...");
     var vecTmp = new pc.Vec3();
     var matSpecial = null;
     var matDefault = null;

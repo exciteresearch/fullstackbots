@@ -1,6 +1,4 @@
-console.log("detection.js");
-var shootNow= false;
-var flameNow= false;
+
 pc.script.create("trigger", function (app) {
 
     var zeroVec = pc.Vec3.ZERO;
@@ -16,31 +14,40 @@ pc.script.create("trigger", function (app) {
         },
 
         onTriggerEnter: function (entity) {
-            
+            if (this.entity._parent._parent._parent.Owner!==null){
+                var user= currentPlayer
+
+            }else{
+                var user= opponentBot
+
+            }
             // Reset back to roughly the position the entity started in.
             if(this.entity.name=="gun-sight"){
+
                 if(entity.name.includes("tank")){
-                shootNow= true;
-                flameNow=true;
+                user.shootNow= true;
+                user.flameNow=true;
                 }
             }
             if (this.entity.name=="right-detection"&&entity.name.includes("tank")){
-                shootNow="right"
+                user.shootNow="right"
             }
             if (this.entity.name=="left-detection"&&entity.name.includes("tank")){
-                shootNow="left"
+                user.shootNow="left"
             }
-            shootNow="left"
         },
          onTriggerLeave: function (entity) {
+            if (this.entity._parent.Owner!==null){
+                var user= currentPlayer
+            }else{
+                var user= opponentBot
+            }
             if (this.entity.name=="gun-sight"){
                 if(entity.name.includes("tank")){
-                    shootNow= false;
-                    flameNow=false;
+                    user.shootNow= false;
+                    user.flameNow=false;
                 }
             }
-            // shootNow="left"
-            
         }
     };
 
