@@ -106,7 +106,7 @@ Tank.prototype.shoot = function() {
         here(this);
     }
 
-        recoil(this)
+        // recoil(this)
 
     if (this.deleted || this.dead) return;
 

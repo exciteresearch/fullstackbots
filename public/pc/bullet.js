@@ -1,4 +1,4 @@
-console.log("bullet.js pc.script.create('bullet', function(context){...");
+
 var tmpVec = new pc.Vec3();
 
 pc.script.create('bullet', function (context) {

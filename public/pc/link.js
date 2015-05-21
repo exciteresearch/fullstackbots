@@ -1,4 +1,4 @@
-console.log('infoBox.js');
+
 var tmpVec = new pc.Vec3();
 var tmpVec2 = new pc.Vec3();
 var tmpVec3 = new pc.Vec3();

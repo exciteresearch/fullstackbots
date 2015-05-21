@@ -1,4 +1,4 @@
-console.log('tanks.js');
+
 var tankPosition=[0,0,0];
 var z=0;
 var p=0;
@@ -24,14 +24,17 @@ pc.script.create('tanks', function (context) {
             // this.hpBar = context.root.getChildren()[0].script.hp;
 
             
-            this.own = null;
-            this.opp = null;
+            // this.own = null;
+            // this.opp = null;
         },
         
         new: function(args) {
             var newTank = this.tank.clone();
             newTank.setName('tank_' + args.id);
-            newTank.owner = args.owner;
+            newTank.owner=args.owner;
+            newTank.Owner=args.owner;
+            newTank.closest={};
+            newTank.currentPriority={};
             newTank.enabled = true;
             newTank.setPosition(args.pos[0], 0, args.pos[1], 0);
             newTank.rotate(0, Math.random() * 360, 0);
@@ -40,7 +43,7 @@ pc.script.create('tanks', function (context) {
                 newTank.opponentIsTrue=true;
             }
             this.teams.tankAdd(newTank.script.tank, args.team);
-            
+            console.log("args.owner",args.owner)
             if (args.owner == this.client.id) {
                 this.camera.script.link.link = newTank;
                 // if(p===0){
@@ -49,10 +52,12 @@ pc.script.create('tanks', function (context) {
                 // }else{
                     this.own= newTank;
                 // }
+            }else{
+                console.log("newTank",newTank)
+                this.opp=newTank;
             }
             
             this.tanks.addChild(newTank);
-            console.log(newTank);
         },
         
         delete: function(args) {

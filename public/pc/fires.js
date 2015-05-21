@@ -1,5 +1,4 @@
 pc.script.create('fires', function (app) {
-	console.log("fires.js");
     var Fires = function (entity) {
         this.entity = entity;
     };

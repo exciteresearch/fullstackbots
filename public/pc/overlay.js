@@ -1,5 +1,4 @@
 pc.script.create('overlay', function (app) {
-	console.log('overlay.js');
     var Overlay = function (entity) {
         this.entity = entity;
         var self = this;

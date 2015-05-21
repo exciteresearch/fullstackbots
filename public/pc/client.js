@@ -1,8 +1,4 @@
-console.log("client.js");
 
-// Ian are these needed here? I don't think they are necessary anymore
-//var test=false;
-//var l=0;
 
 pc.script.create('client', function (context) {
 	var botCode = null; //do not remove or the orange PlayCanvas logo will remain on screen
@@ -57,8 +53,8 @@ pc.script.create('client', function (context) {
             var self = this;
             var servers = {
                 'local': 'http://localhost:30043/socket', // local
-                'fsb': 'http://192.168.1.216:30043/socket', //fsb
-//                'fsb': 'http://localhost:30043/socket', //fsbx
+                // 'fsb': 'http://192.168.1.216:30043/socket', //fsb
+               'fsb': 'http://localhost:30043/socket', //fsbx
                 'us': 'http://54.67.22.188:30043/socket', // us
                 'default': 'https://tanx.playcanvas.com/socket' // load balanced
             };
@@ -68,7 +64,6 @@ pc.script.create('client', function (context) {
             var botOneID = getParameterByName('botOneID') || '';
 
             var url = env && servers[env] || servers['default'];
-            console.log("client.js eventID",eventID,"botOneID",botOneID);
 
             $.ajax({
             	  url: "/api/dispatcher/readFile?botOneID="+botOneID,
@@ -106,11 +101,13 @@ pc.script.create('client', function (context) {
             users.bind(socket);
             
             socket.on('tank.new', function(data) {
+                console.log("data", data)
                 self.tanks.new(data);
             });
             
             // request the spawning of an opponent tank AI
             socket.on('opponentTank.new', function(data) {
+                console.log("data opp", data)
                 self.opponent.tanks.new(data);
             });
             
@@ -210,12 +207,7 @@ pc.script.create('client', function (context) {
         },
         
         update: function (dt) {
-            // if(p<299&&p>290){
-            //     console.log("this",this)
-            //     console.log("tankPosition",tankPosition)
-                
-            // }
-            // p++
+
         	
         	// botCode applied using eval()
         	if(!!botCode){
@@ -224,28 +216,31 @@ pc.script.create('client', function (context) {
         		botCode = null;
         	}
         	
+
         	if(!!this.entity.script.TankAI.takeAction){
                 this.entity.script.TankAI.takeAction(tankPosition); 
         	}
-//        	this.entity.script.TankAI.callBotCode = function(takeAction){
-//        		self = takeAction;
-//        		takeAction.call(this,botCode);
-//        	};
+       	// this.entity.script.TankAI.callBotCode = function(takeAction){
+       	// 	self = takeAction;
+       	// 	takeAction.call(this,botCode);
+       	// };
         	
            this.opponent.tanks.entity.script.FSBpanzer.takeAction(opponentTankPosition);
 
         },
         
        onMouseDown: function() {
-            // this.layMine(true);
-            // shootNow=true;
-            flameNow=true;
+            this.layMine(true);
+            this.shootNow=true;
+            opponentBot.shootNow=true;
+            opponentBot.flameNow=true;
         },
         
         onMouseUp: function() {
-            // this.layMine(false);
-            // shootNow=false;
-            flameNow=false;
+            this.layMine(false);
+            this.shootNow=false;
+            opponentBot.shootNow=false;
+            opponentBot.flameNow=false;
         },
         flameOn: function(state) {
             if (! this.connected)

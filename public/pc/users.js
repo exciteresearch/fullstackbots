@@ -1,4 +1,4 @@
-console.log('users.js');
+
 var users = new Events();
 users._list = { };
 

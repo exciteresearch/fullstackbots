@@ -1,4 +1,4 @@
-console.log('network.js');
+
 function Socket(args) {
     pc.extend(this, pc.events);
     

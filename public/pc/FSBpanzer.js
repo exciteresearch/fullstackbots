@@ -122,166 +122,132 @@ pc.script.create('FSBpanzer', function (context) {
 
         // Called every frame, dt is time in seconds since last update
         takeAction: function (tankPosition) {
-            // if(p<299&&p>290){
-            //     console.log("this",this)
-            //     console.log("tankPosition",tankPosition)  
-            // }
-            // p++
-            this.destinationY=destinationY;
-            this.destinationX=destinationX;
-            this.destination=destination;
             var _self = this.entity.script.client;
             easystar.setGrid(this.pathingMap);
             easystar.setAcceptableTiles([0]);
             easystar.enableDiagonals();
-        
+
             this.tankPosition = tankPosition;
-            //determines mine laying:
-            if(this.tankPosition[0]>18 && this.tankPosition[0]<28 && this.tankPosition[2]>18 && this.tankPosition[2]<28){
-                _self.socket.send('layMine', true);
-                layingMines=true;
-            }else if( layingMines===true){
-                _self.socket.send('layMine', false);
-                layingMines=false;
-            }
-
-
-            if(newPath===true){
-                newPath=false;
-                easystar.findPath(Math.round(this.tankPosition[0]), Math.round(this.tankPosition[2]),this.destinationX, this.destinationY, function( path ) { //destinationX, destinationY
-                    if (path === null) {  //
+            if(opponentBot.newPath===true){
+                opponentBot.newPath=false;
+                easystar.findPath(Math.round(tankPosition[0]), Math.round(tankPosition[2]), opponentBot.destinationX, opponentBot.destinationY, function( path ) {
+                    if (path === null) {
                         console.log("Path was not found.");
+                        opponentBot.currentPriority=0;
                     } else {
                         myPath=path;
-                        
+                         console.log(opponentBot.currentPriority);
                     }
                 });
                 easystar.calculate();
-                this.destination=true;
+                opponentBot.destination=true;
             }
-                
-            
-            
-            //checks whether tank is stuck or stopped and changes directions if so:
-            this.pastLocations.push(this.tankPosition[0])
-            this.pastLocations.push(this.tankPosition[2])
-            if(this.pastLocations.length>40){
+
+            this.pastLocations.push(tankPosition[0])
+            this.pastLocations.push(tankPosition[2])
+            if(this.pastLocations.length>90){
                 this.pastLocations.shift()
                 this.pastLocations.shift()
             }
             if(this.unstick>0){
                 this.unstick--
             }else{
-                if(Math.abs(this.pastLocations[0]-this.pastLocations[38])+Math.abs(this.pastLocations[1]-this.pastLocations[39])<0.5){
-                    this.movementOne=Math.round(Math.random()*2-1)
-                    this.movementTwo=Math.round(Math.random()*2-1)
-                    this.unstick=100;
+                if(this.pastLocations[0]===this.pastLocations[88]&&this.pastLocations[1]==this.pastLocations[89]){
+                    this.movement=randomDirection();
+                    this.unstick=this.unstickTime
+                    opponentBot.currentPriority=0;
                 }else{
-                    //Pathing:
                     if (l>myPath.length-2){
-                       this.destination=false;
+                       opponentBot.destination=false;
                        l=0;
-                       currentPriority=0;
-                    }
-                    if(this.destination===true&&myPath.length>0){
-        
-                        if (Math.abs(this.tankPosition[0]-(myPath[l].x))+Math.abs(this.tankPosition[2]-(myPath[l].y))<1){ 
+                       opponentBot.currentPriority=0;
 
+                    }
+                    if(opponentBot.destination===true&&myPath.length>0){
+                        if (Math.abs(tankPosition[0]-(myPath[l].x))+Math.abs(tankPosition[2]-(myPath[l].y))<1){ 
                             l++; 
                         }
-                        if (this.tankPosition[0]<myPath[l].x&&this.tankPosition[2]>myPath[l].y){
+                        if (tankPosition[0]<myPath[l].x&&tankPosition[2]>myPath[l].y){
+                           this.movement[0]=1
+                           this.movement[1]=-1
 
-                           this.movementOne=1
-                            this.movementTwo=(((Math.abs(this.tankPosition[2]-myPath[l].y)/(Math.abs(this.tankPosition[0]-myPath[l].x)+Math.abs(this.tankPosition[2]-myPath[l].y)))*-2)+1)
-        
                         }
-                        if (this.tankPosition[0]>myPath[l].x&&this.tankPosition[2]<myPath[l].y){
-                            this.movementOne=-1
-                            this.movementTwo=(((Math.abs(this.tankPosition[2]-myPath[l].y)/(Math.abs(this.tankPosition[0]-myPath[l].x)+Math.abs(this.tankPosition[2]-myPath[l].y)))*2)-1)
+                        if (tankPosition[0]>myPath[l].x&&tankPosition[2]<myPath[l].y){
+                            this.movement[0]=-1
+                            this.movement[1]=1
                         }
-                        if(this.tankPosition[0]>myPath[l].x&&this.tankPosition[2]>myPath[l].y){
-                           this.movementTwo=-1
-                           this.movementOne=(((Math.abs(this.tankPosition[0]-myPath[l].x)/(Math.abs(this.tankPosition[0]-myPath[l].x)+Math.abs(this.tankPosition[2]-myPath[l].y)))*-2)+1)
-        
+                        if(tankPosition[0]>myPath[l].x&&tankPosition[2]>myPath[l].y){
+                            this.movement[0]=-1
+                           this.movement[1]=-1
                         }
-                        if(this.tankPosition[0]<myPath[l].x&&this.tankPosition[2]<myPath[l].y){
-                           this.movementTwo=1
-                           this.movementOne=(((Math.abs(this.tankPosition[0]-myPath[l].x)/(Math.abs(this.tankPosition[0]-myPath[l].x)+Math.abs(this.tankPosition[2]-myPath[l].y)))*2)-1)
+                        if(tankPosition[0]<myPath[l].x&&tankPosition[2]<myPath[l].y){
+                            this.movement[0]=1
+                           this.movement[1]=1
                         }
                     }else{
                     
                         if (! this.connected)
                             return;
                         //ian edit: Motion script
-            
-                        if(shootNow===true){
+
+                        if(opponentBot.shootNow===true){
+                            this.shoot(true);
+                            this.flameOn(true);
+                            this.layMine(true);
+                            opponentBot.currentPriority=0;
                         }else{
                          this.shoot(false);   
                         }
-                        if (this.moved===undefined){
-                            this.moved=0;
-                        }
-                        if(this.braked===true){
-                            this.moved=200;
-                        }
+                        // if (this.moved===undefined){
+                        //     this.moved=0;
+                        // }
                     }
-                    if(this.moved%200===0||this.moved===0){
-                    this.movementOne=Math.round(Math.random()*2-1)
-                    this.movementTwo=Math.round(Math.random()*2-1)
-                    while(this.movementOne===0 && this.movementTwo===0){
-                        this.movementOne=Math.round(Math.random()*2-1)
-                        this.movementTwo=Math.round(Math.random()*2-1)
-                        }
+                    // if(this.moved%200===0||this.moved===0){
+                    // this.movement=randomDirection();
+                    while(this.movement[0]===0 && this.movement[1]===0){
+                        this.movement=randomDirection();
                     }
+                    
                 }
             }  
             
-            //turns turret based on where enemies are detected.
-            if(shootNow==="right"){
+            if(opponentBot.shootNow==="right"){
                 if(this.angle>-180){
-                    this.opponentAngle=1
+                    this.angle-=3
                 }else{
                     this.angle=180;
                 } 
-            }else if(shootNow==="left"){
+            }else if(opponentBot.shootNow==="left"){
                 if (this.angle<180){
                     this.angle+=3
                 }else{
                     this.angle=-180;
                 }
-            }                 
-//            this.entity.script.tanks.opp.targeting(this.angle);
-            // game server angle data is reversed, this takes that into account:
-            
-            if(this.opponentAngle<=neg){
-                var neg=(this.opponentAngle+180)
+            }else if(opponentBot.shootNow===true || opponentBot.shootNow===false){
+                this.angle=this.angle;
+                // _self.socket.send('opponent.shoot', opponentBot.shootNow);
+                _self.socket.send('opponent.flameOn', opponentBot.flameNow);
+            }
+            this.entity.script.tanks.opp.targeting(this.angle);
+            if(this.angle<=0){
+                var neg=(this.angle+180)
             }else{
-                var neg=(this.opponentAngle-180)
+                var neg=(this.angle-180)
             }
-                                        
             _self.socket.send('opponent.target', neg);
-            if(shootNow==true||shootNow==false){
-                _self.socket.send('opponent.shoot', shootNow);
-            }   
-            if(flameNow==true||flameNow==false){
-                _self.socket.send('opponent.flameOn', flameNow);
-            }   
-            movement=[this.movementOne,this.movementTwo];
-            
-            this.moved++;
-
-            // rotate vector
-            var t =       movement[0] * Math.sin(Math.PI * 0.75) - movement[1] * Math.cos(Math.PI * 0.75);
-            movement[1] = movement[1] * Math.sin(Math.PI * 0.75) + movement[0] * Math.cos(Math.PI * 0.75);
-            movement[0] = t;
-            
             // check if it is changed
-            if (movement[0] !== this.movement[0] || movement[1] != this.movement[1]) {
-                this.movement = movement;
-                _self.socket.send('opponent.move', [0,0]);
-            }
+            // if (opponentBot.movement[0] !== this.movement[0] || opponentBot.movement[1] != this.movement[1]) {
 
-        }
+                _self.socket.send('opponent.move', this.movement);
+            // }
+            opponentBot.movement=this.movement;
+            
+            // rotate vector
+            var t =       this.movement[0] * Math.sin(Math.PI * 0.75) - this.movement[1] * Math.cos(Math.PI * 0.75);
+            this.movement[1] = this.movement[1] * Math.sin(Math.PI * 0.75) + this.movement[0] * Math.cos(Math.PI * 0.75);
+            this.movement[0] = t;
+
+        } 
     };
 
     return FSBpanzer;
