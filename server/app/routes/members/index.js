@@ -66,6 +66,8 @@ router.post('/', function (req, res, next) {
 
 var event = req.body;
 
+console.log("Hi");
+
   Event.create(event, function (err, event) {
     if (err) return next(err);
     res.send(event);
