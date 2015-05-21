@@ -309,15 +309,6 @@ Room.prototype.join = function(client) {
     tank.team.tanks++;
 
 
-    // room
-//    client.on('eventID', function(data) {
-//        if (!! data ) {
-//        	console.log('request roomID for eventID',data);
-//        	client.send('eventID',data);
-//        }
-//    });
-
-
     // movement
     client.on('move', function(data) {
         if (data &&
@@ -383,7 +374,6 @@ Room.prototype.join = function(client) {
 
         });
     }
-    // console.log("users",users)
     client.send('user.sync', users);
 
     // send other tanks

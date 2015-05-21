@@ -13,7 +13,7 @@ function Flame(owner) {
     this.id = ++flameIds;
     this.damage = 1.0;
 
-    this.speed = 4;
+    this.speed = 9;
     this.radius = 1.75;
     this.pos = Vec2.new(parseFloat(this.owner.pos[0].toFixed(3), 10), parseFloat(this.owner.pos[1].toFixed(3), 10));
     this.target = Vec2.new().setR((-this.owner.angle + 90) * (Math.PI / 180.0)).mulS((this.owner.range)/**ian edit: range**/).add(this.pos);
