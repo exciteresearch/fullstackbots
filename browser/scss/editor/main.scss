@@ -1,0 +1,96 @@
+#editor{
+	.flex{
+		display: flex;
+	}
+	div.justified{
+		display: flex;
+		justify-content: space-around;
+		button, input{
+		color: #fff;
+  		background-color: rgb(13, 139, 217);
+  		border-color: white;
+			width: 111px;
+			transition: All 0.5s;
+		}
+		button:hover{
+			background-color: rgb(0, 75, 190);
+		}
+	}
+	div#viewer{
+		margin-left: 1%;
+		margin-right: 2%;
+		width: 62%;
+		height: 900px;
+		iframe{
+			box-shadow: 0 0 10px rgb(13, 139, 217), 0 0 10px rgb(13, 139, 217);
+			width: 100%;
+			height: 900px;
+		}
+	}
+	h1{
+	text-align: center;
+		color: black;
+  		text-shadow: -3px 3px 14px #0d8bd9, 3px -3px 14px #0d8bd9, -3px -3px 14px #0d8bd9, 3px 3px 14px #0d8bd9;	
+  	}
+	h4{
+	text-align: center;
+		color: black;
+		text-shadow: -3px 3px 14px #0d8bd9, 3px -3px 14px #0d8bd9, -3px -3px 14px #0d8bd9, 3px 3px 14px #0d8bd9;
+	}
+	.editor{
+		margin-left: 2%;
+		margin-right: 1%;
+		margin-top: 19px;
+		width: 31%;
+		height: 1000px;
+		border: dashed black 1px;
+	}
+	.margining{
+		margin-top: -30px;
+		margin-left: 2%;
+		margin-right: 1%;
+		width: 31.5%;
+		height: 1000px;
+		border: dashed black 1px;
+	}
+	#ace{
+		margin-bottom: 20px;
+		box-shadow: 0 0 10px rgb(13, 139, 217), 0 0 10px rgb(13, 139, 217);
+	}
+	.console{
+		margin-top: -150px;
+		width:100%;
+		height:200px;
+		border: dashed rgb(13, 139, 217) 2px;
+	}
+}
+
+.animated { 
+    -webkit-animation-duration: 1s; 
+    animation-duration: 1s; 
+    -webkit-animation-fill-mode: both; 
+    animation-fill-mode: both; 
+    -webkit-animation-timing-function: ease-in; 
+    animation-timing-function: ease-in; 
+} 
+
+@-webkit-keyframes fadeInRight { 
+    0% { 
+        opacity: 0;  
+    } 
+    100% { 
+        opacity: 1; 
+    } 
+} 
+@keyframes fadeInRight { 
+    0% { 
+        opacity: 0;  
+    } 
+    100% { 
+        opacity: 1; 
+    } 
+} 
+.fadeInRight { 
+    -webkit-animation-name: fadeInRight; 
+    animation-name: fadeInRight; 
+}

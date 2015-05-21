@@ -354,7 +354,6 @@ Lobby.prototype.update = function() {
                     tank.pos.dist(bullet.pos) > (tank.radius + bullet.radius)) {  // no collision
                     return;
                 }
-                // console.log("bullet", bullet)
                 // hit
                 bullet.hit = true;
                 bullet.pos.setV(tank.pos);
@@ -472,7 +471,6 @@ Lobby.prototype.update = function() {
                     tank.pos.dist(flame.pos) > (tank.radius + flame.radius)) {  // no collision
                     return;
                 }
-                console.log("flame", flame)
                 // hit
                 flame.hit = true;
                 flame.pos.setV(tank.pos);
@@ -607,7 +605,6 @@ Lobby.prototype.update = function() {
 
             obj.opponentTank=true;
         }else{
-            // console.log("tank: ",tank)
             obj.opponentTank=false;
         }
         if (tank.dead) { // dead

@@ -55,7 +55,7 @@
 					<a ><button class="btn-success" ng-click="joinEvent($index)">
 						Launch</button></a>
 					<a><button class="btn-danger" ng-click="deleteEvent($index)">
-						Remove</button></a>
+						Forfeit</button></a>
 				</td>
 				<td></td>
 				<td></td>				
@@ -71,9 +71,9 @@
 		</div>
 		<hr>
 
-		<button ng-hide="data.createEvent" ng-click="data.createEvent = true">
+		<button ng-hide="data.createEvent" class="btn" ng-click="data.createEvent = true">
 			Create a new event</button>
-		<button ng-click="createNewChallenge()">Challenge</button>
+		<button ng-click="createNewChallenge()" class="btn" >Challenge</button>
 
 		<h2 ng-show="data.createEvent">New Event</h2>
 		<form ng-show="data.createEvent" ng-submit="createNewEvent(data)">

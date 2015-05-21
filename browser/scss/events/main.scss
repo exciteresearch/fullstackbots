@@ -1,0 +1,12 @@
+#events{
+	color: black;
+	text-shadow: -3px 3px 14px #0d8bd9, 3px -3px 14px #0d8bd9, -3px -3px 14px #0d8bd9, 3px 3px 14px #0d8bd9;
+	button{
+		text-shadow: none;
+		background-color: black;
+		color: white;
+		&:btn{
+			border-color: #0d8bd9;
+		}
+	}
+}
