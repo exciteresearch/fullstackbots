@@ -4,7 +4,17 @@ app.config(function ($stateProvider) {
     $stateProvider.state('editor', {
         url: '/editor',
         templateUrl: 'js/editor/editor.html'
+    })
+    .state('forkBotToEditor',{
+    	url: '/editor/:defaultBotID',
+        controller: "CodeEditorCtrl",
+        templateUrl: 'js/editor/editor.html'
+        ,
+        data: {
+            authenticate: true
+        }
     });
+
 });
 
 app.controller('mainEditorCtrl',function($scope, $stateParams){
@@ -14,7 +24,7 @@ app.controller('mainEditorCtrl',function($scope, $stateParams){
 	});
 });
 
-app.controller('PlayCanvasEditorCtrl',function($scope,$sce,uuid4){
+app.controller('PlayCanvasEditorCtrl',function($scope, $stateParams, $sce,uuid4){
 
 	$scope.simLaunched = false;
 	
@@ -37,7 +47,7 @@ app.controller('PlayCanvasEditorCtrl',function($scope,$sce,uuid4){
     });
 });
 
-app.controller('CodeEditorCtrl',function($scope, BotCodeFactory, AuthService){
+app.controller('CodeEditorCtrl',function($scope, $stateParams, BotCodeFactory, AuthService){
 
 	if (!$scope.user) AuthService.getLoggedInUser().then(function (user) {
         $scope.user = user;
@@ -54,7 +64,7 @@ app.controller('CodeEditorCtrl',function($scope, BotCodeFactory, AuthService){
 	$scope.bot = {};
 	
 	//Could also be a Panel of Tabs, TODO upon selection or forking of a bot
-	BotCodeFactory.getBot('555ba4d6a5f6226b30937fc4').then(function(bot){
+	BotCodeFactory.getBot($stateParams.defaultBotID).then(function(bot){
 		$scope.bot = bot;
 //		$scope.bot.botCode = bot.botCode;
 //		$scope.bot._id = bot._id;
