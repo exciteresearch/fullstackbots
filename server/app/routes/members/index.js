@@ -66,11 +66,12 @@ router.post('/', function (req, res, next) {
 
 var event = req.body;
 
-console.log("Hi");
-
   Event.create(event, function (err, event) {
     if (err) return next(err);
-    res.send(event);
+    Event.findOne(event).populate('createdBy').exec(function(err, event2) {
+      console.log(event2);
+      res.send(event2);
+    });
   });
 });
 
@@ -106,7 +107,7 @@ router.get('/challenge', function (req, res, next) {
    
   Challenge.find({}).populate("challenger challenged").exec(function(err, challenges) {
     if (err) return next(err);
-    console.log(challenges);
+    //console.log(challenges);
     res.send(challenges);
   });
 });
@@ -148,11 +149,14 @@ var obj = { accepted : true };
 
 //********************* BOT LIST
 
-//GET challenges by ID
+//GET bots by ID
 router.get('/getBotList/:id', function (req, res, next) {
+
+  console.log("GET bots by ID");
    
-  User.findOne({ _id: req.params.id }, 'bots').populate("bots").exec(function(err, bots) {
+  Bot.find({ codedBy: req.params.id }).exec(function(err, bots) {
     if (err) return next(err);
+    console.log(bots);
     res.send(bots);
   });
 });

@@ -14,7 +14,7 @@ app.config(function ($stateProvider) {
 app.controller('EventsController', function ($scope, $stateParams, EventsFactory) {
 
     $scope.data = {
-        preferences: "",
+        specs: "",
         slots: 1,
         createEvent: false
     };
@@ -42,7 +42,7 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
     $scope.createNewEvent = function() {
 
         var newEvent = { 
-            preferences: $scope.data.preferences,
+            specs: $scope.data.specs,
             slots: $scope.data.slots
         }
 
@@ -52,7 +52,7 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
                 console.log("EVENT ADDED!");
                 $scope.pendingEvents.push(event);
                 $scope.data.createEvent = false;
-                $scope.data.preferences = "";
+                $scope.data.specs = "";
                 $scope.data.slots = 1;
             });
     }
