@@ -94,6 +94,15 @@
                 });
         };
 
+        this.signUp = function(registerInfo) {
+            return $http.post('/register', registerInfo)
+                .then(onSuccessfulLogin)
+                .catch(function (response) {
+                    console.log("ERROR at fsa-pre-built", response);
+                    return $q.reject({ message: 'Invalid signUp credentials.' });
+                });
+        }//added by us
+
         this.logout = function () {
             return $http.get('/logout').then(function () {
                 Session.destroy();

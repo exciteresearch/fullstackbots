@@ -47,7 +47,8 @@
 				</td>							
 			</tr>
 			<tr>
-				<td>{{event.createdBy}}</td>
+				<td>{{event.createdBy.username}}</td>
+				<td>{{event.createdBy.rank}}</td>
 				<td>{{event.preferences}}</td>
 				<td>{{event.slots}}</td>
 				<td>
@@ -99,7 +100,7 @@
 				<td>{{challenge.challenger.rank}}</td>
 				<td>{{challenge.challenged.username}}</td>
 				<td>{{challenge.challenged.rank}}</td>
-				<td>{{challenge.deadLine}}</td>
+				<td>{{challenge.deadline}}</td>
 				<td>{{challenge.accepted}}</td>
 			</tr>
 		</table>

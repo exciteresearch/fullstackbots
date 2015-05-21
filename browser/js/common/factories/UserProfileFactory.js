@@ -2,9 +2,9 @@ app.factory('UserProfileFactory', function ($http) {
 
     return {
 
-        getBotList: function () {
+        getBotList: function ( id ) {
 
-            return $http.get('/api/members/getBotList').then(function (response) {
+            return $http.get('/api/members/getBotList/'+id).then(function (response) {
                 return response.data;
             });
             
@@ -17,5 +17,5 @@ app.factory('UserProfileFactory', function ($http) {
             });
 
         }
-    };
+    }
 });

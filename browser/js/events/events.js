@@ -4,10 +4,10 @@ app.config(function ($stateProvider) {
         url: '/events',
         controller: "EventsController",
         templateUrl: 'js/events/events.html'
-        // ,
-        // data: {
-        //     admin: true
-        // }
+        ,
+        data: {
+            authenticate: true
+        }
     });
 });
 
@@ -15,20 +15,27 @@ app.controller('mainEventCtrl',function($scope, $stateParams){
     $scope.directEventID = "";
     
 	$scope.eventsObj = {};
-	console.log("revised mainEventCtrl");
+	//console.log("revised mainEventCtrl");
 	$scope.$on('refreshEventObj',function(event, data){
-		console.log("mainEventCtrl data=",data);
+		//console.log("mainEventCtrl data=",data);
 		$scope.eventsObj = data;
 	});
 });
 
-app.controller('EventsController', function ($scope, $stateParams, AuthService, EventsFactory, $rootScope) {
+app.controller('EventsController', function ($scope, $stateParams, AuthService, ChallengeFactory, EventsFactory, $rootScope) {
 
     $scope.data = {
         preferences: "",
         slots: 1,
         createEvent: false
     };
+
+    AuthService.getLoggedInUser().then(function (user) {
+        $scope.user = user;
+    });
+
+    //TODO: No tocar por ahora
+    $scope.botOneID = "555ba4d6a5f6226b30937fc4";
 
     $scope.eventLaunched = false;
     $scope.waiting = false;
@@ -42,18 +49,17 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
 	// });
     $scope.liveEvents = [];
 
-    //TODO
-    // if (!$scope.challenges) EventsFactory.getPendingChallenges().then(function(challenges){
-    //     $scope.challenges = challenges;
-    // });
-    $scope.challenges = [];
+    
+    if (!$scope.challenges) ChallengeFactory.getChallenges().then(function(challenges){
+        $scope.challenges = challenges;
+    });
 
 	
 	// //SCOPE METHODS
     $scope.createNewEvent = function() {
-
+        
         var newEvent = {
-            createdBy: 
+            createdBy: $scope.user._id,
             preferences: $scope.data.preferences,
             slots: $scope.data.slots
         }
@@ -61,7 +67,6 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
         EventsFactory.createEvent( newEvent )
         .then( function ( event )
             {
-                console.log("EVENT ADDED!");
                 $scope.pendingEvents.push(event);
                 $scope.data.createEvent = false;
                 $scope.data.preferences = "";
@@ -81,7 +86,6 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
     $scope.joinEvent = function( index ) {
     	
         if($scope.eventLaunched) {
-        	console.log("toggle from",$scope.eventLaunched);
         	$scope.eventLaunched = false;
         }
         else {
@@ -95,7 +99,6 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
 //        		eventID: $scope.pendingEvents[index]._id, eventType: 'pending',
 //        		botOneID: $scope.botOneID
 //        	});
-        	console.log("EventsController 'launchEvent' $scope.pendingEvents[index]._id id",$scope.pendingEvents[index]._id);
         }
         
         

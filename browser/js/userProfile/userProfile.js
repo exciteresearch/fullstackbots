@@ -4,21 +4,24 @@ app.config(function ($stateProvider) {
         url: '/userProfile',
         controller: "UserProfileController",
         templateUrl: 'js/userProfile/userProfile.html'
-        // ,
-        // data: {
-        //     admin: true
-        // }
+        ,
+        data: {
+            authenticate: true
+        }
     });
 });
 
-app.controller('UserProfileController', function ($scope, $stateParams, $UserProfileFactory, $ChallengeFactory) {
+app.controller('UserProfileController', function ($scope, $stateParams, AuthService, UserProfileFactory, ChallengeFactory) {
     
-    if (!$scope.userChallenges) ChallengeFactory.getUserChallenges().then(function(challenges){
-        $scope.userChallenges = challenges;
-    });
+    if (!$scope.user) AuthService.getLoggedInUser().then(function (user) {
+        $scope.user = user;
+        ChallengeFactory.getUserChallenges( user._id ).then(function(challenges){
+            $scope.userChallenges = challenges;
+        });
 
-    if (!$scope.botList) UserProfileFactory.getBotList().then(function(bots){
-        $scope.botList = bots;
+        UserProfileFactory.getBotList( user._id ).then(function(bots){
+            $scope.botList = bots;
+        });
     });
 
 

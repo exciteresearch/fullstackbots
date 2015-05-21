@@ -3,6 +3,7 @@ var router = require('express').Router();
 var mongoose = require('mongoose');
 var Event = require('mongoose').model("Event");
 var User = require('mongoose').model("User");
+var Bot = require('mongoose').model("Bot");
 var Challenge = require('mongoose').model("Challenge");
 module.exports = router;
 var _ = require('lodash');
@@ -41,7 +42,7 @@ router.get('/pending', function (req, res, next) {
   var obj = {};
   obj.slots = {$gt: 0};
  
-  Event.find(obj, function(err, events) {
+  Event.find(obj).populate("createdBy").exec(function(err, events) {
     if (err) return next(err);
     res.send(events);
   });
@@ -101,26 +102,34 @@ router.delete('/:id', function (req, res, next) {
 //GET challenges
 router.get('/challenge', function (req, res, next) {
    
-  Challenge.find({}).populate("User").exec(function(err, challenges) {
+  Challenge.find({}).populate("challenger challenged").exec(function(err, challenges) {
+    if (err) return next(err);
+    console.log(challenges);
+    res.send(challenges);
+  });
+});
+
+//GET challenges by ID
+router.get('/challenge/:id', function (req, res, next) {
+   
+  Challenge.findOne({ challenged: req.params.id }).populate("challenger challenged").exec(function(err, challenges) {
     if (err) return next(err);
     res.send(challenges);
   });
 });
 
 //Create an Challenge
-router.post('/challenge', function (req, res, next) {
-
-var challenged = req.body;
-console.log("Post Challenge", req.user.id, challenged);
+router.post('/challenge/:id', function (req, res, next) {
 
 var obj = {
-  challenged: challenged._id,
-  challenger: req.user.id
+  challenged: req.body.challenged,
+  challenger: req.params.id
 };
 
-  Challenge.create(obj, function (err, event) {
+  Challenge.create(obj, function (err, challenge) {
     if (err) return next(err);
-    res.send(event);
+    console.log("Challenge created");
+    res.send(challenge);
   });
 });
 
@@ -135,3 +144,13 @@ var obj = { accepted : true };
    });
 });
 
+//********************* BOT LIST
+
+//GET challenges by ID
+router.get('/getBotList/:id', function (req, res, next) {
+   
+  User.findOne({ _id: req.params.id }, 'bots').populate("bots").exec(function(err, bots) {
+    if (err) return next(err);
+    res.send(bots);
+  });
+});
