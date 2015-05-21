@@ -10,6 +10,8 @@
     text-shadow: none;
     background-color: black;
     color: white; }
+    #events button:btn {
+      border-color: #0d8bd9; }
 
 fullstack-logo {
   display: block; }
