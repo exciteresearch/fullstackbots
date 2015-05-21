@@ -34,8 +34,8 @@ app.controller('LeaderBoardController', function ($scope, $stateParams, AuthServ
         	{ challenged: user._id } );
     }
    
-   $scope.forkBot = function( index ) {
-        BotCodeFactory.createForkedBot( $scope.userLogged._id, $scope.botRank[index]._id );
+   $scope.forkBot = function( bot ) {
+        BotCodeFactory.createForkedBot( $scope.userLogged._id, bot._id );
     }
   
 });
