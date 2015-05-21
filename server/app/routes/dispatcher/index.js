@@ -28,13 +28,14 @@ router.post('/createForkedBot/:id', function(req, res, next) {
 		codedBy: req.params.id
 	}
 
-	 Bot.findById(req.body.botID, function(err,robotForked) {
+	 Bot.findById(req.body.botID, function(err,found) {
 		if (err) return next(err);
-		obj.botCode = robotForked.botCode;
-		obj.botname = robotForked.botname+"_FORK";
-		Bot.create(obj, function(err,robot) {
+		obj.botCode = found.botCode;
+		obj.botname = found.botname+"_FORK";
+		Bot.create(obj, function(err,forkeBot) {
 			if (err) return next(err);
-			res.send(robot);    
+			res.send(forkeBot);
+//			next(); // is next  needed or not?
 		});    
 	});
 });
