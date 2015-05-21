@@ -18,6 +18,7 @@
 												onChange: aceChanged
 												}" style="height:70%; width: 100%; font-family: monospace;">
 				</div>
+                <input ng-model="bot.botname" type="text" placeholder="{{bot.botname}}" id="botname">
                 <button ng-click="saveBot()" type="submit" class="btn btn-success">Save</button>
                 <button ng-click="simBot()" type="submit" class="btn btn-success">Practice</button>
                 <button ng-click="battle()" type="submit" class="btn btn-success">Compete</button>

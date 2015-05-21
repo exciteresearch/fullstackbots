@@ -34,6 +34,7 @@ router.post('/saveFile', function(req, res, next) {
 	Bot.findById(req.body.bot._id, function(err,found) {
 		if (err) return next(err);
 		found.botCode = req.body.bot.botCode;
+		found.botname = req.body.bot.botname;
 		found.save(function (err,saved) {
 		    if (err) return next(err);
 		    res.send(saved);
