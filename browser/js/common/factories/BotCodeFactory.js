@@ -3,7 +3,7 @@ app.factory('BotCodeFactory', function ($http,$state) {
         getBot: function (bot) {
         	
             var queryParams = {
-            		bot: bot
+            		botOneID: bot
             };
             
             if (!bot) {

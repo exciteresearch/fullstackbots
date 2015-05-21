@@ -50,8 +50,10 @@ router.post('/createForkedBot/:id', function(req, res, next) {
 router.get('/readFile', function (req, res, next) {
 	console.log('/readFile req.query',req.query);
 	var botID = req.query.botOneID;
-	Bot.findOne(botID, function(err, found){
+	console.log('/readFile botID',botID);
+	Bot.findById(botID, function(err, found){
         if (err) return next(err);
+        console.log('/readFile found',found);
 		res.send(found);
 		next();
 	});
