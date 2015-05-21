@@ -1,7 +1,17 @@
 'use strict';
 app.config(function ($stateProvider) {
-    $stateProvider.state('events', {
+    $stateProvider
+    .state('events', {
         url: '/events',
+        controller: "EventsController",
+        templateUrl: 'js/events/events.html'
+        ,
+        data: {
+            authenticate: true
+        }
+    })
+    .state('eventsWithBot',{
+    	url: '/events/:defaultBotID',
         controller: "EventsController",
         templateUrl: 'js/events/events.html'
         ,
@@ -13,7 +23,6 @@ app.config(function ($stateProvider) {
 
 app.controller('mainEventCtrl',function($scope, $stateParams){
     $scope.directEventID = "";
-    
 	$scope.eventsObj = {};
 	//console.log("revised mainEventCtrl");
 	$scope.$on('refreshEventObj',function(event, data){
@@ -34,8 +43,7 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
         $scope.user = user;
     });
 
-    //TODO: Put a modal
-    $scope.botOneID = "555ba4d6a5f6226b30937fc4";
+    $scope.botOneID = $stateParams.defaultBotID;
 
     $scope.eventLaunched = false;
     $scope.waiting = false;
