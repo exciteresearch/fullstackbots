@@ -197,6 +197,8 @@ pc.script.create('FSBpanzer', function (context) {
                             opponentBot.currentPriority=0;
                         }else{
                          this.shoot(false);   
+                         this.flameOn(false);
+                         this.layMine(false);
                         }
                         // if (this.moved===undefined){
                         //     this.moved=0;
@@ -225,8 +227,9 @@ pc.script.create('FSBpanzer', function (context) {
                 }
             }else if(opponentBot.shootNow===true || opponentBot.shootNow===false){
                 this.angle=this.angle;
-                // _self.socket.send('opponent.shoot', opponentBot.shootNow);
-                _self.socket.send('opponent.flameOn', opponentBot.flameNow);
+                _self.socket.send('opponent.layMine', opponentBot.layMine);
+                _self.socket.send('opponent.shoot', opponentBot.shootNow);
+                // _self.socket.send('opponent.flameOn', opponentBot.flameNow);
             }
             this.entity.script.tanks.opp.targeting(this.angle);
             if(this.angle<=0){
