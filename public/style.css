@@ -2,6 +2,16 @@
   box-sizing: border-box; }
   * body {
     background: black; }
+    * body td {
+      padding: 5px;
+      font-size: 20px;
+      color: white; }
+    * body th {
+      font-size: 25px;
+      color: white; }
+    * body h2 {
+      font-size: 30px;
+      color: white; }
 
 #events {
   color: black;
@@ -265,3 +275,6 @@ tutorial-section-menu {
 .fadeInRight {
   -webkit-animation-name: fadeInRight;
   animation-name: fadeInRight; }
+
+#leaderboard {
+  text-shadow: 0 0 10px #0d8bd9, 0 0 10px #0d8bd9; }
