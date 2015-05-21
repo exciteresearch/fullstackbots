@@ -11,10 +11,10 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('LeaderBoardController', function ($scope, $stateParams, AuthService, LeaderBoardFactory, ChallengeFactory) {
+app.controller('LeaderBoardController', function ($scope, $stateParams, AuthService, LeaderBoardFactory, ChallengeFactory, BotCodeFactory) {
     
-	if (!$scope.user) AuthService.getLoggedInUser().then(function (user) {
-        $scope.user = user;
+	if (!$scope.user) AuthService.getLoggedInUser().then(function (userLogged) {
+        $scope.userLogged = userLogged;
     });
 
     if (!$scope.userRank) LeaderBoardFactory.getUserRank().then(function(users){
@@ -28,13 +28,14 @@ app.controller('LeaderBoardController', function ($scope, $stateParams, AuthServ
 
 	// //SCOPE METHODS
 	$scope.challengeUser = function( user ) {
-		if ($scope.user._id !== user._id)
-        ChallengeFactory.challengeUser( $scope.user._id, 
+        
+		if ($scope.userLogged._id !== user._id)
+        ChallengeFactory.challengeUser( $scope.userLogged._id, 
         	{ challenged: user._id } );
     }
    
    $scope.forkBot = function( index ) {
-        //Factory.forkBot( $scope.botRank[index] );
+        BotCodeFactory.createForkedBot( $scope.userLogged._id, $scope.botRank[index]._id );
     }
   
 });

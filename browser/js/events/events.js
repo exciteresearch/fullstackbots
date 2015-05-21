@@ -25,7 +25,7 @@ app.controller('mainEventCtrl',function($scope, $stateParams){
 app.controller('EventsController', function ($scope, $stateParams, AuthService, ChallengeFactory, EventsFactory, $rootScope) {
 
     $scope.data = {
-        preferences: "",
+        specs: "",
         slots: 1,
         createEvent: false
     };
@@ -34,7 +34,7 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
         $scope.user = user;
     });
 
-    //TODO: No tocar por ahora
+    //TODO: Put a modal
     $scope.botOneID = "555ba4d6a5f6226b30937fc4";
 
     $scope.eventLaunched = false;
@@ -56,11 +56,15 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
 
 	
 	// //SCOPE METHODS
+     $scope.createNewChallenge = function() {
+        //TODO
+     }
+
     $scope.createNewEvent = function() {
         
         var newEvent = {
             createdBy: $scope.user._id,
-            preferences: $scope.data.preferences,
+            specs: $scope.data.specs,
             slots: $scope.data.slots
         }
 
@@ -69,7 +73,7 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
             {
                 $scope.pendingEvents.push(event);
                 $scope.data.createEvent = false;
-                $scope.data.preferences = "";
+                $scope.data.specs = "";
                 $scope.data.slots = 1;
             });
     }

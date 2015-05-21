@@ -37,7 +37,19 @@ app.controller('PlayCanvasEditorCtrl',function($scope,$sce,uuid4){
     });
 });
 
-app.controller('CodeEditorCtrl',function($scope, BotCodeFactory){
+app.controller('CodeEditorCtrl',function($scope, BotCodeFactory, AuthService){
+
+	if (!$scope.user) AuthService.getLoggedInUser().then(function (user) {
+        $scope.user = user;
+    });
+
+	// BotCodeFactory.createBlankBot( user._id ).then(function(bot){
+	// 	$scope.bot = bot;
+	// });
+
+	// BotCodeFactory.createForkedBot( user._id, bot._id ).then(function(bot){
+	// 	$scope.bot = bot;
+	// });
 
 	$scope.bot = {};
 	
@@ -48,6 +60,8 @@ app.controller('CodeEditorCtrl',function($scope, BotCodeFactory){
 //		$scope.bot._id = bot._id;
 
 	});
+
+	
 	
 	$scope.saveBot = function(){
 		BotCodeFactory.saveBot($scope.bot);
