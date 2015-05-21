@@ -47,13 +47,15 @@
 				</td>							
 			</tr>
 			<tr>
-				<td>{{event.createdBy}}</td>
+				<td>{{event.createdBy.username}}</td>
+				<td>{{event.createdBy.rank}}</td>
 				<td>{{event.preferences}}</td>
 				<td>{{event.slots}}</td>
 				<td>
-					<a ng-if="!waiting"><button class="btn-success" ng-click="joinEvent($index)">Launch</button></a>
-					<a ng-if="waiting"><button class="btn-default">Waiting</button></a>
-					<a><button class="btn-danger" ng-click="deleteEvent($index)">Remove</button></a>
+					<a ><button class="btn-success" ng-click="joinEvent($index)">
+						Launch</button></a>
+					<a><button class="btn-danger" ng-click="deleteEvent($index)">
+						Remove</button></a>
 				</td>
 				<td></td>
 				<td></td>				
@@ -98,7 +100,7 @@
 				<td>{{challenge.challenger.rank}}</td>
 				<td>{{challenge.challenged.username}}</td>
 				<td>{{challenge.challenged.rank}}</td>
-				<td>{{challenge.deadLine}}</td>
+				<td>{{challenge.deadline}}</td>
 				<td>{{challenge.accepted}}</td>
 			</tr>
 		</table>
