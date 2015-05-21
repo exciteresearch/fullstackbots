@@ -1,4 +1,4 @@
-app.factory('BotCodeFactory', function ($http) {
+app.factory('BotCodeFactory', function ($http,$state) {
     return {
         getBot: function (bot) {
         	
@@ -30,6 +30,16 @@ app.factory('BotCodeFactory', function ($http) {
               }, function(err) {
                   throw new Error(err);
               });  
+        },
+        
+        compete: function (bot){
+        	if (!!bot){
+        		console.log("got to learderboard with bot",bot._id)
+        		$state.go('eventsWithBot',{ 'defaultBotID': bot._id });
+        	} else {
+        		console.log("got to learderboard without a bot")
+        		$state.go('events');
+        	}
         }
 
     };
