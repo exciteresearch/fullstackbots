@@ -3,7 +3,7 @@ app.factory('BotCodeFactory', function ($http,$state) {
         getBot: function (bot) {
         	
             var queryParams = {
-            		bot: bot
+            		botOneID: bot
             };
             
             if (!bot) {
@@ -27,6 +27,27 @@ app.factory('BotCodeFactory', function ($http,$state) {
 //                update.currentOrder = res.data;
 //                update.justOrdered = true;
             	return res.data;
+              }, function(err) {
+                  throw new Error(err);
+              });  
+        },
+
+        createBlankBot: function ( user_ID ) {
+            
+            return $http.post('/api/dispatcher/createBlankBot/:user_ID').then(function(res) {
+                return res.data;
+              }, function(err) {
+                  throw new Error(err);
+              });  
+        }, 
+
+        createForkedBot: function (user_ID, bot_ID) {
+          
+            return $http.post('/api/dispatcher/createForkedBot/'+user_ID, { botID : bot_ID} )
+            .then(function(res) {
+            	console.log('createForkedBot res.data._id',res.data_id);
+            	$state.go('forkBotToEditor',{ 'defaultBotID': res.data._id });
+//                return res.data;
               }, function(err) {
                   throw new Error(err);
               });  

@@ -10,6 +10,37 @@ var Bot = require('mongoose').model('Bot');
 
 module.exports = router;
 
+
+router.post('/createBlankBot/:id', function(req, res, next) {
+	var obj = {
+		codedBy: req.params.id,
+		botname:"BlankBot"
+	}
+	Bot.create(obj, function(err,robot) {
+		if (err) return next(err);
+		res.send(robot);    
+	});
+});
+
+router.post('/createForkedBot/:id', function(req, res, next) {
+	
+	var obj = {
+		codedBy: req.params.id
+	}
+
+	 Bot.findById(req.body.botID, function(err,robotForked) {
+		if (err) return next(err);
+		obj.botCode = robotForked.botCode;
+		obj.botname = robotForked.botname+"_FORK";
+		Bot.create(obj, function(err,robot) {
+			if (err) return next(err);
+			res.send(robot);    
+		});    
+	});
+});
+
+
+
 // TODO user login/register, 
 //	assign session id, 
 //	authenticate user for 
@@ -19,8 +50,10 @@ module.exports = router;
 router.get('/readFile', function (req, res, next) {
 	console.log('/readFile req.query',req.query);
 	var botID = req.query.botOneID;
-	Bot.findOne(botID, function(err, found){
+	console.log('/readFile botID',botID);
+	Bot.findById(botID, function(err, found){
         if (err) return next(err);
+        console.log('/readFile found',found);
 		res.send(found);
 		next();
 	});

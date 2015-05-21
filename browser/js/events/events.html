@@ -49,7 +49,7 @@
 			<tr>
 				<td>{{event.createdBy.username}}</td>
 				<td>{{event.createdBy.rank}}</td>
-				<td>{{event.preferences}}</td>
+				<td>{{event.specs}}</td>
 				<td>{{event.slots}}</td>
 				<td>
 					<a ><button class="btn-success" ng-click="joinEvent($index)">
@@ -78,7 +78,7 @@
 		<h2 ng-show="data.createEvent">New Event</h2>
 		<form ng-show="data.createEvent" ng-submit="createNewEvent(data)">
 			<textarea rows="6" cols="50" placeholder="Player Preferences"
-				ng-model="data.preferences"></textarea>
+				ng-model="data.specs"></textarea>
 			<input required placeholder="Open Slots" ng-model="data.slots" size="10">
 				</input>
 			<button type="submit" class="btn btn-default">Confirm Creation</button>
