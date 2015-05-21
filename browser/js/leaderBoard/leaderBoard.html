@@ -1,0 +1,42 @@
+<section id="leaderBoard"> 
+	<div class="col-lg-6 col-sm-12">
+		<div class="row">
+		<h2>User Rank</h2>
+			
+		<table>
+			<tr>
+				<th>User Name</th><th>Rank</th><th>Points</th>
+				<th>Challenge</th>
+			</tr>
+			<tr ng-repeat="user in userRank" ng-controller="LeaderBoardController">
+				<td>{{user.username}}</td>
+				<td>{{user.rank}}</td>
+				<td>{{user.points}}</td>
+				<td><a><button ng-click="challengeUser(user)">Challenge</button></a></td>
+			</tr>
+		</table>
+	</div>
+	</div>
+
+	<div class="col-lg-6 col-sm-12">
+		<div class="row">
+		<h2>Bot Rank</h2>
+		<table>
+			<tr>
+				<th>Bot Name</th><th>Points</th><th>Wins</th><th>Battles</th>
+				<th>Fork</th>
+			</tr>
+			<tr ng-repeat="bot in botRank" ng-controller="LeaderBoardController">
+				<td>{{bot.botname}}</td>
+				<td>{{bot.points}}</td>
+				<td>{{bot.wins}}</td>
+				<td>{{bot.battles}}</td>
+				<td><a><button class="btn-success" ng-click="forkBot(bot)">Fork</button></a></td>
+			</tr>
+		</table>
+		
+	</div>
+	</div>
+	
+</div>
+</section>

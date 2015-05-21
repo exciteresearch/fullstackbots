@@ -47,4 +47,34 @@ module.exports = function (app) {
 
     });
 
+    app.post('/register', function (req, res, next) {
+
+        var authCb = function (err, user) {
+
+            if (err) {console.log("REGISTER ERROR"); return next(err); }
+
+            if (!user) {
+                var error = new Error('Invalid signUp credentials');
+                error.status = 401;
+                return next(error);
+            }
+
+            // req.logIn will establish our session.
+            req.logIn(user, function (err) {
+                if (err) return next(err);
+                // We respond with a reponse object that has user with _id and email.
+                res.status(200).send({ user: _.omit(user.toJSON(), ['password', 'salt']) });
+            });
+
+        };
+
+        //console.log("Before USERMODEL CREATE");
+
+        UserModel.create(req.body, function(err) {
+            if (err) throw err;
+            else passport.authenticate('local', authCb)(req, res, next);
+        });
+
+    });
+
 };

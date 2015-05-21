@@ -9,9 +9,12 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
 
             scope.items = [
                 { label: 'Home', state: 'home' },
-                { label: 'About', state: 'about' },
-                { label: 'Tutorial', state: 'tutorial' },
-                { label: 'Members Only', state: 'membersOnly', auth: true }
+                { label: 'Tutorial', state: 'tutorial' }//this auth is in the template
+                ,{ label: 'Leader Board', state: 'leaderBoard', auth: true }
+                ,{ label: 'User Profile', state: 'userProfile', auth: true }
+                ,{ label: 'Events', state: 'events', auth: true }
+                ,{ label: 'Editor', state: 'editor', auth: true }
+                //,{ label: 'Members Only', state: 'membersOnly', auth: true }
             ];
 
             scope.user = null;

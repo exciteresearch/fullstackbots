@@ -47,13 +47,15 @@
 				</td>							
 			</tr>
 			<tr>
-				<td>{{event.createdBy}}</td>
+				<td>{{event.createdBy.username}}</td>
+				<td>{{event.createdBy.rank}}</td>
 				<td>{{event.preferences}}</td>
 				<td>{{event.slots}}</td>
 				<td>
-					<a ng-if="!waiting"><button class="btn-success" ng-click="joinEvent($index)">Launch</button></a>
-					<a ng-if="waiting"><button class="btn-default">Waiting</button></a>
-					<a><button class="btn-danger" ng-click="deleteEvent($index)">Remove</button></a>
+					<a ><button class="btn-success" ng-click="joinEvent($index)">
+						Launch</button></a>
+					<a><button class="btn-danger" ng-click="deleteEvent($index)">
+						Remove</button></a>
 				</td>
 				<td></td>
 				<td></td>				
@@ -90,15 +92,16 @@
 		<table>
 			<tr>
 				<th>Challenger</th><th>Rank</th><th>Challenged</th><th>Rank</th>
-				<th>Time DeadLine</th>
+				<th>Time DeadLine</th><th>Status</th>
 			</tr>
 			<tr ng-repeat="challenge in challenges" ng-controller="EventsController">
 				<!-- Showing LIVE challenges -->
-				<td>{{challenge.p1_user_name}}</td>
-				<td>{{challenge.p1_rank}}</td>
-				<td>{{challenge.p2_user_name}}</td>
-				<td>{{challenge.p2_rank}}</td>
-				<td><a ng-if="challenge.challenged"><button ng-click="accept(challenge)">Accept</button></a></td>
+				<td>{{challenge.challenger.username}}</td>
+				<td>{{challenge.challenger.rank}}</td>
+				<td>{{challenge.challenged.username}}</td>
+				<td>{{challenge.challenged.rank}}</td>
+				<td>{{challenge.deadline}}</td>
+				<td>{{challenge.accepted}}</td>
 			</tr>
 		</table>
 		

@@ -2,6 +2,9 @@
 var router = require('express').Router();
 var mongoose = require('mongoose');
 var Event = require('mongoose').model("Event");
+var User = require('mongoose').model("User");
+var Bot = require('mongoose').model("Bot");
+var Challenge = require('mongoose').model("Challenge");
 module.exports = router;
 var _ = require('lodash');
 
@@ -39,7 +42,7 @@ router.get('/pending', function (req, res, next) {
   var obj = {};
   obj.slots = {$gt: 0};
  
-  Event.find(obj, function(err, events) {
+  Event.find(obj).populate("createdBy").exec(function(err, events) {
     if (err) return next(err);
     res.send(events);
   });
@@ -60,12 +63,10 @@ router.get('/live', ensureAuthenticated, function (req, res, next) {
 
 //Create an Event
 router.post('/', function (req, res, next) {
-  
-console.log("index.js route.post.('/',...");
-var event = req.body;
-event.createdBy = mongoose.Types.ObjectId("5558f55d28db30a4394d4234");
 
-console.log(event);
+var event = req.body;
+
+console.log("Hi");
 
   Event.create(event, function (err, event) {
     if (err) return next(err);
@@ -95,5 +96,63 @@ router.delete('/:id', function (req, res, next) {
   Event.findByIdAndRemove(req.params.id, function (err, event) {
     if (err) {  console.log(err); return next(err); }
     res.send(event);
+  });
+});
+
+//**************** CHALLENGES
+
+//GET challenges
+router.get('/challenge', function (req, res, next) {
+   
+  Challenge.find({}).populate("challenger challenged").exec(function(err, challenges) {
+    if (err) return next(err);
+    console.log(challenges);
+    res.send(challenges);
+  });
+});
+
+//GET challenges by ID
+router.get('/challenge/:id', function (req, res, next) {
+   
+  Challenge.findOne({ challenged: req.params.id }).populate("challenger challenged").exec(function(err, challenges) {
+    if (err) return next(err);
+    res.send(challenges);
+  });
+});
+
+//Create an Challenge
+router.post('/challenge/:id', function (req, res, next) {
+
+var obj = {
+  challenged: req.body.challenged,
+  challenger: req.params.id
+};
+
+  Challenge.create(obj, function (err, challenge) {
+    if (err) return next(err);
+    console.log("Challenge created");
+    res.send(challenge);
+  });
+});
+
+//Accept
+router.put('/challenges/:id', function (req, res, next) {
+
+var obj = { accepted : true };
+
+  Challenge.findByIdAndUpdate(req.params.id, obj, function(err, challenge){
+     if (err) return next(err);
+     res.send(challenge);
+   });
+});
+
+//********************* BOT LIST
+
+//GET challenges by ID
+router.get('/getBotList/:id', function (req, res, next) {
+   
+  User.findOne({ _id: req.params.id }, 'bots').populate("bots").exec(function(err, bots) {
+    if (err) return next(err);
+    res.send(bots);
   });
 });

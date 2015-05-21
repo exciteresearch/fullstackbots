@@ -18,7 +18,7 @@ app.controller('PlayCanvasEditorCtrl',function($scope,$sce,uuid4){
 
 	$scope.simLaunched = false;
 	
-    $scope.$on('simmulate',function(event, bot) {
+    $scope.$on('simulate',function(event, bot) {
     	if(!bot._id) {
         	$scope.simLaunched = false;
         }
@@ -55,7 +55,7 @@ app.controller('CodeEditorCtrl',function($scope, BotCodeFactory){
 	
 	$scope.simBot = function(){
 		BotCodeFactory.saveBot($scope.bot);
-		$scope.$emit('simmulate', $scope.bot);
+		$scope.$emit('simulate', $scope.bot);
 	};
 	
 	// ui.ace start
@@ -67,6 +67,12 @@ app.controller('CodeEditorCtrl',function($scope, BotCodeFactory){
 		//
 	};
 	
+	$scope.compete = function(){
+		console.log("fire compete")
+		BotCodeFactory.compete($scope.bot);
+	};
+	
+
 });
 
 app.controller('CodeConsoleCtrl',function($scope){

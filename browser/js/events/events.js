@@ -1,35 +1,51 @@
 'use strict';
 app.config(function ($stateProvider) {
-    $stateProvider.state('events', {
+    $stateProvider
+    .state('events', {
         url: '/events',
         controller: "EventsController",
         templateUrl: 'js/events/events.html'
-        // ,
-        // data: {
-        //     admin: true
-        // }
+        ,
+        data: {
+            authenticate: true
+        }
+    })
+    .state('eventsWithBot',{
+    	url: '/events/:defaultBotID',
+        controller: "EventsController",
+        templateUrl: 'js/events/events.html'
+        ,
+        data: {
+            authenticate: true
+        }
     });
 });
 
 app.controller('mainEventCtrl',function($scope, $stateParams){
     $scope.directEventID = "";
-    
 	$scope.eventsObj = {};
-	console.log("revised mainEventCtrl");
+	//console.log("revised mainEventCtrl");
 	$scope.$on('refreshEventObj',function(event, data){
-		console.log("mainEventCtrl data=",data);
+		//console.log("mainEventCtrl data=",data);
 		$scope.eventsObj = data;
 	});
 });
 
-app.controller('EventsController', function ($scope, $stateParams, EventsFactory, $rootScope) {
+app.controller('EventsController', function ($scope, $stateParams, AuthService, ChallengeFactory, EventsFactory, $rootScope) {
 
     $scope.data = {
         preferences: "",
         slots: 1,
         createEvent: false
     };
-    
+
+    AuthService.getLoggedInUser().then(function (user) {
+        $scope.user = user;
+    });
+
+    //TODO: No tocar por ahora
+    $scope.botOneID = $stateParams.defaultBotID;
+
     $scope.eventLaunched = false;
     $scope.waiting = false;
     if (!$scope.pendingEvents) EventsFactory.getPendingEvents().then(function(events){
@@ -42,17 +58,17 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
 	// });
     $scope.liveEvents = [];
 
-    //TODO
-    // if (!$scope.challenges) EventsFactory.getPendingChallenges().then(function(challenges){
-    //     $scope.challenges = challenges;
-    // });
-    $scope.challenges = [];
+    
+    if (!$scope.challenges) ChallengeFactory.getChallenges().then(function(challenges){
+        $scope.challenges = challenges;
+    });
 
 	
 	// //SCOPE METHODS
     $scope.createNewEvent = function() {
-
-        var newEvent = { 
+        
+        var newEvent = {
+            createdBy: $scope.user._id,
             preferences: $scope.data.preferences,
             slots: $scope.data.slots
         }
@@ -60,7 +76,6 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
         EventsFactory.createEvent( newEvent )
         .then( function ( event )
             {
-                console.log("EVENT ADDED!");
                 $scope.pendingEvents.push(event);
                 $scope.data.createEvent = false;
                 $scope.data.preferences = "";
@@ -80,7 +95,6 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
     $scope.joinEvent = function( index ) {
     	
         if($scope.eventLaunched) {
-        	console.log("toggle from",$scope.eventLaunched);
         	$scope.eventLaunched = false;
         }
         else {
@@ -94,7 +108,6 @@ app.controller('EventsController', function ($scope, $stateParams, EventsFactory
 //        		eventID: $scope.pendingEvents[index]._id, eventType: 'pending',
 //        		botOneID: $scope.botOneID
 //        	});
-        	console.log("EventsController 'launchEvent' $scope.pendingEvents[index]._id id",$scope.pendingEvents[index]._id);
         }
         
         
