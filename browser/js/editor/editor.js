@@ -5,6 +5,15 @@ app.config(function ($stateProvider) {
         url: '/editor',
         templateUrl: 'js/editor/editor.html'
     })
+    .state('editBot',{
+		url: '/editor/:defaultBotID',
+	    controller: "CodeEditorCtrl",
+	    templateUrl: 'js/editor/editor.html'
+	    ,
+	    data: {
+	        authenticate: true
+	    }
+    })
     .state('forkBotToEditor',{
     	url: '/editor/:defaultBotID',
         controller: "CodeEditorCtrl",
@@ -92,7 +101,7 @@ app.controller('CodeEditorCtrl',function($scope, $stateParams, BotCodeFactory, A
 	};
 	
 	$scope.compete = function(){
-		console.log("fire compete")
+//		console.log("fire compete")
 		BotCodeFactory.compete($scope.bot);
 	};
 	

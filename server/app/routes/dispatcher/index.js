@@ -15,7 +15,8 @@ router.post('/createBlankBot/:id', function(req, res, next) {
 	var obj = {
 		codedBy: req.params.id,
 		botname:"BlankBot"
-	}
+	};
+	
 	Bot.create(obj, function(err,robot) {
 		if (err) return next(err);
 		res.send(robot);    
@@ -26,7 +27,7 @@ router.post('/createForkedBot/:id', function(req, res, next) {
 	
 	var obj = {
 		codedBy: req.params.id
-	}
+	};
 
 	 Bot.findById(req.body.botID, function(err,robotForked) {
 		if (err) return next(err);
@@ -39,6 +40,15 @@ router.post('/createForkedBot/:id', function(req, res, next) {
 	});
 });
 
+router.post('/editBot', function(req, res, next) {
+	//TODO if req.body.userId same as session.userId then allow for editBot
+	console.log('editBot userId',req.body.userId,'botId',req.body.botId);
+	Bot.findById(req.body.botId, function(err,editBot) {
+		if (err) return next(err);
+		res.send(editBot);    
+	});
+});
+
 
 
 // TODO user login/register, 
@@ -48,12 +58,12 @@ router.post('/createForkedBot/:id', function(req, res, next) {
 //	edit loads botCode into codeEditor <= router.get('/readFile'
 	
 router.get('/readFile', function (req, res, next) {
-	console.log('/readFile req.query',req.query);
+//	console.log('/readFile req.query',req.query);
 	var botID = req.query.botOneID;
-	console.log('/readFile botID',botID);
+//	console.log('/readFile botID',botID);
 	Bot.findById(botID, function(err, found){
         if (err) return next(err);
-        console.log('/readFile found',found);
+//        console.log('/readFile found',found);
 		res.send(found);
 		next();
 	});
@@ -97,7 +107,7 @@ router.get('/compete', function (req, res) {
 var openConnections = [];
 
 router.get('/', function (req, res) {
-	console.log("sse openned ip:"+ req.socket.remoteAddress + ":" + req.socket.remotePort );
+//	console.log("sse openned ip:"+ req.socket.remoteAddress + ":" + req.socket.remotePort );
     req.socket.setTimeout(Infinity);
 
     res.writeHead(200, {

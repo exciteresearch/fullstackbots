@@ -45,8 +45,20 @@ app.factory('BotCodeFactory', function ($http,$state) {
           
             return $http.post('/api/dispatcher/createForkedBot/'+user_ID, { botID : bot_ID} )
             .then(function(res) {
-            	console.log('createForkedBot res.data._id',res.data_id);
+//            	console.log('createForkedBot res.data._id',res.data_id);
             	$state.go('forkBotToEditor',{ 'defaultBotID': res.data._id });
+//                return res.data;
+              }, function(err) {
+                  throw new Error(err);
+              });  
+        },
+
+        editBot: function (userId, botId) {
+//        	console.log('editBot',userId,botId);
+            return $http.post('/api/dispatcher/editBot/', { userId: userId, botId: botId} ) //no params, just query, why not body?
+            .then(function(res) {
+//            	console.log('editBot res.data',res.data);
+            	$state.go('editBot',{ 'defaultBotID': res.data._id });
 //                return res.data;
               }, function(err) {
                   throw new Error(err);
@@ -55,10 +67,10 @@ app.factory('BotCodeFactory', function ($http,$state) {
         
         compete: function (bot){
         	if (!!bot){
-        		console.log("got to learderboard with bot",bot._id)
+//        		console.log("got to learderboard with bot",bot._id)
         		$state.go('eventsWithBot',{ 'defaultBotID': bot._id });
         	} else {
-        		console.log("got to learderboard without a bot")
+//        		console.log("got to learderboard without a bot")
         		$state.go('events');
         	}
         }
