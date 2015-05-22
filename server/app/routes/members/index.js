@@ -69,7 +69,7 @@ var event = req.body;
   Event.create(event, function (err, event) {
     if (err) return next(err);
     Event.findOne(event).populate('createdBy').exec(function(err, event2) {
-      console.log(event2);
+//      console.log(event2);
       res.send(event2);
     });
   });
@@ -131,7 +131,7 @@ var obj = {
 
   Challenge.create(obj, function (err, challenge) {
     if (err) return next(err);
-    console.log("Challenge created");
+//    console.log("Challenge created");
     res.send(challenge);
   });
 });
@@ -151,12 +151,10 @@ var obj = { accepted : true };
 
 //GET bots by ID
 router.get('/getBotList/:id', function (req, res, next) {
-
-  console.log("GET bots by ID");
    
   Bot.find({ codedBy: req.params.id }).exec(function(err, bots) {
     if (err) return next(err);
-    console.log(bots);
+//    console.log(bots);
     res.send(bots);
   });
 });

@@ -41,7 +41,7 @@
 				<td>{{bot.points}}</td>
 				<td>{{bot.wins}}</td>
 				<td>{{bot.forked}}</td>
-				<td><a ui-sref="editor({ botID: bot._id })">Edit</a></td>
+				<td><a ng-click="editBot(bot)">Edit</a></td>
 				<td><button ng-click="delete(bot)">Delete</button></td>
 			</tr>
 		</table>
