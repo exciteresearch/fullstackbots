@@ -27,7 +27,7 @@ pc.script.create('flames', function (context) {
             if (this.pool.length === 0) {
                 var before = this.length;
                 // extend pool
-                this.length += 8;
+                this.length += 16;
                 
                 for(var i = 0; i < this.length - before; i++) {
                     var flame = this.flame.clone();
@@ -69,7 +69,7 @@ pc.script.create('flames', function (context) {
             
             flame.setPosition(tank.getPosition().x + vecTmp.x, 0.9, tank.getPosition().z + vecTmp.z);
             flame.targetPosition = new pc.Vec3(data.tx, 0.9, data.ty);
-            flame.speed = data.sp * 5 * 0.5;
+            flame.speed = data.sp * 50 * 0.5;
             
             // material and scale if special
             
