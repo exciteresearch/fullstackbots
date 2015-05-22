@@ -53,10 +53,10 @@ pc.script.create('client', function (context) {
             var self = this;
             var servers = {
                 'local': 'http://localhost:30043/socket', // local
-                 'fsb': 'http://192.168.1.216:30043/socket', //fsb
-//                 'fsb': 'http://localhost:30043/socket', //fsbx
-                 'us': 'http://54.67.22.188:30043/socket', // us
-                 'default': 'https://tanx.playcanvas.com/socket' // load balanced
+                // 'fsb': 'http://192.168.1.216:30043/socket', //fsb
+               'fsb': 'http://localhost:30043/socket', //fsbx
+                'us': 'http://54.67.22.188:30043/socket', // us
+                'default': 'https://tanx.playcanvas.com/socket' // load balanced
             };
 
             var env = getParameterByName('server') || 'default';
@@ -231,7 +231,7 @@ pc.script.create('client', function (context) {
         
        onMouseDown: function() {
             this.layMine(true);
-            this.shootNow=true;
+            this.shootNow=true
             opponentBot.shootNow=true;
             opponentBot.flameNow=true;
         },

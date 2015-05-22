@@ -9,7 +9,7 @@ pc.script.create('flame', function (context) {
     Flame.prototype = {
         initialize: function () {
             this.fires = context.root.getChildren()[0].script.fires;
-            // this.entity.audiosource.pitch = Math.random() * 0.2 + 0.7;
+            // this.entity.audiosource.pitch = Math.random() * -0.2 - 0.7;
             this.shadow = this.entity.findByName('shadow');
             var self = this;
             this.entity.on('culled', function(state) {
@@ -70,7 +70,7 @@ pc.script.create('flame', function (context) {
                 self.entity.audiosource.stop();
                 self.hidden(false);
                 self.entity.fire('finish');
-            }, 500);
+            }, 1000);
         },
         
         hidden: function(state) {

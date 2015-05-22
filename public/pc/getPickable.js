@@ -10,6 +10,7 @@ var randomDirection= function(unstickTime){
         movement=[Math.round(Math.random()*2-1),Math.round(Math.random()*2-1)]
         return movement;
     };
+
 var logging=true;
 var unstickTime=100;
 var currentPlayer={
@@ -31,7 +32,8 @@ var opponentBot={
     enemyPriority:6,
     coinPriority:5,
     movement:[0,0],
-    shootNow: "left"
+    shootNow: "left",
+    lastCheckPoint:0
 };
 //ian edit: end my library
 

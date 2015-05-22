@@ -117,15 +117,19 @@ pc.script.create('TankAI', function (context) {
             this.unstickTime=unstickTime;
         },
 
-        unstick: function(time){
-            if(typeof(time)===Number){
-                this.unstick=time;
-            }
-            if(this.unstick>0){
-                this.movementOne=Math.round(Math.random()*2-1)
-                this.movementTwo=Math.round(Math.random()*2-1)
-            }
-            this.unstick--;
+        // unstick: function(time){
+        //     if(typeof(time)===Number){
+        //         this.unstick=time;
+        //     }
+        //     if(this.unstick>0){
+        //         this.movementOne=Math.round(Math.random()*2-1)
+        //         this.movementTwo=Math.round(Math.random()*2-1)
+        //     }
+        //     this.unstick--;
+        // },
+        wander: function(){
+            this.unstick=unstickTime;
+            return randomDirection()
         },
         // takeAction: function (tankPosition) {
         // Called every frame, dt is time in seconds since last update

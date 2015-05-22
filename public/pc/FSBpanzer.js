@@ -143,16 +143,10 @@ pc.script.create('FSBpanzer', function (context) {
                 opponentBot.destination=true;
             }
 
-            this.pastLocations.push(tankPosition[0])
-            this.pastLocations.push(tankPosition[2])
-            if(this.pastLocations.length>90){
-                this.pastLocations.shift()
-                this.pastLocations.shift()
-            }
             if(this.unstick>0){
                 this.unstick--
             }else{
-                if(this.pastLocations[0]===this.pastLocations[88]&&this.pastLocations[1]==this.pastLocations[89]){
+                if(opponentBot.lastCheckPoint+3000<Date.now()&&opponentBot.currentPriority>0){
                     this.movement=randomDirection();
                     this.unstick=this.unstickTime
                     opponentBot.currentPriority=0;
@@ -164,7 +158,8 @@ pc.script.create('FSBpanzer', function (context) {
 
                     }
                     if(opponentBot.destination===true&&myPath.length>0){
-                        if (Math.abs(tankPosition[0]-(myPath[l].x))+Math.abs(tankPosition[2]-(myPath[l].y))<1){ 
+                        if (Math.abs(tankPosition[0]-(myPath[l].x))+Math.abs(tankPosition[2]-(myPath[l].y))<1){
+                            opponentBot.lastCheckPoint=Date.now()
                             l++; 
                         }
                         if (tankPosition[0]<myPath[l].x&&tankPosition[2]>myPath[l].y){
@@ -228,7 +223,7 @@ pc.script.create('FSBpanzer', function (context) {
             }else if(opponentBot.shootNow===true || opponentBot.shootNow===false){
                 this.angle=this.angle;
                 _self.socket.send('opponent.layMine', opponentBot.layMine);
-                _self.socket.send('opponent.shoot', opponentBot.shootNow);
+                _self.socket.send('opponent.flameOn', opponentBot.shootNow);
                 // _self.socket.send('opponent.flameOn', opponentBot.flameNow);
             }
             this.entity.script.tanks.opp.targeting(this.angle);
