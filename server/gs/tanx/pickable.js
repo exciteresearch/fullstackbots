@@ -8,6 +8,7 @@ function Pickable(args) {
     this.deleted = false;
     this.id = ++pickableIds;
     this.owner= args.owner;
+    this.ownerTank=args.ownerTank;
     this.radius = .3;
     this.pos = Vec2.new(args.x, args.y);
     this.type = args.type;

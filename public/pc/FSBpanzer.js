@@ -136,7 +136,6 @@ pc.script.create('FSBpanzer', function (context) {
                         opponentBot.currentPriority=0;
                     } else {
                         myPath=path;
-                         if(logging===true){console.log(opponentBot.currentPriority);}
                     }
                 });
                 easystar.calculate();
