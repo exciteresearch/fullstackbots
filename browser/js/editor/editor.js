@@ -27,6 +27,10 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('mainEditorCtrl',function($scope, $stateParams){
+	$scope.editorOn=true;
+	$scope.editorToggle = function(){
+		$scope.editorOn=!$scope.editorOn;
+	};
 	$scope.eventsObj = {};
 	$scope.$on('refreshEventObj',function(event, data){
 		$scope.eventsObj = data;
