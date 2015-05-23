@@ -1,11 +1,10 @@
 <section id="editor">
 	<div ng-controller="mainEditorCtrl">
 		<div  ng-hide="false" ng-model="eventsObj" >
-			<h1 id="eventsObj-eventID" ng-show="eventsObj.eventID" class="animated fadeInRight" >Room: {{eventsObj.eventID}}</h1>
+	<!-- 		<h1 id="eventsObj-eventID" ng-show="eventsObj.eventID" class="animated fadeInRight" >Room: {{eventsObj.eventID}}</h1> -->
 		</div>
-
- 	    <div class="flex" ng-controller="PlayCanvasEditorCtrl" class="col-lg-12 col-sm-12">   
-		    <div class="editor animated fadeInRight" ng-class="{'margining':eventsObj.eventID}" ng-controller="CodeEditorCtrl">
+ 	    <div ng-controller="PlayCanvasEditorCtrl" class="col-lg-12 col-sm-12">   
+		    <div class="editor animated fadeInRight"  ng-controller="CodeEditorCtrl">
 				<h4>Code Editor</h4>
 				<div id="ace" ng-model="bot.botCode" ui-ace="{
 												useWrapMode : true,
@@ -15,7 +14,7 @@
 												showPrintMargins: true,
 												onLoad: aceLoaded,
 												onChange: aceChanged
-												}" style="height:70%; width: 100%; font-family: monospace;">
+												}" style=" font-family: monospace;">
 				</div>
 				<div class="justified">
 					<div>
@@ -25,20 +24,25 @@
 	                	<button ng-click="saveBot()" type="submit" class="btn btn-success">Save</button>
 	                </div>
 	                <div>	
-	                	<button ng-click="simBot()" type="submit" class="btn btn-success">Practice</button>
+	                	<button ng-click="simBot(); editorToggle()" type="submit" class="btn btn-success">Practice</button>
 	                </div>
 	                <div>
-	                	<button ng-click="compete()" type="submit" class="btn btn-success">Compete</button>
+	                	<button ng-click="compete(); editorToggle()" type="submit" class="btn btn-success">Compete</button>
 	                </div>
 	            </div>    
 			</div>
-		   	<div id="viewer" ng-if="simLaunched" class="animated fadeInRight">
-	    		<iframe  ng-src="{{playCanvasURL}}" style="width:100%;height:800px;"></iframe> 	
-	    	</div>     
+			<div id="draggable" class="console" >
+		   		   	<h4>Draggable Console</h4>
+		   		    <p>{{editorOn}}{{simLaunched}}</p>
+		   	</div> 
+	   	    <div id="viewer" ng-click="editorToggle()" ng-if="simLaunched && !editorOn" class="animated fadeInRight">
+	   	    	<iframe  id="iframe" ng-src="{{playCanvasURL}}" ></iframe>
+	   	    </div>   
 	    </div>
-	     <div class="console col-lg-6 col-sm-12" >
-		    	<h4>Console</h4>
-		    </div>	
-	    
+		<script>
+			$(function() {
+				$( "#draggable" ).draggable({ handle: "h4" });
+			});
+		</script>  
     </div>	    
 </section>
