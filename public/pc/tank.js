@@ -343,7 +343,24 @@ pc.script.create('tank', function (context) {
             this.hpBarLeft.setLocalPosition(-Math.max(0.01, 1 - left) / 2, 0, 0);
             this.hpBarRight.setLocalScale(Math.max(0.01, 1 - left), 0.1, 0.1);
             this.hpBarRight.setLocalPosition(left / 2, 0, 0);
-            
+            currentPlayer.repairPriority = currentPlayer.hurt
+            if(this.hp<10){
+                
+                if (this.own){
+                    console.log(this)
+                    currentPlayer.repairPriority=currentPlayer.hurt
+                }else{
+                    opponentBot.repairPriority=opponentBot.hurt
+                }
+            }
+            // while(this.hp=>10){
+                // console.log(this)
+                // if (this.own){
+                //     currentPlayer.repairPriority=currentPlayer.notHurt
+                // }else{
+                //     opponentBot.repairPriority=opponentBot.notHurt
+                // }
+            // }
             // if (this.own)
             //     this.uiHP.set(hp);
         },
