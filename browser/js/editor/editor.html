@@ -1,7 +1,20 @@
 <section id="editor">
 	<div ng-controller="mainEditorCtrl">
-		<div class='modalBackground' ng-class="{hideSelectBotModal: bot.botCode !== undefined}">
-				<div class='modalSelectBot' ng-class="{hideSelectBotModal: bot.botCode !== undefined}"></div>
+		<div ng-controller="SelectBotModalCtrl">
+			<div class='modalBackground' ng-class="{hideSelectBotModal: bot._id !== undefined}" ng-click="">
+					<div class='modalSelectBot' ng-class="{hideSelectBotModal: bot._id !== undefined}">
+						<div>
+							<!-- title -->
+							<h3> Select a Bot</h3>
+							<pre>{{bot._id===undefined}}<br>{{ bot.botname }}<br>{{ bot._id }}</pre>
+							<!-- content -->
+							<select ng-options="bot.botname for bot in botList" ng-model="botId" ng-change="selectBot(botId)">
+							</select>
+							<!-- cancel button -->
+		                	<br><button ng-click="blankBot()" type="submit" class="btn btn-success">Blank Bot</button>
+						</div>
+					</div>
+			</div>
 		</div>
 		<div  ng-hide="false" ng-model+="eventsObj" >
 			<h1 id="eventsObj-eventID" ng-show="eventsObj.eventID" class="animated fadeInRight" >Room: {{eventsObj.eventID}}</h1>

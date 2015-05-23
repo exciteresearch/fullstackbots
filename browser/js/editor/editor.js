@@ -23,6 +23,7 @@ app.config(function ($stateProvider) {
             authenticate: true
         }
     });
+//    console.log("defaultBotID",defaultBotID);
 });
 
 app.controller('mainEditorCtrl',function($scope, $stateParams){
@@ -30,6 +31,32 @@ app.controller('mainEditorCtrl',function($scope, $stateParams){
 	$scope.$on('refreshEventObj',function(event, data){
 		$scope.eventsObj = data;
 	});
+});
+
+app.controller('SelectBotModalCtrl', function ($scope, $stateParams, AuthService, BotCodeFactory, UserProfileFactory) {
+    
+    if (!$scope.user) AuthService.getLoggedInUser().then(function (user) {
+        $scope.user = user;
+        //get bots by user._id only
+        UserProfileFactory.getBotList( user._id ).then(function(bots){
+            $scope.botList = bots;
+        });
+    });
+
+	// //SCOPE METHODS
+    $scope.selectBot = function( bot ) {
+    	console.log("bot",bot);
+    	$scope.bot = bot;
+//    	$scope.defaultBotID = bot._id;
+    	console.log("end of selectBot(bot)");
+//       	BotCodeFactory.editBot( $scope.user._id, bot._id );
+    };
+    $scope.blankBot = function( index ) {
+    	console.log('$scope.botList[index]._id',$scope.botList[index]._id);
+		BotCodeFactory.getNewBot($scope.botList[index]._id).then(function(bot){
+			$scope.bot = bot;
+		});
+    };
 });
 
 app.controller('PlayCanvasEditorCtrl',function($scope, $stateParams, $sce,uuid4){
@@ -69,17 +96,14 @@ app.controller('CodeEditorCtrl',function($scope, $stateParams, BotCodeFactory, A
 	// 	$scope.bot = bot;
 	// });
 
-	$scope.bot = {};
+	$scope.bot = $scope.bot || {};
 	
 	//Could also be a Panel of Tabs, TODO upon selection or forking of a bot
-	BotCodeFactory.getBot($stateParams.defaultBotID).then(function(bot){
-		$scope.bot = bot;
-//		$scope.bot.botCode = bot.botCode;
-//		$scope.bot._id = bot._id;
-
-	});
-
-	
+	if ($stateParams.defaultBotID !== undefined){
+		BotCodeFactory.getBot($stateParams.defaultBotID).then(function(bot){
+			$scope.bot = bot;
+		});
+	}	
 	
 	$scope.saveBot = function(){
 		BotCodeFactory.saveBot($scope.bot);
