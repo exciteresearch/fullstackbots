@@ -29,6 +29,7 @@ Flame.prototype.delete = function() {
 
     this.deleted = true;
     this.owner = null;
+    this.ownerID=null;
     this.pos.delete();
     this.target.delete();
 };

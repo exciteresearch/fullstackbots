@@ -347,7 +347,7 @@ pc.script.create('tank', function (context) {
             if(this.hp<10){
                 
                 if (this.own){
-                    console.log(this)
+                    if(logging===true){"Tank is damaged and looking for repairs"}
                     currentPlayer.repairPriority=currentPlayer.hurt
                 }else{
                     opponentBot.repairPriority=opponentBot.hurt

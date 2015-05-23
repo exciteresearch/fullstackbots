@@ -182,7 +182,7 @@ Tank.prototype.update = function() {
         }
     } else {
         // dead
-        if (now - this.died > 5000) {
+        if (now - this.died > 500) { //ian edit: op mines
             this.dead = false;
             this.hp = 10;
             this.shield = 0;

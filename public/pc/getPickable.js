@@ -22,7 +22,7 @@ var currentPlayer={
     enemyPriority:6,
     coinPriority:5,
     movement:[0,0],
-    hurt:3,
+    hurt:-8,
     notHurt:-12,
     pathStep:0,
     turretAngle: 0
@@ -38,7 +38,7 @@ var opponentBot={
     movement:[0,0],
     shootNow: "left",
     lastCheckPoint:0,   
-    hurt: 3,    //priority given to repair powerups  hurt
+    hurt: 1,    //priority given to repair powerups  hurt
     notHurt:-12, //priority given to repair powerups when not hurt
     pathStep: 0,
     turretAngle: 0
