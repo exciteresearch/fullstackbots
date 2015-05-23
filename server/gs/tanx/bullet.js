@@ -54,7 +54,7 @@ Object.defineProperty(
                 y: parseFloat(this.pos[1].toFixed(2), 10),
                 tx: parseFloat(this.target[0].toFixed(2), 10),
                 ty: parseFloat(this.target[1].toFixed(2), 10),
-                sp: parseFloat(this.speed.toFixed(4), 10)
+                sp: parseFloat(this.speed.toFixed(4), 1)
             };
 
             if (this.special)
