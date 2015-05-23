@@ -107,7 +107,7 @@ pc.script.create('TankAI', function (context) {
 
 
     };
-    var layingMines=false;
+
     TankAI.prototype = {
         // Called once after all resources are loaded and before the first update
         initialize: function () {
@@ -129,7 +129,9 @@ pc.script.create('TankAI', function (context) {
         // },
         wander: function(){
             this.unstick=unstickTime;
-            return randomDirection()
+            this.movement=randomDirection()
+            // console.log(this.movement)
+            return this.movement
         },
         // takeAction: function (tankPosition) {
         // Called every frame, dt is time in seconds since last update
