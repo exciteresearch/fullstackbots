@@ -23,7 +23,6 @@ app.config(function ($stateProvider) {
             authenticate: true
         }
     });
-
 });
 
 app.controller('mainEditorCtrl',function($scope, $stateParams){

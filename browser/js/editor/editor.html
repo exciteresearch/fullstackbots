@@ -1,6 +1,9 @@
 <section id="editor">
 	<div ng-controller="mainEditorCtrl">
-		<div  ng-hide="false" ng-model="eventsObj" >
+		<div class='modalBackground' ng-class="{hideSelectBotModal: bot.botCode !== undefined}">
+				<div class='modalSelectBot' ng-class="{hideSelectBotModal: bot.botCode !== undefined}"></div>
+		</div>
+		<div  ng-hide="false" ng-model+="eventsObj" >
 			<h1 id="eventsObj-eventID" ng-show="eventsObj.eventID" class="animated fadeInRight" >Room: {{eventsObj.eventID}}</h1>
 		</div>
 
