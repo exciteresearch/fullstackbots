@@ -11,7 +11,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('UserProfileController', function ($scope, $stateParams, AuthService, UserProfileFactory, ChallengeFactory) {
+app.controller('UserProfileController', function ($scope, $stateParams, AuthService, BotCodeFactory, UserProfileFactory, ChallengeFactory) {
     
     if (!$scope.user) AuthService.getLoggedInUser().then(function (user) {
         $scope.user = user;
@@ -28,6 +28,10 @@ app.controller('UserProfileController', function ($scope, $stateParams, AuthServ
 	// //SCOPE METHODS
     $scope.acceptChallenge = function( index ) {
         ChallengeFactory.acceptChallenge( $scope.challenges[index] );
+    }
+     
+    $scope.editBot = function( bot ) {
+    	BotCodeFactory.editBot( $scope.user._id, bot._id );
     }
      
     $scope.deleteBot = function( index ) {
