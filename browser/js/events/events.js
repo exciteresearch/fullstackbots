@@ -61,7 +61,9 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
     if (!$scope.challenges) ChallengeFactory.getChallenges().then(function(challenges){
         $scope.challenges = challenges;
     });
-
+    $scope.setCurrentEvent=function(arg){
+        $scope.currentEvent=arg;
+    }
 	
 	// //SCOPE METHODS
      $scope.createNewChallenge = function() {
