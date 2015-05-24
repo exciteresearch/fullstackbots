@@ -9,6 +9,8 @@ navbar {
   }
   display: block;
   #navbar{
+      /* z-index: 1000; */
+      border-width: 0 0 0px;
     border-bottom-left-radius:75px;
     border-bottom-right-radius:75px;
     background: #0D8BD9;
@@ -28,8 +30,10 @@ navbar {
       color: white;
       transition: All 0.5s;
       &:hover {
-        box-shadow: inset 0 0 10px white;
-        background: transparent;
+        margin-right:15px;
+        margin-left: 15px;
+        box-shadow: 0 0 10px white;
+        background: #052BD9;
         
       }
     }
