@@ -120,11 +120,14 @@ Lobby.prototype.update = function() {
         // respawn pickables
     for(o; o < this.pickables.length; o++) {
         var pickable = this.pickables[o];
+        // if(pickable.owner===undefined&&pickable.item.deleted===true){console.log("test: ", (now - pickable.picked),  pickable.delay)}
         if (! pickable.item && (now - pickable.picked) > pickable.delay) {
+            console.log("test2")
             pickable.item = new Pickable({
                 type: pickable.type,
                 x: pickable.x,
-                y: pickable.y
+                y: pickable.y,
+                delay: 10000
             });
             pickable.item.ind = o;
             world.add('pickable', pickable.item);
@@ -232,11 +235,9 @@ Lobby.prototype.update = function() {
 
                             if (damage>0) {
                                 tank.hp -= damage;
-                                console.log("tank.hp: ",tank.hp)
                                 // killed, give point
                                 if (tank.hp <= 0) {
                                     // add score
-                                    console.log("killed by mine")
                                     // pickable.owner.score+=3;
                                     pickable.ownerTank.team.score+=3;
                                     // winner?
@@ -263,10 +264,10 @@ Lobby.prototype.update = function() {
                 state.pickableDelete.push({
                     id: pickable.id
                 });
-
-                self.pickables[pickable.ind].picked = now;
+                
+                self.pickables[pickable.ind].picked = Date.now();
                 self.pickables[pickable.ind].item = null;
-
+                console.log(self.pickables[pickable.ind])
                 pickable.delete();
             });
         }
