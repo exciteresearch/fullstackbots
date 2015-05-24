@@ -42,12 +42,14 @@ navbar {
       min-height: 70px;
       cursor: pointer;
       &.active {
-        color: #9ED628;
+        color: black;
+        text-shadow: 0 0 7px white, 2 -2 7px white, -2 2 7px white;
         box-shadow: inset 0 0 10px black;
         background-color: #004bbe;
       }
       &:focus {
-        color: #9ED628;
+        color: black;
+        text-shadow: 0 0 7px white, 2 -2 7px white, -2 2 7px white;
         background: #004bbe;
       }
     }
@@ -64,8 +66,14 @@ navbar {
         color: white;
       }
       a {
-        color: #9ED628;
+      color: black;
         cursor: pointer;
+      }
+      a:hover{
+        margin: 12px 0 0 0;
+        background: transparent;
+        text-shadow: -3px 3px 14px #fff, 3px -3px 14px #fff, -3px -3px 14px #fff, 3px 3px 14px #fff;
+        box-shadow: none;
       }
     }
   }
