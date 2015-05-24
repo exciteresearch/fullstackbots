@@ -18,7 +18,11 @@
 				</div>
 				<div class="row">
 					<h4>Challenge</h4>
-					<a ng-repeat="user in userRank"><button class="btn" ng-click="challengeUser(user)">Challenge</button></a>
+					<div class="justified">
+						<div>
+							<button ng-repeat="user in userRank" class="btn" ng-click="challengeUser(user)">Challenge</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -43,7 +47,11 @@
 				</div>
 				<div class="row">
 					<h4>Fork</h4>
-					<a ng-repeat="bot in botRank"><button class="btn" ng-click="forkBot(bot)">Fork</button></a>
+					<div class="justified">
+						<div>
+							<button ng-repeat="bot in botRank" class="btn" ng-click="forkBot(bot)">Fork</button>
+						</div>
+					</div>
 				</div>
 			</div>	
 		</div>

@@ -9,10 +9,11 @@ navbar {
   }
   display: block;
   #navbar{
-      /* z-index: 1000; */
-      border-width: 0 0 0px;
-    border-bottom-left-radius:75px;
-    border-bottom-right-radius:75px;
+    /* z-index: 1000; */
+    color: #0D8BD9;
+    border-width: 0 0 0px;
+    border-bottom-left-radius:40px;
+    border-bottom-right-radius:40px;
     background: #0D8BD9;
     box-shadow: 0 0 25px white, 0 0 25px white;
     h1{
@@ -24,10 +25,29 @@ navbar {
       margin-right: 20px;
       width: 30px;
     }
+    .btn{
+      background: #0d8bd9;
+      color: #0d8bd9;
+      font-size: 20px;
+      border-bottom-left-radius:25px;
+      border-top-left-radius:0px;
+      border-top-right-radius:0px;
+      margin: -7px 5px 0;
+      border-bottom-right-radius:25px;
+      box-shadow: 0 0 14px white, 0 0 14px white;
+      padding: 12px;
+      transition: All 0.5s;
+      text-shadow: 3px 3px 14px black, -3px -3px 14px black, -3px 3px 14px black, 3px -3px 14px black;
+    }
+    .btn:hover{
+        background-color: #004bbe;
+        box-shadow: white 0 0 24px,white 0 0 24px;
+        margin-right:15px;
+        margin-left: 15px;
+    }
 
     a {
       width: 75px;
-      color: white;
       transition: All 0.5s;
       &:hover {
         margin-right:15px;
@@ -43,7 +63,6 @@ navbar {
       cursor: pointer;
       &.active {
         color: black;
-        text-shadow: 0 0 7px white, 2 -2 7px white, -2 2 7px white;
         box-shadow: inset 0 0 10px black;
         background-color: #004bbe;
       }
