@@ -26,6 +26,9 @@ app.controller('UserProfileController', function ($scope, $stateParams, AuthServ
 
 
 	// //SCOPE METHODS
+    $scope.setProfileEvent=function(arg){
+        $scope.profileEvent=arg;
+    }
     $scope.acceptChallenge = function( index ) {
         ChallengeFactory.acceptChallenge( $scope.challenges[index] );
     }
