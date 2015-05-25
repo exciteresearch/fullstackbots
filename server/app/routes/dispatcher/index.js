@@ -11,15 +11,17 @@ var Bot = require('mongoose').model('Bot');
 module.exports = router;
 
 
-router.post('/createBlankBot/:id', function(req, res, next) {
+router.post('/createBlankBot/:userid', function(req, res, next) {
 	var obj = {
-		codedBy: req.params.id,
+		codedBy: req.params.userid,
+		botCode: "//BlankBot " + new Date(),
 		botname:"BlankBot"
 	};
 	
-	Bot.create(obj, function(err,robot) {
+	Bot.create(obj, function(err,bot) {
 		if (err) return next(err);
-		res.send(robot);    
+		console.log('createBlankBot bot',bot);
+		res.send(bot);    
 	});
 });
 

@@ -33,33 +33,30 @@ app.factory('BotCodeFactory', function ($http,$state) {
         },
 
         createBlankBot: function ( user_ID ) {
-            
-            return $http.post('/api/dispatcher/createBlankBot/:user_ID').then(function(res) {
-                return res.data;
+            console.log('createBlankBot user_ID',user_ID);
+            return $http.post('/api/dispatcher/createBlankBot/'+user_ID)
+            .then(function(res) {
+            	$state.go('editBot',{ 'defaultBotID': res.data._id });
               }, function(err) {
                   throw new Error(err);
               });  
-        }, 
-
-        createForkedBot: function (user_ID, bot_ID) {
-          
-            return $http.post('/api/dispatcher/createForkedBot/'+user_ID, { botID : bot_ID} )
+        },
+        
+        editBot: function (userId, botId) {
+        	
+            return $http.post('/api/dispatcher/editBot/', { userId: userId, botId: botId} ) //no params, just query, why not body?
             .then(function(res) {
-//            	console.log('createForkedBot res.data._id',res.data_id);
-            	$state.go('forkBotToEditor',{ 'defaultBotID': res.data._id });
-//                return res.data;
+            	$state.go('editBot',{ 'defaultBotID': res.data._id });
               }, function(err) {
                   throw new Error(err);
               });  
         },
 
-        editBot: function (userId, botId) {
-//        	console.log('editBot',userId,botId);
-            return $http.post('/api/dispatcher/editBot/', { userId: userId, botId: botId} ) //no params, just query, why not body?
+        createForkedBot: function (user_ID, bot_ID) {
+          
+            return $http.post('/api/dispatcher/createForkedBot/'+user_ID, { botID : bot_ID} )
             .then(function(res) {
-//            	console.log('editBot res.data',res.data);
-            	$state.go('editBot',{ 'defaultBotID': res.data._id });
-//                return res.data;
+            	$state.go('forkBotToEditor',{ 'defaultBotID': res.data._id });
               }, function(err) {
                   throw new Error(err);
               });  
