@@ -39,13 +39,21 @@ app.controller('mainEditorCtrl',function($scope, $stateParams){
 
 app.controller('SelectBotModalCtrl', function ($scope, $stateParams, AuthService, BotCodeFactory, UserProfileFactory) {
     
-    if (!$scope.user) AuthService.getLoggedInUser().then(function (user) {
+    if (!$scope.user ) AuthService.getLoggedInUser().then(function (user) {
         $scope.user = user;
         //get bots by user._id only
         UserProfileFactory.getBotList( user._id ).then(function(bots){
-            $scope.botList = bots;
+        	if ( bots.length >= 1 ) {
+        		$scope.botList = bots;
+        	} else {
+    			BotCodeFactory.createBlankBot($scope.user._id).then(function(bot){
+    				$scope.botList = [ bot ];
+    			});
+        	}
         });
     });
+    
+    // if bot._id is undefined then showSelectBotModal === hideSelectBotModal if bot._id !== undefined
 
 	// //SCOPE METHODS
     $scope.selectBot = function( bot ) {
