@@ -1,7 +1,7 @@
 var Vec2 = require('./vec2');
 var Room = require('./room');
 var Pickable = require('./pickable');
-
+var winningScore=30;
 function Lobby() {
 //    this.rooms = [ ];
 	this.rooms = { };
@@ -120,11 +120,14 @@ Lobby.prototype.update = function() {
         // respawn pickables
     for(o; o < this.pickables.length; o++) {
         var pickable = this.pickables[o];
+        // if(pickable.owner===undefined&&pickable.item.deleted===true){console.log("test: ", (now - pickable.picked),  pickable.delay)}
         if (! pickable.item && (now - pickable.picked) > pickable.delay) {
+            console.log("test2")
             pickable.item = new Pickable({
                 type: pickable.type,
                 x: pickable.x,
-                y: pickable.y
+                y: pickable.y,
+                delay: 10000
             });
             pickable.item.ind = o;
             world.add('pickable', pickable.item);
@@ -203,7 +206,7 @@ Lobby.prototype.update = function() {
                         tank.score++;
                         tank.team.score++;
                         // winner?
-                        if (tank.team.score === 32)
+                        if (tank.team.score >= winningScore)
                             winner = tank.owner.team;
                         // total score
                         room.score++;
@@ -211,10 +214,9 @@ Lobby.prototype.update = function() {
                     case 'mine':
                         // damage tank
                         if(pickable.owner===tank.owner.id){
-
                             tank.mines++
                         }else{
-                            var damage = 3;
+                            var damage = 20; //ian edit: op mines
 
                             tank.tHit = now;
 
@@ -231,23 +233,21 @@ Lobby.prototype.update = function() {
                                 }
                             }
 
-                            if (damage) {
+                            if (damage>0) {
                                 tank.hp -= damage;
-
                                 // killed, give point
                                 if (tank.hp <= 0) {
                                     // add score
-
-                                    pickable.owner.score+=3;
-                                    pickable.owner.team.score+=3;
+                                    // pickable.owner.score+=3;
+                                    pickable.ownerTank.team.score+=3;
                                     // winner?
-                                    if (pickable.owner.team.score === 32)
-                                        winner = pickable.owner.team;
+                                    if (pickable.ownerTank.team.score >= winningScore)
+                                        winner = pickable.ownerTank.team;
                                     // total score
-                                    room.score++;
+                                    room.score+=3;
                                     // bullet.owner.owner.send('point', 1);
                                     // remember killer
-                                    tank.killer = pickable.owner.id;
+                                    tank.killer = pickable.owner;
                                     // respawn
                                     tank.respawn();
                                 }
@@ -264,10 +264,10 @@ Lobby.prototype.update = function() {
                 state.pickableDelete.push({
                     id: pickable.id
                 });
-
-                self.pickables[pickable.ind].picked = now;
+                
+                self.pickables[pickable.ind].picked = Date.now();
                 self.pickables[pickable.ind].item = null;
-
+                console.log(self.pickables[pickable.ind])
                 pickable.delete();
             });
         }
@@ -281,8 +281,9 @@ Lobby.prototype.update = function() {
             tank.tHit = now;
             tank.reloadingMines = true;
             tank.lastMine = now;
-            tank.mines--;
+            // tank.mines--;
             var pickable = new Pickable({
+                ownerTank: tank,
                 owner: tank.owner.id,
                 type: 'mine',
                 x: tank.pos[0]-tank.movementDirection[0]*2,
@@ -386,7 +387,7 @@ Lobby.prototype.update = function() {
                             bullet.owner.score+=3;
                             bullet.owner.team.score+=3;
                             // winner?
-                            if (bullet.owner.team.score === 32)
+                            if (bullet.owner.team.score >= winningScore)
                                 winner = bullet.owner.team;
                             // total score
                             room.score++;
@@ -503,7 +504,7 @@ Lobby.prototype.update = function() {
                             flame.owner.score+=3;
                             flame.owner.team.score+=3;
                             // winner?
-                            if (flame.owner.team.score === 32)
+                            if (flame.owner.team.score >= winningScore)
                                 winner = flame.owner.team;
                             // total score
                             room.score++;

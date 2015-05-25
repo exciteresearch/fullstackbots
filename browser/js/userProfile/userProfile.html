@@ -1,52 +1,69 @@
 <section id="userProfile"> 
-<div class="container">
-	<div class="col-lg-12 col-sm-12">
-		<div class="row">
-		<h2>Challenges</h2>
-		<table>
-			<tr>
-				<th>Challenger</th><th>Rank</th><th>Challenged</th><th>Rank</th>
-				<th>Time DeadLine</th><th></th>
-			</tr>
-			<tr ng-repeat="challenge in challenges" ng-controller="UserProfileController">
-				<!-- Showing challenges of the specific user-->
-				<td>{{challenge.challenger.username}}</td>
-				<td>{{challenge.challenger.rank}}</td>
-				<td>{{challenge.challenged.username}}</td>
-				<td>{{challenge.challenged.rank}}</td>
-				<td>{{challenge.deadLine}}</td>
-				<td><a ng-if="!challenge.accepted"><button ng-click="acceptChallenge(challenge)">Accept</button></a><span ng-if="challenge.accepted">Accepted!!</span></td>
-			</tr>
-		</table>
-		
-	</div>
-	
-	<hr>
-	
-	<div class="row">
-		<h2>My Bots</h2>
-		<table  ng-repeat="bot in botList" ng-controller="UserProfileController">
-			<tr>
-				<th>Bot Name</th>
-				<th>Battles</th>
-				<th>Points</th>
-				<th>Wins</th>
-				<th>Times Forked</th>
-				<th>Edit</th>
-				<th>Delete</th>
-			</tr>
-			<tr>
-				<td>{{bot.username}}</td>
-				<td>{{bot.battles}}</td>
-				<td>{{bot.points}}</td>
-				<td>{{bot.wins}}</td>
-				<td>{{bot.forked}}</td>
-				<td><a ng-click="editBot(bot)">Edit</a></td>
-				<td><button ng-click="delete(bot)">Delete</button></td>
-			</tr>
-		</table>
-		<hr>
-		<a ui-sref="editor"><button>Create New Bot</button></a>
+	<div id="center" ng-controller="UserProfileController" class="justified">
+		<div class="group">
+			<h2 ng-click="setProfileEvent('challenges')">Challenges</h2>
+			<div ng-if="profileEvent==='challenges'"class="justified eventModal">
+				<div class="row">
+					<h4>Challenger</h4>
+					<h6 ng-repeat="challenge in challenges">{{challenge.challenger.username}}</h6>
+				</div>
+				<div class="row">
+					<h4>Rank</h4>
+					<h6 ng-repeat="challenge in challenges">{{challenge.challenger.rank}}</h6>
+				</div>
+				<div class="row">
+					<h4>Challenged</h4>
+					<h6 ng-repeat="challenge in challenges">{{challenge.challenged.username}}</h6>
+				</div>
+				<div class="row">
+					<h4>Rank</h4>
+					<h6 ng-repeat="challenge in challenges">{{challenge.challenged.rank}}</h6>
+				</div>
+				<div class="row">
+					<h4>Time Deadline</h4>
+					<h6 ng-repeat="challenge in challenges">{{challenge.deadLine}}</h6>
+				</div>
+				<div class="row">
+					<button ng-if="!challenge.accepted" ng-click="acceptChallenge(challenge)" class="btn">Accept</button>
+				</div>	
+			</div>	
+		</div>
+		<div class="group">
+			<h2 ng-click="setProfileEvent('bots')">My Bots</h2>
+			<div ng-if="profileEvent==='bots'" class="justified eventModal">
+				<div class="row">
+					<h4>Bot Name</h4>
+					<h6 ng-repeat="bot in botList">{{bot.username}}</h6>
+				</div>
+				<div class="row">
+					<h4>Battles</h4>
+					<h6 ng-repeat="bot in botList">{{bot.battles}}</h6>
+				</div>
+				<div class="row">
+					<h4>Points</h4>
+					<h6 ng-repeat="bot in botList">{{bot.points}}</h6>
+				</div>
+				<div class="row">
+					<h4>Wins</h4>
+					<h6 ng-repeat="bot in botList">{{bot.wins}}</h6>
+				</div>
+				<div class="row">
+					<h4>Times Forked</h4>
+					<h6 ng-repeat="bot in botList">{{bot.forked}}</h6>
+				</div>
+				<div class="row">
+					<h4>Edit</h4>
+					<button ng-repeat="bot in botList" class="btn" ng-click="editBot(bot)">Edit</button>
+				</div>
+				<div class="row">
+					<h4>Delete</h4>
+					<button ng-repeat="bot in botList" class="btn" ng-click="deleteBot(bot)">Delete</button>
+				</div>
+			</div>
+		</div>
+		<div class="group">
+				<a ui-sref="editor"><h2>Create New Bot</h2></a>
+		</div>
 	</div>
 	</div>
 	

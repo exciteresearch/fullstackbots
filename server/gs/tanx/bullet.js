@@ -10,6 +10,7 @@ function Bullet(owner) {
     this.deleted = false;
 
     this.owner = owner;
+    // console.log("bullet owner",owner)
     this.id = ++bulletIds;
     this.damage = 3.0;
 
