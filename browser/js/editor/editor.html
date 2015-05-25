@@ -49,17 +49,59 @@
 	                </div>
 	            </div>    
 			</div>
-			<div id="draggable" class="console" >
-		   		   	<h4>Draggable Console</h4>
-		   		    <p>{{editorOn}}{{simLaunched}}</p>
-		   	</div> 
+			<div id="draggable">
+	   		    <div id="optionsModal" ng-class="{activated: optionsActivated}">
+	   		    	<div id="bar">
+			   		   	<div>
+			   		   		<h4>Display Options</h4>
+			   		   	</div>
+		   		   	</div>
+		   		   	<div>
+			   			<form>
+			   				<div ng-repeat="option in options" class="space-between double">
+				   				<h6>Tank {{option.text}}:{{option.active}}</h6>
+				   				<input type="checkbox" ng-model="option.active">
+			   				</div>
+			   			</form>
+			   		</div>
+	   		    </div>
+				<div class="console" >
+		   		   	<divider id="bar">
+			   		   	<div>
+			   		   		<h4>Console</h4>
+			   		   	</div>
+			   		   	<div>	
+			   		   		<img ng-click="optionsActivated=!optionsActivated" id="options" src="/images/gear.png">
+			   		   		<img src="/images/drag_icon.png">
+			   		   	</div>
+			   		</divider>
+
+		   		   	<div class="adjustable top">
+		   		   		<h5>Bot Actions: {{editorOn}}</h5>
+		   		   		<h7>{{tank.actions[0]}}</h7>
+		   		   		<h7>{{tank.actions[1]}}</h7>
+		   		   		<h7>{{tank.actions[2]}}</h7>
+		   		   		<h7>{{tank.actions[3]}}</h7>
+		   		   		<h7>{{tank.actions[4]}}</h7>
+		   		   	</div>
+		   		   	<div >
+		   		    	<h5>Bot Stats: {{simLaunched}}</h5>
+		   		    	<div >
+		   		    		<div ng-repeat="option in options" ng-if="option.active===true" class="float">
+		   		    			<h7>{{option.text}}: {{tank.shots}}</h7>
+		   		    		</div>
+		   		    	</div>
+		   		    </div>   
+			   	</div>
+   	   		    
+		   	</div>
 	   	    <div id="viewer" ng-click="editorToggle()" ng-if="simLaunched && !editorOn" class="animated fadeInRight">
 	   	    	<iframe  id="iframe" ng-src="{{playCanvasURL}}" ></iframe>
 	   	    </div>   
 	    </div>
 		<script>
 			$(function() {
-				$( "#draggable" ).draggable({ handle: "h4" });
+				$( "#draggable" ).draggable({ handle: "divider" });
 			});
 		</script>  
     </div>	    
