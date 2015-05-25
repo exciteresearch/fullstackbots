@@ -40,7 +40,9 @@ app.controller('UserProfileController', function ($scope, $stateParams, AuthServ
      
     $scope.deleteBot = function( bot ) {
         UserProfileFactory.deleteBot( bot ).then(function( bot ){
-            $scope.botList.splice(index, 1);
+            UserProfileFactory.getBotList( user._id ).then(function(bots){
+                $scope.botList = bots;
+            });
         });
     }    
   
