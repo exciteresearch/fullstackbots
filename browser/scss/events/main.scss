@@ -2,11 +2,12 @@
     .justified{
         color: white;
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         
         .row{
             box-shadow: rgb(13, 139, 217) 0 0 24px, rgb(13, 139, 217) 0 0 24px;
             border: 7px double white;
+            margin: 0 2px;
             padding: 5px;
             background-color: rgb(63, 64, 68);
         }
@@ -16,6 +17,9 @@
             border: 4px double white;
             background-color: black;
         }
+    }
+    .eventModal{
+        margin-top: 20px
     }
     #center{
             justify-content: center;
@@ -28,6 +32,7 @@
         font-size: 21px;
         margin-bottom: 7px;
     }
+
     .group{
         h2{
             background: rgb(13, 139, 217);
@@ -42,17 +47,13 @@
         h2:hover{
             background: #004bbe;
         }
+        h2.activated{
+            color: green;
+            background-color: green;
+        }
         transition: All 0.5s;
         margin: -20px 20px 0;
-        .eventModal{
-            border: white double 10px; 
-            padding: 7px;
-            box-shadow: rgb(13, 139, 217) 0 0 24px, rgb(13, 139, 217) 0 0 24px;
-            position: absolute;
-            left: 25%;
-            top: 150px;
-            width: 50%;
-        }
+        
     }
     .group:hover{
         margin: -20px 30px 0;

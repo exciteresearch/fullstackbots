@@ -12,7 +12,7 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('UserProfileController', function ($scope, $stateParams, AuthService, BotCodeFactory, UserProfileFactory, ChallengeFactory) {
-    
+    $scope.profileEvent= "bots";
     if (!$scope.user) AuthService.getLoggedInUser().then(function (user) {
         $scope.user = user;
         ChallengeFactory.getUserChallenges( user._id ).then(function(challenges){

@@ -2,7 +2,7 @@
 	.justified{
         color: white;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         
         .row{
             box-shadow: rgb(13, 139, 217) 0 0 24px, rgb(13, 139, 217) 0 0 24px;
@@ -42,16 +42,20 @@
         h2:hover{
             background: #004bbe;
         }
+        h2.activated{
+            color: green;
+            background-color: green;
+        }
         transition: All 0.5s;
         margin: -20px 20px 0;
         .eventModal{
-            border: white double 10px; 
-            padding: 7px;
-            box-shadow: rgb(13, 139, 217) 0 0 24px, rgb(13, 139, 217) 0 0 24px;
+            border: white double 10px;
+            padding: 7px 21px;
+            box-shadow: #0d8bd9 0 0 24px, #0d8bd9 0 0 24px;
             position: absolute;
-            left: 25%;
+            left: 10%;
             top: 150px;
-            width: 50%;
+            width: 80%;
         }
     }
     .group:hover{
