@@ -1,16 +1,6 @@
 <section id="events" ng-controller="mainEventCtrl"> 
 	<div ng-controller="EventsController">
 		<div id="center" ng-model="eventsObj" class="justified">
-					<!-- PlayCanvas iFrame viewable with 'Launch' -->
-			<div ng-if="eventLaunched" ng-controller="PlayCanvasCtrl" class="col-lg-12 col-sm-12">
-				<iframe ng-src="{{playCanvasURL}}" style="width:100%;height:500px;"></iframe>
-			</div>
-			
-
-
-
-
-
 			<!-- Live Events for display only with 'viewer functionality' -->
 			<div class="group">
 				<h2 ng-click="setCurrentEvent('live')" ng-class="{activated: currentEvent==='live'}">Live Events</h2>
@@ -28,7 +18,13 @@
 				<h2 ng-click="setCurrentEvent('challenges')" ng-class="{activated: currentEvent==='challenges'}">Challenges</h2>
 			</div>
 		</div>
-		<div id="center" class="eventModal">
+		
+		<!-- PlayCanvas iFrame viewable with 'Launch' -->
+		<div ng-if="eventLaunched" ng-controller="PlayCanvasCtrl" class="justified">
+			<iframe ng-src="{{playCanvasURL}}" style="width:100%;height:500px;"></iframe>
+		</div>		
+		
+		<div id="center" class="eventModal"  class="justified">
 			<div ng-if="currentEvent==='live'"  class="justified">
 				<div class="row">
 					<h4>Host Player</h4>
@@ -77,16 +73,18 @@
 				</div>
 				<div class="row">
 					<h4>Actions</h4>
-					<!-- Always confirm the confirm bot to battle with using selectBotModal -->
-					<button ng-show="!eventLaunched" ng-hide="playCanvasURL" class="btn" ng-click="joinEvent($index)">
-						Launch
-					</button>
-					<button ng-hide="!eventLaunched" ng-hide="playCanvasURL" class="btn" ng-click="forfeit($index)">
-						Forfeit
-					</button>
-					<button ng-show="!eventLaunched" ng-hide="!!playCanvasURL" class="btn" ng-click="deleteEvent($index)">
-						Remove
-					</button>
+					<div ng-repeat="event in pendingEvents">
+						<!-- Always confirm the confirm bot to battle with using selectBotModal -->
+						<button ng-show="!eventLaunched" ng-hide="playCanvasURL" class="btn" ng-click="joinEvent($index)">
+							Launch
+						</button>
+						<button ng-hide="!eventLaunched" ng-hide="playCanvasURL" class="btn" ng-click="forfeit($index)">
+							Forfeit
+						</button>
+						<button ng-show="!eventLaunched" ng-hide="!!playCanvasURL" class="btn" ng-click="deleteEvent($index)">
+							Remove
+						</button>
+					</div>
 				</div>
 			</div>	
 			<div  ng-if="currentEvent==='host'" class="eventModal justified">
