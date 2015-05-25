@@ -33,31 +33,31 @@
 			<div ng-if="profileEvent==='bots'" class="justified eventModal">
 				<div class="row">
 					<h4>Bot Name</h4>
-					<h6 ng-repeat="challenge in challenges">{{bot.username}}</h6>
+					<h6 ng-repeat="bot in botList">{{bot.username}}</h6>
 				</div>
 				<div class="row">
 					<h4>Battles</h4>
-					<h6 ng-repeat="challenge in challenges">{{bot.battles}}</h6>
+					<h6 ng-repeat="bot in botList">{{bot.battles}}</h6>
 				</div>
 				<div class="row">
 					<h4>Points</h4>
-					<h6 ng-repeat="challenge in challenges">{{bot.points}}</h6>
+					<h6 ng-repeat="bot in botList">{{bot.points}}</h6>
 				</div>
 				<div class="row">
 					<h4>Wins</h4>
-					<h6 ng-repeat="challenge in challenges">{{bot.wins}}</h6>
+					<h6 ng-repeat="bot in botList">{{bot.wins}}</h6>
 				</div>
 				<div class="row">
 					<h4>Times Forked</h4>
-					<h6 ng-repeat="challenge in challenges">{{bot.forked}}</h6>
+					<h6 ng-repeat="bot in botList">{{bot.forked}}</h6>
 				</div>
 				<div class="row">
 					<h4>Edit</h4>
-					<button ng-repeat="challenge in challenges" class="btn" ng-click="editBot(bot)">Edit</button>
+					<button ng-repeat="bot in botList" class="btn" ng-click="editBot(bot)">Edit</button>
 				</div>
 				<div class="row">
 					<h4>Delete</h4>
-					<button ng-repeat="challenge in challenges" class="btn" ng-click="editBot(bot)">Edit</button>
+					<button ng-repeat="bot in botList" class="btn" ng-click="deleteBot(bot)">Delete</button>
 				</div>
 			</div>
 		</div>

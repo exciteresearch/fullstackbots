@@ -158,3 +158,12 @@ router.get('/getBotList/:id', function (req, res, next) {
     res.send(bots);
   });
 });
+
+//Delete bot
+router.delete('/deleteBot/:id', function (req, res, next) {
+  
+  Bot.findByIdAndRemove(req.params.id, function (err, bot) {
+    if (err) {  console.log(err); return next(err); }
+    res.send(bot);
+  });
+});
