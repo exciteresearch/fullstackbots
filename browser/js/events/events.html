@@ -88,7 +88,7 @@
 				</div>
 			</div>	
 			<div  ng-if="currentEvent==='host'" class="eventModal justified">
-				<div class="row">
+				<div ng-hide="data.createEvent" class="row">
 					<button ng-hide="data.createEvent" class="btn" ng-click="data.createEvent = true">
 				Create a new event</button>
 				</div>		
@@ -96,14 +96,19 @@
 					<button ng-click="createNewChallenge()" class="btn" >Challenge</button>
 				</div>	
 			</div>	
-			<div>
+			<div id="newEvent">
 				<h2 ng-show="data.createEvent">New Event</h2>
-				<form ng-show="data.createEvent" ng-submit="createNewEvent(data)">
-					<textarea rows="6" cols="50" placeholder="Player Preferences" ng-model="data.specs"></textarea>
-					<input required placeholder="Open Slots" ng-model="data.slots" size="10"></input>
-					<button type="submit" class="btn btn-default">Confirm Creation</button>
-				</form>
-				<!-- <div ng-if="eventLaunched" ng-controller="PlayCanvasCtrl" class="col-lg-12 col-sm-12">
+				<div class="justified">
+					<form ng-show="data.createEvent" ng-submit="createNewEvent(data)">
+						<textarea rows="6" cols="50" placeholder="Player Preferences" ng-model="data.specs"></textarea>
+						<div class="space-between">
+							<h3>Number of Open Slots:</h3>
+							<input required type="number" min="0" max="11" placeholder="Open Slots" ng-model="data.slots" ></input>
+							<button type="submit" class="btn ">Confirm Creation</button>
+						</div>
+					</form>
+				</div>
+				<div ng-if="eventLaunched" ng-controller="PlayCanvasCtrl" class="col-lg-12 col-sm-12">
 					<iframe ng-src="{{playCanvasURL}}" style="width:100%;height:500px;"></iframe>
 				</div>  -->
 			</div>
