@@ -29,18 +29,6 @@
 }
 
 #editor{
-	#draggable{
-		position: absolute;
-		left: 80%;
-		top: 100px;
-		width: 200px;
-		resize: both;
-		overflow: hidden;
-		background-color: black;
-		border-radius: 10px;
-		z-index: 1001;
-		color: rgb(13, 139, 217);
-	}
 	#ace{
 		margin-bottom: 20px;
 		box-shadow: 0 0 10px rgb(13, 139, 217), 0 0 10px rgb(13, 139, 217);
@@ -119,22 +107,138 @@
 		height: 1000px;
 		border: dashed black 1px;
 	}
-
-	.console{
-		box-shadow: 0 0 10px rgb(13, 139, 217), 0 0 10px rgb(13, 139, 217);
-		h4{
-			margin: 0;
-			text-align: center;
-			color: #0000ff;
-			/*text-shadow: -3px 3px 14px #0d8bd9, 3px -3px 14px #0d8bd9, -3px -3px 14px #0d8bd9, 3px 3px 14px #0d8bd9;*/
-			background:-webkit-gradient(linear, 100% 18%, 100% 100%, from(silver), to(rgb(92, 92, 92)));
-			width: 100%;
+	#draggable{
+		position: absolute;
+		height:300px;
+		left: 50%;
+		top: 100px;
+		.console{
+			min-height: 265px;
+			position: relative;
+			left:0;
+			top: -200px;
+			width: 200px;
+			resize: both;
+			overflow: hidden;
+			background-color: black;
 			border-radius: 10px;
-			border: solid 1px silver;
+			z-index: 1001;
+			color: rgb(13, 139, 217);
+			box-shadow: 0 0 10px rgb(13, 139, 217), 0 0 10px rgb(13, 139, 217);
+
+			h5{
+				font-size: 24px;
+				padding: 0 5px;
+				border: 4px double white;
+				background-color: black;
+			}
+			#bar{
+				display: flex;
+				justify-content: space-between;
+				margin: 0;
+				text-align: center;
+				color: #0D8BD9;
+				text-shadow: -3px 3px 14px #000000, 3px -3px 14px #000000, -3px -3px 14px #000000, 3px 3px 14px #000000;
+				background: -webkit-gradient(linear, 100% 18%, 100% 100%, from(silver), to(#5c5c5c));
+				width: 100%;
+				border-radius: 10px;
+				padding: 5px;
+				border: solid 1px silver;
+				h4{
+					margin: 0;
+					padding: 0;
+					font-size: 25px;
+				}
+				img{
+					height: 24px;
+					width: 24px;
+				}
+				img#options{
+					transition: All 1.5s;
+				}
+				img#options:hover{
+					transform: rotate(360deg) ;
+					-webkit-transform: rotate(360deg) ;
+					-moz-transform: rotate(360deg) ;
+					-o-transform: rotate(360deg) ;
+					-ms-transform: rotate(360deg) ;
+				}
+			}
+			
+			.float{
+				float: left;
+				box-shadow: #0d8bd9 0 0 24px, #0d8bd9 0 0 24px;
+				border: 7px double white;
+				padding: 5px;
+				background-color: #3f4044;
+
+			}
+			h4{
+				
+			}
+			.adjustable{
+				resize: vertical;
+				overflow: hidden;
+
+			}
+			.top{
+				border-bottom: silver solid 4px;
+			}
+
+		}
+		#optionsModal{
+			position: relative;
+			left: 0%;
+			top: 64px;
+			transition: All 1s;
+			width:200px;
+			height: 88%;
+			z-index: 1;
+			background-color: black;
+			border-radius: 10px;
+			color: rgb(13, 139, 217);
+			h6{
+				margin: 0;
+			}
+			input{
+			  margin: 0;
+			  line-height: normal;
+			}
+			#bar{
+				display: flex;
+				justify-content: space-between;
+				margin: 0;
+				text-align: center;
+				color: #0D8BD9;
+				text-shadow: -3px 3px 14px #000000, 3px -3px 14px #000000, -3px -3px 14px #000000, 3px 3px 14px #000000;
+				background: -webkit-gradient(linear, 100% 18%, 100% 100%, from(silver), to(#5c5c5c));
+				width: 100%;
+				border-radius: 10px;
+				padding: 5px;
+				border: solid 1px silver;
+				h4{
+					margin: 0;
+					padding: 0;
+					font-size: 25px;
+				}
+			}
+		}
+		#optionsModal.activated{
+			left:100%;
+			box-shadow: 0 0 10px rgb(13, 139, 217), 0 0 10px rgb(13, 139, 217);
+			
+
 		}
 	}
 }
-
+.space-between{
+	display: flex;
+	justify-content: space-between;
+}
+.double{
+	padding: 5px;
+	border: 4px double white;
+}
 .animated { 
     -webkit-animation-duration: 1s; 
     animation-duration: 1s; 

@@ -64,8 +64,38 @@ app.controller('SelectBotModalCtrl', function ($scope, $stateParams, AuthService
 });
 
 app.controller('PlayCanvasEditorCtrl',function($scope, $stateParams, $sce,uuid4){
-
+	$scope.optionsActivated=false;
 	$scope.simLaunched = false;
+	$scope.options={
+		shots:{
+			active:false,
+			text:"Shots"
+		},
+		accuracy:{
+			active:false,
+			text:"Accuracy"
+		},
+		mines:{
+			active:false,
+			text:"Mines Layed"
+		},
+		minesTripped:{
+			active:false,
+			text:"Mines Tripped"
+		},
+		coins:{
+			active:false,
+			text:"Coins"
+		},
+		kills:{
+			active:false,
+			text:"Kills"
+		},
+		deaths:{
+			active:false,
+			text:"Deaths"
+		},
+	}
 	
     $scope.$on('simulate',function(event, bot) {
     	if(!bot._id) {
