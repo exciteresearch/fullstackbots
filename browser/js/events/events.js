@@ -56,7 +56,7 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
 	// 	$scope.liveEvents = events;
 	// });
     $scope.liveEvents = [];
-
+    $scope.currentEvent="arena"
     
     if (!$scope.challenges) ChallengeFactory.getChallenges().then(function(challenges){
         $scope.challenges = challenges;

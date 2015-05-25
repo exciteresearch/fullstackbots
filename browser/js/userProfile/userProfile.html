@@ -1,7 +1,7 @@
 <section id="userProfile"> 
 	<div id="center" ng-controller="UserProfileController" class="justified">
 		<div class="group">
-			<h2 ng-click="setProfileEvent('challenges')">Challenges</h2>
+			<h2 ng-click="setProfileEvent('challenges')" ng-class="{activated: profileEvent==='challenges'}">Challenges</h2>
 			<div ng-if="profileEvent==='challenges'"class="justified eventModal">
 				<div class="row">
 					<h4>Challenger</h4>
@@ -29,11 +29,11 @@
 			</div>	
 		</div>
 		<div class="group">
-			<h2 ng-click="setProfileEvent('bots')">My Bots</h2>
+			<h2 ng-click="setProfileEvent('bots')" ng-class="{activated: profileEvent==='bots'}">My Bots</h2>
 			<div ng-if="profileEvent==='bots'" class="justified eventModal">
 				<div class="row">
 					<h4>Bot Name</h4>
-					<h6 ng-repeat="bot in botList">{{bot.username}}</h6>
+					<h6 ng-repeat="bot in botList">{{bot.botname}}</h6>
 				</div>
 				<div class="row">
 					<h4>Battles</h4>
