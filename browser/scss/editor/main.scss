@@ -1,11 +1,13 @@
 .modalSelectBot {
+	box-shadow: 0 0 10px rgb(13, 139, 217), 0 0 10px rgb(13, 139, 217);
 	transition: All 0.15s;
 	position: absolute;
-	width: 50%;
-	height: 500px;
-	left: 25%;
+	/*width: 50%;*/
+	padding: 10px 10px;
+	left: calc(50% - (541px/2));
 	top: 100px;
-	background: white;
+	background-color: #3f4044;
+	border: 7px double white;
 	z-index: 9999;
 	opacity: 1;
 	transform: scale(1,1);	
@@ -29,6 +31,7 @@
 }
 
 #editor{
+
 	#ace{
 		margin-bottom: 20px;
 		box-shadow: 0 0 10px rgb(13, 139, 217), 0 0 10px rgb(13, 139, 217);
@@ -52,6 +55,58 @@
 /*	.flex{
 		display: flex;
 	}*/
+	.top-space{
+		color: white;
+		text-align: center;
+		h3{
+			margin-top: 14px;
+			font-size: 24px;
+			padding: 0 5px;
+			margin-bottom: 15px;
+			border: 4px double white;
+			background-color: black;
+			text-shadow: -3px 3px 14px #0d8bd9, 3px -3px 14px #0d8bd9, -3px -3px 14px #0d8bd9, 3px 3px 14px #0d8bd9;
+		}
+		select{
+			margin: 8px 18px;
+			height: 25px;
+			background-color: rgb(13, 139, 217);
+			box-shadow: 0 0 14px white, 0 0 14px white;
+
+		}
+		option{
+				color: blue;
+				background-color: black;
+			}
+	}
+	button{
+		margin-left: calc(50% - 55px);
+        display: block;
+        height: 41px;
+        text-shadow: none;
+        background-color: black;
+        color: white;
+        &:btn{
+            border-color: #0d8bd9;
+        }
+    }
+	.btn{
+        background: #0d8bd9;
+	  	color: #0d8bd9;
+	  	font-size: 20px;
+	  	border-bottom-left-radius: 10px;
+	  	border-top-left-radius: 10px;
+	  	border-top-right-radius: 10px;
+	  	/* margin: -7px 5px 0; */
+	  	border-bottom-right-radius: 10px;
+	  	box-shadow: 0 0 14px white, 0 0 14px white;
+	  	transition: All 0.5s;
+	  	text-shadow: 3px 3px 14px black, -3px -3px 14px black, -3px 3px 14px black, 3px -3px 14px black;
+    }
+    .btn:hover{
+        background-color: #004bbe;
+        box-shadow: white 0 0 24px,white 0 0 24px;
+    }
 	div.justified{
 		display: flex;
 		justify-content: space-around;
