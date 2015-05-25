@@ -54,18 +54,18 @@
 					</div>
 					<div class="row">
 						<h4>Launch</h4>
-						<h6 ng-repeat="event in pendingEvents">{{event.slots}}</h6>
-						<div class="justified">
+						<div ng-repeat="event in pendingEvents" class="justified">
 							<button ng-hide="playCanvasURL"class="btn" ng-click="joinEvent($index)">
-							Launch</button>
+								Launch
+							</button>
 						</div>
 					</div>
 					<div class="row">
 						<h4>Forfiet</h4>
-						<h6 ng-repeat="event in pendingEvents">{{event.slots}}</h6>
-						<div class="justified">
+						<div ng-repeat="event in pendingEvents" class="justified">
 							<button ng-hide="!!playCanvasURL" class="btn" ng-click="deleteEvent($index)">
-								Forfeit</button>
+								Forfeit
+							</button>
 						</div>	
 					</div>
 				</div>	
