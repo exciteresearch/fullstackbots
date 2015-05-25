@@ -6,13 +6,13 @@ app.config(function ($stateProvider) {
         templateUrl: 'js/editor/editor.html'
     })
     .state('editBot',{
-		url: '/editor/:defaultBotID',
-	    controller: "CodeEditorCtrl",
-	    templateUrl: 'js/editor/editor.html'
-	    ,
-	    data: {
-	        authenticate: true
-	    }
+    	url: '/editor/:defaultBotID',
+        controller: "CodeEditorCtrl",
+        templateUrl: 'js/editor/editor.html'
+        ,
+        data: {
+            authenticate: true
+        }
     })
     .state('forkBotToEditor',{
     	url: '/editor/:defaultBotID',
@@ -49,18 +49,17 @@ app.controller('SelectBotModalCtrl', function ($scope, $stateParams, AuthService
 
 	// //SCOPE METHODS
     $scope.selectBot = function( bot ) {
-    	console.log("bot",bot);
-    	$scope.bot = bot;
-//    	$scope.defaultBotID = bot._id;
-    	console.log("end of selectBot(bot)");
-//       	BotCodeFactory.editBot( $scope.user._id, bot._id );
-    };
-    $scope.blankBot = function( index ) {
-    	console.log('$scope.botList[index]._id',$scope.botList[index]._id);
-		BotCodeFactory.getNewBot($scope.botList[index]._id).then(function(bot){
+		BotCodeFactory.editBot($scope.user._id, bot._id ).then(function(bot){
 			$scope.bot = bot;
 		});
     };
+    
+    $scope.createBlankBot = function() {
+		BotCodeFactory.createBlankBot($scope.user._id).then(function(bot){
+			$scope.bot = bot;
+		});
+    };
+    
 });
 
 app.controller('PlayCanvasEditorCtrl',function($scope, $stateParams, $sce,uuid4){
@@ -91,15 +90,7 @@ app.controller('CodeEditorCtrl',function($scope, $stateParams, BotCodeFactory, A
 	if (!$scope.user) AuthService.getLoggedInUser().then(function (user) {
         $scope.user = user;
     });
-
-	// BotCodeFactory.createBlankBot( user._id ).then(function(bot){
-	// 	$scope.bot = bot;
-	// });
-
-	// BotCodeFactory.createForkedBot( user._id, bot._id ).then(function(bot){
-	// 	$scope.bot = bot;
-	// });
-
+	
 	$scope.bot = $scope.bot || {};
 	
 	//Could also be a Panel of Tabs, TODO upon selection or forking of a bot
