@@ -36,8 +36,8 @@ app.controller('UserProfileController', function ($scope, $stateParams, AuthServ
      
     $scope.deleteBot = function( index ) {
         UserProfileFactory.deleteBot( $scope.botList[index] ).then(function( bot ){
-        $scope.botList.splice(index, 1);
-    });;
-    }   
+            $scope.botList.splice(index, 1);
+        });
+    }    
   
 });
