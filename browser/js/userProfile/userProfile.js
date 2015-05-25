@@ -26,6 +26,10 @@ app.controller('UserProfileController', function ($scope, $stateParams, AuthServ
 
 
 	// //SCOPE METHODS
+    $scope.setProfileEvent=function(arg){
+        $scope.profileEvent=arg;
+    }
+    
     $scope.acceptChallenge = function( index ) {
         ChallengeFactory.acceptChallenge( $scope.challenges[index] );
     }
@@ -34,8 +38,8 @@ app.controller('UserProfileController', function ($scope, $stateParams, AuthServ
     	BotCodeFactory.editBot( $scope.user._id, bot._id );
     }
      
-    $scope.deleteBot = function( index ) {
-        UserProfileFactory.deleteBot( $scope.botList[index] ).then(function( bot ){
+    $scope.deleteBot = function( bot ) {
+        UserProfileFactory.deleteBot( bot ).then(function( bot ){
             $scope.botList.splice(index, 1);
         });
     }    
