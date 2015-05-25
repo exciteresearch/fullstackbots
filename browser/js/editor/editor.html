@@ -6,7 +6,7 @@
 						<div>
 							<!-- title -->
 							<h3> Select a Bot</h3>
-							<pre>{{bot._id===undefined}}<br>{{ bot.botname }}<br>{{ bot._id }}</pre>
+							<pre>{{ bot._id===undefined }}<br>{{ bot.botname }}<br>{{ bot._id }}</pre>
 							<!-- content -->
 							<select ng-options="bot.botname for bot in botList" ng-model="bot" ng-change="selectBot(bot)">
 							</select>
@@ -91,7 +91,7 @@
 		   		    			<h7>{{option.text}}: {{tank.shots}}</h7>
 		   		    		</div>
 		   		    	</div>
-		   		    </div>   
+		   		    </div>
 			   	</div>
    	   		    
 		   	</div>
@@ -100,9 +100,6 @@
 	   	    </div>   
 	    </div>
 		<script>
-			$(function() {
-				$( "#draggable" ).draggable({ handle: "divider" });
-			});
 		</script>  
     </div>	    
 </section>
