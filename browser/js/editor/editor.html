@@ -2,16 +2,20 @@
 	<div ng-controller="mainEditorCtrl">
 		<div ng-controller="SelectBotModalCtrl">
 			<div class='modalBackground' ng-class="{hideSelectBotModal: bot._id !== undefined}" ng-click="">
-					<div class='modalSelectBot' ng-class="{hideSelectBotModal: bot._id !== undefined}">
-						<div>
+					<div class='modalSelectBot justified' ng-class="{hideSelectBotModal: bot._id !== undefined}">
+						<div class="justified top-space">
+							<div>
 							<!-- title -->
-							<h3> Select a Bot</h3>
-							<pre>{{ bot._id===undefined }}<br>{{ bot.botname }}<br>{{ bot._id }}</pre>
-							<!-- content -->
-							<select ng-options="bot.botname for bot in botList" ng-model="bot" ng-change="selectBot(bot)">
-							</select>
+								<h3>Select AI:</h3>
+								<!-- content -->
+								<select ng-options="bot.botname for bot in botList" ng-model="bot" ng-change="selectBot(bot)">
+								</select>
+							</div>
+							<div>
 							<!-- cancel button -->
-		                	<br><button ng-click="createBlankBot()" type="submit" class="btn btn-success">Blank Bot</button>
+		                		<h3>Or Build a New One:</h3>
+		                		<button ng-click="createBlankBot()" type="submit" class="btn ">Blank Bot</button>
+		                	</div>
 						</div>
 					</div>
 			</div>
@@ -59,7 +63,7 @@
 		   		   	<div>
 			   			<form>
 			   				<div ng-repeat="option in options" class="space-between double">
-				   				<h6>Tank {{option.text}}:{{option.active}}</h6>
+				   				<h6>Tank {{option.text}}:</h6>
 				   				<input type="checkbox" ng-model="option.active">
 			   				</div>
 			   			</form>
@@ -88,7 +92,7 @@
 		   		    	<h5>Bot Stats: {{simLaunched}}</h5>
 		   		    	<div >
 		   		    		<div ng-repeat="option in options" ng-if="option.active===true" class="float">
-		   		    			<h7>{{option.text}}: {{tank.shots}}</h7>
+		   		    			<h7>{{option.text}}: {{option.value}}</h7>
 		   		    		</div>
 		   		    	</div>
 		   		    </div>

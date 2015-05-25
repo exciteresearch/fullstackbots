@@ -122,7 +122,6 @@ Lobby.prototype.update = function() {
         var pickable = this.pickables[o];
         // if(pickable.owner===undefined&&pickable.item.deleted===true){console.log("test: ", (now - pickable.picked),  pickable.delay)}
         if (! pickable.item && (now - pickable.picked) > pickable.delay) {
-            console.log("test2")
             pickable.item = new Pickable({
                 type: pickable.type,
                 x: pickable.x,
