@@ -8,10 +8,10 @@
 							<h3> Select a Bot</h3>
 							<pre>{{bot._id===undefined}}<br>{{ bot.botname }}<br>{{ bot._id }}</pre>
 							<!-- content -->
-							<select ng-options="bot.botname for bot in botList" ng-model="botId" ng-change="selectBot(botId)">
+							<select ng-options="bot.botname for bot in botList" ng-model="bot" ng-change="selectBot(bot)">
 							</select>
 							<!-- cancel button -->
-		                	<br><button ng-click="blankBot()" type="submit" class="btn btn-success">Blank Bot</button>
+		                	<br><button ng-click="createBlankBot()" type="submit" class="btn btn-success">Blank Bot</button>
 						</div>
 					</div>
 			</div>
