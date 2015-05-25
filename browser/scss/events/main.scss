@@ -48,8 +48,8 @@
             background: #004bbe;
         }
         h2.activated{
-            color: green;
-            background-color: green;
+            color: lime;
+            background-color: lime;
         }
         transition: All 0.5s;
         margin: -20px 20px 0;
@@ -78,6 +78,34 @@
         &:btn{
             border-color: #0d8bd9;
         }
+    }
+    textarea{
+        background-color: black;
+        display: block;
+        height: 46px;
+        color: white;
+        font-size: 18px;
+        text-shadow: -3px 3px 14px #0d8bd9, 3px -3px 14px #0d8bd9, -3px -3px 14px #0d8bd9, 3px 3px 14px #0d8bd9;
+        border: white double 7px;
+        box-shadow: 0 0 14px white, 0 0 14px white;
+        clear: both;
+    }
+    input{
+        height: 40px;
+        background-color: black;
+        color: white;
+        font-size: 18px;
+        text-shadow: -3px 3px 14px #0d8bd9, 3px -3px 14px #0d8bd9, -3px -3px 14px #0d8bd9, 3px 3px 14px #0d8bd9;
+        border: white double 7px;
+        box-shadow: 0 0 14px white, 0 0 14px white;
+    }
+    h3{
+        margin: 5px;
+    }
+    .space-between{
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
     }
 }
 
