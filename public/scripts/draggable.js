@@ -1,3 +1,5 @@
 $( document ).ready( function() {
-	$( "#draggable" ).draggable({ handle: "divider" });
+	setTimeout(function(){
+		$( "#draggable" ).draggable({ handle: "divider" });
+	},100);
 });
