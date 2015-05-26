@@ -11,17 +11,17 @@
 			</div>	
 			<!-- Announce a 'New Battle Arena' Button -->
 			<div class="group">
-				<h2 ng-click="setCurrentEvent('host')" ng-class="{activated: currentEvent==='host'}">Host New Match</h2>
+				<h2 ng-click="setCurrentEvent('host'); data.createEvent = true" ng-class="{activated: currentEvent==='host'}">Create New Arena{{data.createEvent}}</h2>
 			</div>		
 			<!-- Challenge another player -->
 			<div class="group">
-				<h2 ng-click="setCurrentEvent('challenges')" ng-class="{activated: currentEvent==='challenges'}">Challenges</h2>
+				<h2 ng-click="setCurrentEvent('challenges'); " ng-class="{activated: currentEvent==='challenges'}">Challenges</h2>
 			</div>
 		</div>
 		
 		<!-- PlayCanvas iFrame viewable with 'Launch' -->
 		<div ng-if="eventLaunched" ng-controller="PlayCanvasCtrl" class="justified">
-			<iframe ng-src="{{playCanvasURL}}" style="width:100%;height:500px;"></iframe>
+			<iframe ng-src="{{playCanvasURL}}" ></iframe>
 		</div>		
 		
 		<div id="center" class="eventModal"  class="justified">
@@ -73,7 +73,7 @@
 				</div>
 				<div class="row">
 					<h4>Actions</h4>
-					<div ng-repeat="event in pendingEvents">
+					<div ng-repeat="event in pendingEvents" class="justified">
 						<!-- Always confirm the confirm bot to battle with using selectBotModal -->
 						<button ng-show="!eventLaunched" ng-hide="playCanvasURL" class="btn" ng-click="joinEvent($index)">
 							Launch
@@ -87,17 +87,8 @@
 					</div>
 				</div>
 			</div>	
-			<div  ng-if="currentEvent==='host'" class="eventModal justified">
-				<div ng-hide="data.createEvent" class="row">
-					<button ng-hide="data.createEvent" class="btn" ng-click="data.createEvent = true">
-				Create a new event</button>
-				</div>		
-				<div class="row">
-					<button ng-click="createNewChallenge()" class="btn" >Challenge</button>
-				</div>	
-			</div>	
-			<div id="newEvent">
-				<h2 ng-show="data.createEvent">New Event</h2>
+			<div ng-if="currentEvent==='host'" id="newEvent">
+				<h2 ng-show="data.createEvent">New Arena</h2>
 				<div class="justified">
 					<form ng-show="data.createEvent" ng-submit="createNewEvent(data)">
 						<textarea rows="6" cols="50" placeholder="Player Preferences" ng-model="data.specs"></textarea>
@@ -108,9 +99,6 @@
 						</div>
 					</form>
 				</div>
-				<div ng-if="eventLaunched" ng-controller="PlayCanvasCtrl" class="col-lg-12 col-sm-12">
-					<iframe ng-src="{{playCanvasURL}}" style="width:100%;height:500px;"></iframe>
-				</div>  -->
 			</div>
 			<div ng-if="currentEvent==='challenges'" class="justified eventModal">
 				<div class="row">
