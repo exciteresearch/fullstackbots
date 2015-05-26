@@ -1,6 +1,5 @@
 var wander=function(){
     currentPlayer.newPath=true;
-    currentPlayer.destination=true;
     currentPlayer.destinationX=Math.round(Math.random()*48)
     currentPlayer.destinationY=Math.round(Math.random()*48)
     console.log("wandering to", currentPlayer.destinationX=Math.round(Math.random()*48), currentPlayer.destinationY)
