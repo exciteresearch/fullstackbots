@@ -29,10 +29,10 @@
 			</div>	
 		</div>
 		<div class="group">
-			<h2 ng-click="setProfileEvent('bots')" ng-class="{activated: profileEvent==='bots'}">My Bots</h2>
+			<h2 ng-click="setProfileEvent('bots')" ng-class="{activated: profileEvent==='bots'}">My AIs</h2>
 			<div ng-if="profileEvent==='bots'" class="justified eventModal">
 				<div class="row">
-					<h4>Bot Name</h4>
+					<h4>AI Tank</h4>
 					<h6 ng-repeat="bot in botList">{{bot.botname}}</h6>
 				</div>
 				<div class="row">
@@ -62,7 +62,7 @@
 			</div>
 		</div>
 		<div class="group">
-				<a ui-sref="editor"><h2>Create New Bot</h2></a>
+				<a ui-sref="editor"><h2>Create New AI Tank</h2></a>
 		</div>
 	</div>
 	</div>

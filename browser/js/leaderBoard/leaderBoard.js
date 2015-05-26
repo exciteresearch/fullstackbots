@@ -25,8 +25,9 @@ app.controller('LeaderBoardController', function ($scope, $stateParams, AuthServ
         $scope.botRank = bots;
     });
 
-
+    $scope.currentRanking="tank";
 	// //SCOPE METHODS
+
     $scope.setRanking=function(arg){
         $scope.currentRanking=arg;
     }

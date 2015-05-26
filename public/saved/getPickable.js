@@ -49,8 +49,8 @@ pc.script.create("trigger", function (app) {
                 this.entity._parent.destinationX=Math.round(itemLoc.data[0]);
                 this.entity._parent.destinationY=Math.round(itemLoc.data[2]);
                 newPath=true;
-                destination=true;
-                this.entity._parent.destination=true;
+                // destination=true;
+                // this.entity._parent.destination=true;
                 currentPriority=thisPriority;
             }
         },

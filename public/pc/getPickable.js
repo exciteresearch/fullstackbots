@@ -102,8 +102,8 @@ pc.script.create("trigger", function (app) {
                 user.destinationX=Math.round(itemLoc.data[0]);
                 user.destinationY=Math.round(itemLoc.data[2]);
                 user.newPath=true;
-                user.destination=true;
-                this.entity.destination=true;
+                // user.destination=true;
+                // this.entity.destination=true;
                 user.currentPriority = user.thisPriority+proximity;
             }
         },
@@ -141,8 +141,8 @@ pc.script.create("trigger", function (app) {
                 user.destinationX=Math.round(itemLoc.data[0]);
                 user.destinationY=Math.round(itemLoc.data[2]);
                 user.newPath=true;
-                user.destination=true;
-                this.entity.destination=true;
+                // user.destination=true;
+                // this.entity.destination=true;
                 user.currentPriority = user.thisPriority;
             }
         }
