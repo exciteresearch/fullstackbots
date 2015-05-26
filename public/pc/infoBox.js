@@ -14,7 +14,10 @@ pc.script.create('infoBox', function (context) {
                cursor: pointer;
                color: #eee;
                text-align: center;
-               background-color: rgba(33, 34, 36, .75);
+               background-color: rgba(33, 34, 36, 0);
+            }
+            #modal{
+                backgrou
             }
             @media all and (max-width: 640px) {
                 #infoButton {
@@ -44,7 +47,7 @@ pc.script.create('infoBox', function (context) {
         modal.style.width = 'auto';
         modal.style.height = 'auto';
         modal.style.padding = '0 16px 4px 16px';
-        modal.style.backgroundColor = '#212224';
+        modal.style.backgroundColor = 'rgba(33, 34, 36, 0)';
         // modal.style.color = '#2ecc71';
         modal.style.display = 'none';
         modal.style.zIndex = 20;
@@ -52,14 +55,11 @@ pc.script.create('infoBox', function (context) {
         modal.style.textAlign = 'center';
         
         modal.innerHTML = '<img src="https://s3-eu-west-1.amazonaws.com/static.playcanvas.com/images/tanx_green.png" style="padding-top:8px;" />';
-        modal.innerHTML += '<p>Multiplayer Top-Down Tanks Shooter<p>';
-        modal.innerHTML += '<p>made during 12 hours hackathon using <a href="https://playcanvas.com/" target="_blank">PlayCanvas</a> and node.js.</p>';
-        modal.innerHTML += '<p>Use WASD &amp; Mouse to control tank or Touch Joystics on mobile platforms.</p>';
-        modal.innerHTML += '<p>The game features use of HTML5, WebGL, WebSockets, Canvas, Touch.</p>';
-        modal.innerHTML += '<br /><p>code: <a href="https://twitter.com/mrmaxm" target="_blank">moka</a></p>';
-        modal.innerHTML += '<br /><p>art: SashaRX</p>';
-        modal.innerHTML += '<br /><p>ui: <a href="https://twitter.com/4Roonio" target="_blank">Roonio</a></p>';
-        modal.innerHTML += '<br /><p>sound: <a href="mailto:toxin136+tanx@gmail.com" target="_blank">ToXa</a></p>';
+        modal.innerHTML += '<p>Program Your Tank AI and Battle it Out!<p>';
+        modal.innerHTML += '<br /><p>AI Tanx has been built by <a href="https://www.linkedin.com/in/djnadgar" target="_blank"> DJ Nadgar</a>, <a href="https://www.linkedin.com/in/miguelalvarezd" target="_blank"> Miguel Alvarez</a>, and <a href="https://www.linkedin.com/pub/ian-downie/79/9bb/824" target="_blank">Ian Downie</a> at <a href="http://www.fullstackacademy.com/" target="_blank">Fullstack Academy</a>.</p>';
+        modal.innerHTML += '<p>Visit the Tutorial Page to Lean How to Code an AI tank!</p>';
+        modal.innerHTML += '<p>The game features use of Angular, Javascript, SCSS, HTML5, WebGL, WebSockets, <a href="https://playcanvas.com/" target="_blank">PlayCanvas</a>, JQuery, AceEditor, EasyStar, Mongoose, and Node.</p>';
+        modal.innerHTML += '<p>Game Foundation by: <a href="https://twitter.com/mrmaxm" target="_blank">moka</a>, SashaRX, <a href="https://twitter.com/4Roonio" target="_blank">Roonio</a>, and <a href="mailto:toxin136+tanx@gmail.com" target="_blank">ToXa</a>. </p>';
         
         document.body.appendChild(modal);
         
