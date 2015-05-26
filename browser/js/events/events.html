@@ -1,7 +1,7 @@
 <section id="events" ng-controller="mainEventCtrl"> 
 	<div ng-controller="EventsController">
 		<div ng-controller="LaunchBotModalCtrl">
-			<div class='modalBackground' ng-if="showSelectBotModal">
+			<div class='modalBackground justified' ng-if="showSelectBotModal" >
 				<div class='modalSelectBot justified' ng-if="showSelectBotModal">
 					<div class="justified top-space">
 						<div>
@@ -23,19 +23,19 @@
 		<div id="center" ng-model="eventsObj" class="justified">
 			<!-- Live Events for display only with 'viewer functionality' -->
 			<div class="group">
-				<h2 ng-click="setCurrentEvent('live')" ng-class="{activated: currentEvent==='live'}">Live Events</h2>
+				<h2 ng-click="setCurrentEvent('live')" ng-class="{activated: currentEvent==='live'}" ng-hide="showSelectBotModal">Live Events</h2>
 			</div>
 			<!-- Arena Battles -->
 			<div class="group">
-				<h2 ng-click="setCurrentEvent('arena')" ng-class="{activated: currentEvent==='arena'}">Available Arenas</h2>
+				<h2 ng-click="setCurrentEvent('arena')" ng-class="{activated: currentEvent==='arena'}" ng-hide="showSelectBotModal">Available Arenas</h2>
 			</div>	
 			<!-- Announce a 'New Battle Arena' Button -->
 			<div class="group">
-				<h2 ng-click="setCurrentEvent('host'); data.createEvent = true" ng-class="{activated: currentEvent==='host'}">Create New Arena</h2>
+				<h2 ng-click="setCurrentEvent('host'); data.createEvent = true" ng-class="{activated: currentEvent==='host'}" ng-hide="showSelectBotModal">Create New Arena</h2>
 			</div>		
 			<!-- Challenge another player -->
 			<div class="group">
-				<h2 ng-click="setCurrentEvent('challenges'); " ng-class="{activated: currentEvent==='challenges'}">Challenges</h2>
+				<h2 ng-click="setCurrentEvent('challenges'); " ng-class="{activated: currentEvent==='challenges'}" ng-hide="showSelectBotModal">Challenges</h2>
 			</div>
 		</div>
 		
