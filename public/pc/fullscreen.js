@@ -18,7 +18,7 @@ pc.script.create('fullscreen', function (context) {
                right: 16px;
                z-index: 1;
                cursor: pointer;
-               background-color: rgba(33, 34, 36, .75);
+               background-color: rgba(33, 34, 36, 0);
                background-image: url("https://s3-eu-west-1.amazonaws.com/static.playcanvas.com/tanx/button-fs.png");
                background-size: 16px 16px;
                background-repeat: no-repeat;
