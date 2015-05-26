@@ -11,7 +11,7 @@
 			</div>	
 			<!-- Announce a 'New Battle Arena' Button -->
 			<div class="group">
-				<h2 ng-click="setCurrentEvent('host'); data.createEvent = true" ng-class="{activated: currentEvent==='host'}">Create New Arena{{data.createEvent}}</h2>
+				<h2 ng-click="setCurrentEvent('host'); data.createEvent = true" ng-class="{activated: currentEvent==='host'}">Create New Arena</h2>
 			</div>		
 			<!-- Challenge another player -->
 			<div class="group">
@@ -56,7 +56,7 @@
 			</div>
 			<div ng-if="currentEvent==='arena'" class="justified eventModal">
 				<div class="row">
-					<h4>Host Player</h4>
+					<h4>Creator</h4>
 					<h6 ng-repeat="event in pendingEvents">{{event.createdBy.username}}</h6>
 				</div>
 				<div class="row">
@@ -64,11 +64,11 @@
 					<h6 ng-repeat="event in pendingEvents">{{event.createdBy.rank}}</h6>
 				</div>
 				<div class="row">
-					<h4>Specifications</h4>
+					<h4>Specs</h4>
 					<h6 ng-repeat="event in pendingEvents">{{event.specs}}</h6>
 				</div>
 				<div class="row">
-					<h4>Empty Slots</h4>
+					<h4>Opponent Slots</h4>
 					<h6 ng-repeat="event in pendingEvents">{{event.slots}}</h6>
 				</div>
 				<div class="row">
