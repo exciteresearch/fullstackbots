@@ -24,6 +24,22 @@
             background-color: black;
         }
     }
+    .modalSelectBot {
+        box-shadow: 0 0 10px #0d8bd9, 0 0 10px #0d8bd9;
+        transition: All 0.15s;
+        position: initial;
+        width: auto; 
+        margin-top: 20px;
+        height: 100px;
+        padding: 10px 10px;
+        left: calc(50% - (541px/2));
+        top: 100px;
+        background-color: #3f4044;
+        border: 7px double white;
+        z-index: 9999;
+        opacity: 1;
+        transform: scale(1, 1);
+    }
     .eventModal{
         margin-top: 20px
     }
