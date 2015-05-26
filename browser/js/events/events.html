@@ -1,5 +1,25 @@
 <section id="events" ng-controller="mainEventCtrl"> 
 	<div ng-controller="EventsController">
+		<div ng-controller="LaunchBotModalCtrl">
+			<div class='modalBackground' ng-if="showSelectBotModal">
+				<div class='modalSelectBot justified' ng-if="showSelectBotModal">
+					<div class="justified top-space">
+						<div>
+						<!-- title -->
+							<h3>Select AI Tank:</h3>
+							<!-- content -->
+							<select ng-options="bot.botname for bot in botList" ng-model="bot" ng-change="selectBot(bot);">
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- PlayCanvas iFrame viewable with 'Launch' -->
+			<div ng-controller="PlayCanvasCtrl" ng-if="eventLaunched" class="justified">
+				<iframe ng-src="{{playCanvasURL}}" ></iframe>
+			</div>
+		</div>
+		
 		<div id="center" ng-model="eventsObj" class="justified">
 			<!-- Live Events for display only with 'viewer functionality' -->
 			<div class="group">
@@ -19,10 +39,6 @@
 			</div>
 		</div>
 		
-		<!-- PlayCanvas iFrame viewable with 'Launch' -->
-		<div ng-if="eventLaunched" ng-controller="PlayCanvasCtrl" class="justified">
-			<iframe ng-src="{{playCanvasURL}}" ></iframe>
-		</div>		
 		
 		<div id="center" class="eventModal"  class="justified">
 			<div ng-if="currentEvent==='live'"  class="justified">
