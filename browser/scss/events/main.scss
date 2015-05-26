@@ -1,9 +1,15 @@
 #events{
+    iframe{
+        margin-top: 20px;
+        height: 700px;
+        width: 80%;
+        box-shadow: rgb(13, 139, 217) 0 0 24px, rgb(13, 139, 217) 0 0 24px;
+    }
     .justified{
         color: white;
         display: flex;
         justify-content: center;
-        
+    
         .row{
             box-shadow: rgb(13, 139, 217) 0 0 24px, rgb(13, 139, 217) 0 0 24px;
             border: 7px double white;
