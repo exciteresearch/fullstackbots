@@ -54,7 +54,7 @@ pc.script.create('infoBox', function (context) {
         modal.style.cursor = 'pointer';
         modal.style.textAlign = 'center';
         
-        modal.innerHTML = '<img src="https://s3-eu-west-1.amazonaws.com/static.playcanvas.com/images/tanx_green.png" style="padding-top:8px;" />';
+        modal.innerHTML = '<img src="/images/ai-tanx-logo-green.png" style="padding-top:8px; width: 300px;" />';
         modal.innerHTML += '<p>Program Your Tank AI and Battle it Out!<p>';
         modal.innerHTML += '<br /><p>AI Tanx has been built by <a href="https://www.linkedin.com/in/djnadgar" target="_blank"> DJ Nadgar</a>, <a href="https://www.linkedin.com/in/miguelalvarezd" target="_blank"> Miguel Alvarez</a>, and <a href="https://www.linkedin.com/pub/ian-downie/79/9bb/824" target="_blank">Ian Downie</a> at <a href="http://www.fullstackacademy.com/" target="_blank">Fullstack Academy</a>.</p>';
         modal.innerHTML += '<p>Visit the Tutorial Page to Lean How to Code an AI tank!</p>';
@@ -67,7 +67,7 @@ pc.script.create('infoBox', function (context) {
         
         var logo = document.createElement('img');
         logo.id = 'logo';
-        logo.src = 'https://s3-eu-west-1.amazonaws.com/static.playcanvas.com/tanx/tanx-logo-black.png';
+        logo.src = '/images/ai-tanx-logo-black.png';
         logo.alt = 'logo';
         document.body.appendChild(logo);
         

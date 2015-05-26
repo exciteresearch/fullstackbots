@@ -281,7 +281,7 @@ pc.script.create('overlay', function (app) {
         // logo
         var logo = this.elLogo = new Image();
         logo.classList.add('logo', 'active');
-        logo.src = 'https://s3-eu-west-1.amazonaws.com/static.playcanvas.com/tanx/tanx-logo.png';
+        logo.src = '/images/ai-tanx-logo-green.png';
         overlay.appendChild(logo);
 
         // cinematic top
