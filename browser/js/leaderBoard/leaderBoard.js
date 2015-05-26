@@ -27,6 +27,9 @@ app.controller('LeaderBoardController', function ($scope, $stateParams, AuthServ
 
 
 	// //SCOPE METHODS
+    $scope.setRanking=function(arg){
+        $scope.currentRanking=arg;
+    }
 	$scope.challengeUser = function( user ) {
         
 		if ($scope.userLogged._id !== user._id)
