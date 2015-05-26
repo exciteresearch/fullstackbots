@@ -22,16 +22,63 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('mainEventCtrl',function($scope, $stateParams){
+	$scope.showSelectBotModal=false;
     $scope.directEventID = "";
+	$scope.botOneID = "";
 	$scope.eventsObj = {};
-	//console.log("revised mainEventCtrl");
 	$scope.$on('refreshEventObj',function(event, data){
-		//console.log("mainEventCtrl data=",data);
 		$scope.eventsObj = data;
 	});
 });
 
-app.controller('EventsController', function ($scope, $stateParams, AuthService, ChallengeFactory, EventsFactory, $rootScope) {
+app.controller('LaunchBotModalCtrl', function ($rootScope, $scope, $stateParams, AuthService, BotCodeFactory, UserProfileFactory) {
+        
+	if (!$scope.user) AuthService.getLoggedInUser().then(function (user) {
+        $scope.user = user;
+        //get bots by user._id only
+        UserProfileFactory.getBotList( user._id ).then(function(bots){
+        	if ( bots.length >= 1 ) {
+        		$scope.botList = bots;
+        	} else {
+    			//TODO if there are no bots user must create one... redirect to editor?
+        	}
+        });
+    });
+    
+    // if bot._id is undefined then showSelectBotModal === hideSelectBotModal if bot._id !== undefined
+
+	// //SCOPE METHODS
+    $scope.selectBot = function( bot ) {
+    	$scope.$parent.botOneID = bot._id;
+    	$rootScope.eventLaunched = true;
+    	$scope.$parent.showSelectBotModal = false;
+    };
+    
+});
+
+app.controller('PlayCanvasCtrl',function($rootScope,$scope,$sce){
+	 //playCanvas URL can be changed to anything including:
+	 // FullStackBots: /pc/index.html ,
+	 // FSB: http://playcanv.as/p/bbMQlNMt?server=fsb,
+	 // Tanx: http://playcanv.as/p/aP0oxhUr ,
+	 // Voyager: http://playcanv.as/p/MmS7rx1i ,
+	 // Swoop: http://playcanv.as/p/JtL2iqIH ,
+	 // Hack: http://playcanv.as/p/KRE8VnRm 
+		
+	// trustAsResourceUrl can be highly insecure if you do not filter for secure URLs
+	// it compounds the security risk of malicious code injection from the Code Editor
+	
+	if($rootScope.eventLaunched){
+		$scope.$parent.showSelectBotModal=false;
+    	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html?server=fsb'
+			+'&eventID='+$scope.$parent.directEventID
+			+"&botOneID="+$scope.$parent.botOneID
+		);
+     }
+});
+
+
+app.controller('EventsController', function ($rootScope, $scope, $stateParams, AuthService, ChallengeFactory, EventsFactory) {
 
     $scope.data = {
         specs: "",
@@ -43,9 +90,9 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
         $scope.user = user;
     });
 
-    $scope.botOneID = $stateParams.defaultBotID;
+    $scope.$parent.botOneID = $stateParams.defaultBotID;
 
-    $scope.eventLaunched = false;
+    $rootScope.eventLaunched = false;
     $scope.waiting = false;
     if (!$scope.pendingEvents) EventsFactory.getPendingEvents().then(function(events){
         $scope.pendingEvents = events;
@@ -55,20 +102,22 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
 	// if (!$scope.liveEvents) EventsFactory.getLiveEvents().then(function(events){
 	// 	$scope.liveEvents = events;
 	// });
+    
     $scope.liveEvents = [];
-    $scope.currentEvent="arena"
+    $scope.currentEvent="arena";
     
     if (!$scope.challenges) ChallengeFactory.getChallenges().then(function(challenges){
         $scope.challenges = challenges;
     });
+    
     $scope.setCurrentEvent=function(arg){
         $scope.currentEvent=arg;
-    }
+    };
 	
 	// //SCOPE METHODS
-     $scope.createNewChallenge = function() {
+    $scope.createNewChallenge = function() {
         //TODO
-     }
+    };
 
     $scope.createNewEvent = function() {
         
@@ -86,7 +135,7 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
                 $scope.data.specs = "";
                 $scope.data.slots = 1;
             });
-    }
+    };
 
     $scope.deleteEvent = function( index ) {
         EventsFactory.deleteEvent( $scope.pendingEvents[index] )
@@ -94,80 +143,13 @@ app.controller('EventsController', function ($scope, $stateParams, AuthService, 
             {
                 $scope.pendingEvents.splice(index, 1);
             });
-    }
+    };
 
 
     $scope.joinEvent = function( index ) {
-    	
-        if($scope.eventLaunched) {
-        	$scope.eventLaunched = false;
-        }
-        else {
-        	$scope.directEventID = $scope.pendingEvents[index]._id;
-        	$scope.eventLaunched = true;
-        	$scope.$emit('refreshEventObj', { 
-        		eventID: $scope.pendingEvents[index]._id, eventType: 'pending',
-        		botOneID: $scope.botOneID
-    			});
-//        	$scope.$emit('launchEvent',{ 
-//        		eventID: $scope.pendingEvents[index]._id, eventType: 'pending',
-//        		botOneID: $scope.botOneID
-//        	});
-        }
-        
-        
-        
-        
-//        EventsFactory.joinEvent( $scope.pendingEvents[index] )
-//        .then(function (event) {
-//        	$scope.waiting = true;
-//            $scope.eventLaunched = true;
-//        }).catch(function(err){
-//            	console.log(err);
-//        });
-        
-        
-        
-    }
-});
-
-app.controller('PlayCanvasCtrl',function($scope,$sce){
-	 //playCanvas URL can be changed to anything including:
-	 // FullStackBots: /pc/index.html ,
-	 // FSB: http://playcanv.as/p/bbMQlNMt?server=fsb,
-	 // Tanx: http://playcanv.as/p/aP0oxhUr ,
-	 // Voyager: http://playcanv.as/p/MmS7rx1i ,
-	 // Swoop: http://playcanv.as/p/JtL2iqIH ,
-	 // Hack: http://playcanv.as/p/KRE8VnRm 
-		
-	// trustAsResourceUrl can be highly insecure if you do not filter for secure URLs
-	// it compounds the security risk of malicious code injection from the Code Editor
-	
-	console.log('$scope.$parent.directEventID',$scope.$parent.directEventID);
-	console.log('$scope.$parent.botOneID',$scope.$parent.botOneID);
-	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html?server=fsb'
-			+'&eventID='+$scope.$parent.directEventID
-			+"&botOneID="+$scope.$parent.botOneID
-			);
-////	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html?server=fsb&eventID='+'5559f60123b028a5143b6e63');
-////	$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html?server=fsb');
-//
-//	$scope.$on('launchEvent',function(event, data){
-//		console.log("PlayCanvasCtrl data=",data);
-//		$scope.playCanvasURL = $sce.trustAsResourceUrl('/pc/index.html?server=fsb&eventID='+data.eventID);
-//	});
+    	$scope.$parent.directEventID = $scope.pendingEvents[index]._id;
+    	$scope.$parent.showSelectBotModal = true;
+    };
 
 });
 
-// app.filter('rankFilter', function () {
-
-//   return function ( events, number ) {
-//     var filtered = [];
-//     for (var i = 0; i < events.length; i++) {
-//       if ( events[i].rank<= number ) {
-//         filtered.push( events[i] );
-//       }
-//     }
-//     return filtered;
-//   };
-// });
